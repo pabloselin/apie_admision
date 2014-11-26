@@ -9,12 +9,25 @@
  * License: A short license name. Example: GPL2
  */
 
-$dbver = '0.1';
+
+/*
+TODO:
+- Poblar base de datos vía ajax
+- Crear vista de datos en admin
+- Crear correo de aviso para apoderado y admin
+*/
+
+global $dbver;
+$dbver = '0.4';
+$tbname = $wpdb->prefix . 'fspmapdata';
 
 //Tablas de datos
 function fspm_table() {
-	global $wpdb, $dbver;
+	global $wpdb;
+	global $dbver;
+	global $tbname;
 	$actver = get_option('fspm_dbver');
+	$charset_collate = $wpdb->get_charset_collate();
 	//Datos a recopilar
 	//Nombre apoderado
 	//Teléfono
@@ -22,22 +35,23 @@ function fspm_table() {
 	//Nombre alumno
 	//Curso postula
 	//Fecha de inscripción
-	$tbname = $wpdb->prefix . 'fspmapdata';
-	if($dbver != $actver) {
-		$sql = "CREATE TABLE $tbname (id mediumint(9) NOT NULL AUTO_INCREMENT,
+	$sql = "CREATE TABLE $tbname (
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
 			time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-			nombre_apoderado text NOT NULL,
-			fono_apoderado text NOT NULL,
-			email_apoderado text NOT NULL,
-			extra_apoderado text NOT NULL
-			UNIQUE_KEY id(id))";
+			apname text NOT NULL,
+			alname text NOT NULL,
+			apfono text NOT NULL,
+			apmail text NOT NULL,
+			apextr text NOT NULL,
+			cursoi text NOT NULL,
+			UNIQUE KEY id (id)
+		) $charset_collate;";
+		
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta($sql);
-		update_option('fspm_dbver', $dbver);
-	}
+		
+		add_option('fspm_dbver', $dbver);
 }
-
-register_activation_hook( __FILE__, 'fspm_table' );
 
 function fspm_checkupdate() {
 	global $dbver;
@@ -46,9 +60,13 @@ function fspm_checkupdate() {
 	}
 }
 
+add_action('plugins_loaded', 'fspm_checkupdate');
+register_activation_hook( __FILE__, 'fspm_table' );
+
 //Html del formulario
 function fspm_form() {
-	$form = '<form class="form-horizontal" id="fspm_prepostulacion" action="'.admin_url('admin-ajax.php').'" method="POST">
+	$nonce = $_POST['prepostnonce'];
+	$form = '<form class="form-horizontal" id="fspm_prepostulacion" action="" method="POST">
 			<h2>Pre-postulación Seminario Pontificio Menor</h2>
 			<!--nonce-->
 			'.wp_nonce_field('fspm_prepost', 'prepostnonce').'
@@ -57,28 +75,28 @@ function fspm_form() {
 			<div class="control-group">
 				<label class="control-label" for="nombre_apoderado">Nombre apoderado</label>
 					<div class="controls">
-						<input type="text" name="nombre_apoderado" value="" placeholder="Nombre Apoderado">
+						<input type="text" name="nombre_apoderado" value="" placeholder="Nombre Apoderado" required>
 					</div>
 				</div>
 			<!--formel-->
 			<div class="control-group">
 				<label class="control-label" for="fono_apoderado">Teléfono apoderado</label>
 				<div class="controls">
-					<input type="text" name="fono_apoderado" value="" placeholder="Teléfono Apoderado">
+					<input type="text" name="fono_apoderado" value="" placeholder="Teléfono Apoderado" required>
 				</div>
 			</div>
 			<!--formel-->
 			<div class="control-group">
 				<label class="control-label" for="email_apoderado">E-Mail apoderado</label>
 				<div class="controls">
-					<input type="text" name="email_apoderado" value="" placeholder="Email Apoderado">
+					<input type="email" name="email_apoderado" value="" placeholder="Email Apoderado" required>
 				</div>
 			</div>
 			<!--formel-->
 			<div class="control-group">
 				<label class="control-label" for="nombre_alumno">Nombre alumno</label>
 				<div class="controls">
-					<input type="text" name="nombre_alumno" value="" placeholder="Nombre alumno">
+					<input type="text" name="nombre_alumno" value="" placeholder="Nombre alumno" required>
 				</div>
 			</div>
 			<!--formel-->
@@ -95,20 +113,24 @@ function fspm_form() {
 				</span>
 				<div class="controls">
 					<label class="radio">
-						<input type="radio" name="curso" value="pre">
+						<input type="radio" name="curso" value="pre" default>
 						Pre-Kínder
 					</label>
-					<label class="radio">
-						<input type="radio" name="curso" value="kin">
+					<label class="radio disabled">
+						<input type="radio" name="curso" value="kin" disabled>
 						Kínder
 					</label>
 					<label class="radio">
-						<input type="radio" name="curso" value="bas">
-						Básica
+						<input type="radio" name="curso" value="1bas">
+						1º Básico
 					</label>
 					<label class="radio">
-						<input type="radio" name="curso" value="med">
-						Media
+						<input type="radio" name="curso" value="2bas">
+						2º Básico
+					</label>
+					<label class="radio">
+						<input type="radio" name="curso" value="3bas">
+						3º Básico
 					</label>
 				</div>
 			</div>
@@ -117,14 +139,33 @@ function fspm_form() {
 				<input type="submit" name="Enviar" value="Enviar" placeholder="" class="btn btn-danger btn-lg">
 			</p>
 		</form>';
-	return $form;
+		if($nonce){	
+			fspm_validate();
+		} else {
+			return $form;	
+		}
+		
 }
 
 
 
 //Insertar datos en tabla
-function fspm_putdata() {
+function fspm_putdata($data) {
 	global $wpdb;
+	global $tbname;
+	$insert = $wpdb->insert(
+						$tbname,
+						array(
+							'time'   => current_time('mysql'),
+							'apname' => $data['nombre'],
+							'alname' => $data['nalumno'],
+							'apfono' => $data['fono'],
+							'apmail' => $data['email'],
+							'apextr' => $data['mensaje'],
+							'cursoi' => $data['curso']
+							)
+						);
+	$lastid = $wpdb->insert_id;
 }
 
 //Shortcode para el formulario
@@ -150,16 +191,26 @@ function fspm_adminviews() {
 
 //Validación
 function fspm_validate() {
-	$data['nombre'] = $_POST['nombre_apoderado'];
-	$data['fono'] = $_POST['fono_apoderado'];
-	$data['email'] = $_POST['email_apoderado'];
-	$data['mensaje'] = $_POST['mensaje'];
-	$data['curso'] = $_POST['curso'];
+	if(!wp_verify_nonce( $_POST['prepostnonce'], 'fspm_prepost' )) {
+		echo 'nonce inválido';
+	} else {
+		//Sanitizar
+		$data['nombre'] = sanitize_text_field($_POST['nombre_apoderado']);
+		$data['fono'] = sanitize_text_field($_POST['fono_apoderado']);
+		$data['email'] = sanitize_text_field($_POST['email_apoderado']);
+		$data['nalumno'] = sanitize_text_field($_POST['nombre_alumno'] );
+		$data['mensaje'] = sanitize_text_field($_POST['mensaje']);
+		$data['curso'] = sanitize_text_field($_POST['curso']);
+		//Meter en la base de datos
+		fspm_putdata($data);
+		//Enviar mensaje y correr funciones
+		fspm_mails($data);
+	}
 }
 
 //Envío de correos
-function fspm_mails() {
-
+function fspm_mails($data) {
+	echo $data['nombre'] . ': Inscripción enviada';
 }
 
 //Scripts y estilos extras
@@ -167,8 +218,10 @@ function fspm_stylesetscripts() {
 	if(!is_admin()) {
 		wp_register_style( 'fspm', plugins_url('/css/fspm.css', __FILE__) , array(), '1.0', 'screen' );
 		wp_register_script( 'fspm', plugins_url('/js/fspm.js', __FILE__), array('jquery'), '1.0', false);
+		wp_register_script( 'jqvalidate', plugins_url('/bower_components/jquery-validation/dist/jquery.validate.js', __FILE__), array('jquery'), '1.0', false);
 		wp_enqueue_style( 'fspm' );
 		wp_enqueue_script( 'fspm' );
+		wp_enqueue_script('jqvalidate');
 	};
 }
 
