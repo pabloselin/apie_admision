@@ -21,6 +21,9 @@ global $dbver;
 $dbver = '0.4';
 $tbname = $wpdb->prefix . 'fspmapdata';
 
+//admin page
+include( plugin_dir_path( __FILE__ ) . 'admin.php');
+
 //Tablas de datos
 function fspm_table() {
 	global $wpdb;
@@ -62,6 +65,14 @@ function fspm_checkupdate() {
 
 add_action('plugins_loaded', 'fspm_checkupdate');
 register_activation_hook( __FILE__, 'fspm_table' );
+
+//Llamar inscritos y devolver un array
+function fspm_getdata() {
+	global $wpdb;
+	global $tbname;
+	$inscritos = $wpdb->get_results("SELECT * FROM $tbname");
+	return $inscritos;
+} 
 
 //Html del formulario
 function fspm_form() {
@@ -166,6 +177,11 @@ function fspm_putdata($data) {
 							)
 						);
 	$lastid = $wpdb->insert_id;
+	if($lastid) {
+		echo 'Inscripción registrada';
+	} else {
+		echo 'Falló el envío de emails';
+	}
 }
 
 //Shortcode para el formulario
@@ -210,7 +226,16 @@ function fspm_validate() {
 
 //Envío de correos
 function fspm_mails($data) {
-	echo $data['nombre'] . ': Inscripción enviada';
+	$mensajeapoderado = 'Gracias por enviar prepostulación a SPM';
+	$mensajeadmin = 'Se envió inscripción a admisión SPM';
+	
+	$mailapoderado = wp_mail( $data['email'], 'Prepostulación SPM', $mensajeapoderado);
+	$mailadmin = wp_mail( 'pablo@apie.cl', 'Prepostulación SPM', $mensajeadmin);
+	if($mailapoderado && $mailadmin) {
+		echo 'E-Mails enviados';
+	} else {
+		echo 'Falló el envío de emails';
+	}
 }
 
 //Scripts y estilos extras
