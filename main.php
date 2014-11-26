@@ -191,6 +191,13 @@ function fspm_formshortcode($atts) {
 
 add_shortcode('fspm_admform', 'fspm_formshortcode');
 
+function spm_shortcode($atts) {
+    $title = $atts['title'];   
+    return '<div class="addthis_sharing_toolbox" data-title="'.$title.'"></div>';
+}
+
+add_shortcode('spm_addthis', 'spm_shortcode');
+
 //shortcode para el botón
 function fspm_buttonshortcode($atts) {
 	$link = $atts['url'];
