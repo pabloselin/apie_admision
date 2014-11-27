@@ -58,7 +58,7 @@ function fspm_table() {
 
 function fspm_checkupdate() {
 	global $dbver;
-	if($dbver != get_site_option('fspm_dbver')) {
+	if(!get_site_option('fspm_dbver') || $dbver != get_site_option('fspm_dbver')) {
 		fspm_table();
 	}
 }
@@ -129,7 +129,7 @@ function fspm_form() {
 					</label>
 					<label class="radio disabled">
 						<input type="radio" name="curso" value="kin" disabled>
-						Kínder
+						Kínder (completo)
 					</label>
 					<label class="radio">
 						<input type="radio" name="curso" value="1bas">
@@ -180,7 +180,7 @@ function fspm_putdata($data) {
 	if($lastid) {
 		echo 'Inscripción registrada';
 	} else {
-		echo 'Falló el envío de emails';
+		echo 'Falló registro de inscripción';
 	}
 }
 
@@ -191,12 +191,22 @@ function fspm_formshortcode($atts) {
 
 add_shortcode('fspm_admform', 'fspm_formshortcode');
 
-function spm_shortcode($atts) {
-    $title = $atts['title'];   
-    return '<div class="addthis_sharing_toolbox" data-title="'.$title.'"></div>';
+function spm_shareshortcode($atts) {
+	global $post;
+	$soctitle = get_post_meta($post->ID, 'rw_titulosocial', true);   
+    $share['whatsapp'] = '<a target="_blank" href="whatsapp://send?text='.$post->post_title.' ' . get_permalink($post->ID).'" class="wa" title="Enviar por WhatsApp"><span class="fa-stack">
+  				<i class="fa fa-circle-o fa-stack-1x"></i>
+  				<i class="fa fa-phone fa-stack-1x"></i>
+			</span></i></a>';
+    $share['facebook'] = '<a target="_blank" class="fb" href="https://facebook.com/sharer.php?u='.get_permalink($post->ID).'" class="facebook"><i class="fa fa-facebook"></i></a>';
+    $share['twitter'] = '<a target="_blank" href="https://twitter.com/intent/tweet?url='.get_permalink($post->ID).'&text='.urlencode($soctitle).'" class="twt"><i class="fa fa-twitter"></i></a>';
+    $share['gmas'] = '<a target="_blank" href="https://plus.google.com/share?url='.get_permalink($post->ID).'" class="gpl"><i class="fa fa-google-plus"></i></a>';
+    $share = implode(' ', $share);
+    $share = '<div class="sharing_toolbox">'.$share.'</div>';
+    return $share;
 }
 
-add_shortcode('spm_addthis', 'spm_shortcode');
+add_shortcode('spm_share', 'spm_shareshortcode');
 
 //shortcode para el botón
 function fspm_buttonshortcode($atts) {
