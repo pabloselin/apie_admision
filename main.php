@@ -269,7 +269,7 @@ function fspm_cursequi($curso) {
 
 //Envío de correos
 function fspm_mails($data) {
-	$mensajeapoderado = '<table width="60 cellspacing="0" cellpading="20" style="font-family:sans-serif;font-size:14px;background-color:#FEF1D6;border:1px solid #ccc;">
+	$mensajeapoderado = '<table width="600" cellspacing="0" cellpading="20" style="font-family:sans-serif;font-size:14px;background-color:#FEF1D6;border:1px solid #ccc;">
 		<tr>
 			<td>
 				<h3>Confirmación de pre-postulación</h3>
@@ -282,7 +282,7 @@ function fspm_mails($data) {
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
 							<p><strong>Teléfono Apoderado(a): </strong>' . $data['fono'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
-							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['fspm_cursequi']) .'</p>
+							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['curso']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
 							<p><strong>Consulta adicional: </strong>' .$data['mensaje'].'</p>
 						</td>

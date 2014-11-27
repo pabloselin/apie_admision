@@ -32,12 +32,12 @@ function fspm_doadmin() {
 			foreach($inscritos as $inscrito) {?>
 				<tr>
 					<td><?php echo mysql2date( 'j F', $inscrito->time );?></td>
-					<td><?php echo mysql2date( 'h:i', $inscrito->time );?></td>
+					<td><?php echo mysql2date( 'H:i', $inscrito->time );?></td>
 					<td><?php echo $inscrito->apname;?></td>
 					<td><?php echo $inscrito->alname;?></td>
 					<td><?php echo $inscrito->apmail;?></td>
 					<td><?php echo $inscrito->apfono;?></td>
-					<td><?php echo $inscrito->cursoi;?></td>
+					<td><?php echo fspm_cursequi($inscrito->cursoi);?></td>
 					<td><?php echo $inscrito->apextr;?></td>
 				</tr>
 			<?php }

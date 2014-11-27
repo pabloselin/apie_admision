@@ -49,17 +49,28 @@ div.controls.curso-post {
 	margin-bottom:12px;
 }
 
+.input-prepend input {
+	width:159px;
+}
+
 label.radio {
 	padding:12px;
-	background-color:darken(#f0f0f0, 10%);
+	background-color:white;
 	border-radius:10px;
 	margin-bottom:12px;
+	-moz-transition:all ease-in 0.2s;
+	-webkit-transition:all ease-in 0.2s;
+	transition:all ease-in 0.2s;
 	div.alert {
 		margin-top:12px;
 		margin-bottom:0;
 	}
 	span.lname {
 		font-size:20px;
+	}
+	&.selected {
+		background-color:#214A82;
+		color:white;
 	}
 }
 

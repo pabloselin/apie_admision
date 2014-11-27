@@ -57,6 +57,13 @@ $(document).ready(function() {
 		}
 	});
 
+	$('.curso-post input:checked').addClass('selected');
+
+	$('.curso-post input[type="radio"]').on('click', function(event) {
+		$('.curso-post label').removeClass('selected');
+		$(this).parent('label').addClass('selected');
+	});
+
 	if(!isMobile.any()) {
 		$('.sharing_toolbox a.wa').hide();
 	};
