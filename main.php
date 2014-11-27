@@ -269,7 +269,7 @@ function fspm_cursequi($curso) {
 
 //Envío de correos
 function fspm_mails($data) {
-	$mensajeapoderado = '<table width="600" cellspacing="0" cellpading="20" style="font-family:sans-serif;font-size:14px;background-color:#FEF1D6;border:1px solid #ccc;">
+	$mensajeapoderado = '<table width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:#FEF1D6;border:1px solid #ccc;">
 		<tr>
 			<td>
 				<h3>Confirmación de pre-postulación</h3>
@@ -289,9 +289,11 @@ function fspm_mails($data) {
 					</tr>	
 			<tr>
 				<td>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
 				<p>Muchas gracias por su interés.</p>
 				<p>Afectuosamente</p>
-				<p>Colegio Seminario Pontificio Menor</p>
+				<p><strong>Colegio Seminario Pontificio Menor</strong></p>
 				</td>
 			</tr>
 		</tr>
