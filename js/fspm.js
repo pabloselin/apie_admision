@@ -1,3 +1,25 @@
+//Check mobile stuff
+var isMobile = {
+    Android: function() {
+    return navigator.userAgent.match(/Android/i);
+    },
+    BlackBerry: function() {
+    return navigator.userAgent.match(/BlackBerry/i);
+    },
+    iOS: function() {
+    return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+    },
+    Opera: function() {
+    return navigator.userAgent.match(/Opera Mini/i);
+    },
+    Windows: function() {
+    return navigator.userAgent.match(/IEMobile/i);
+    },
+    any: function() {
+    return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+    }
+};
+
 //Fspm script
 $(document).ready(function() {
 	function spmSubmit(form) {
@@ -10,10 +32,10 @@ $(document).ready(function() {
 			email_apoderado: 'Falta email apoderado',
 			nombre_alumno: 'Falta nombre alumno',
 			curso: 'Falta elegir un curso para postular'
-		}
+		},
 		submitHandler: function(form) {
 			$(form).submit();
-		}
+		},
 		rules: {
 			email_apoderado: {
 				required: true,
@@ -21,4 +43,8 @@ $(document).ready(function() {
 			}
 		}
 	});
+
+	if(!isMobile.any()) {
+		$('.sharing_toolbox a.wa').hide();
+	};
 });

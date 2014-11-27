@@ -178,9 +178,9 @@ function fspm_putdata($data) {
 						);
 	$lastid = $wpdb->insert_id;
 	if($lastid) {
-		echo 'Inscripción registrada';
+		echo '<div class="alert alert-success">Inscripción registrada</div>';
 	} else {
-		echo 'Falló registro de inscripción';
+		echo '<div class="alert alert-error">Falló registro de inscripción</div>';
 	}
 }
 
@@ -249,9 +249,9 @@ function fspm_mails($data) {
 	$mailapoderado = wp_mail( $data['email'], 'Prepostulación SPM', $mensajeapoderado);
 	$mailadmin = wp_mail( 'pablo@apie.cl', 'Prepostulación SPM', $mensajeadmin);
 	if($mailapoderado && $mailadmin) {
-		echo 'E-Mails enviados';
+		echo '<div class="alert alert-success">E-Mails enviados</div>';
 	} else {
-		echo 'Falló el envío de emails';
+		echo '<div class="alert alert-error">Falló el envío de emails</div>';
 	}
 }
 
