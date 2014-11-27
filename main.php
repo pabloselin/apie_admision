@@ -18,7 +18,7 @@ TODO:
 */
 
 global $dbver;
-$dbver = '0.4';
+$dbver = '0.5';
 $tbname = $wpdb->prefix . 'fspmapdata';
 
 //admin page
