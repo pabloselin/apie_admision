@@ -123,29 +123,29 @@ function fspm_form() {
 			<!--formel-->
 			<div class="control-group">
 				<span class="help-block">
-					Curso al que le interesa postular
+					Curso a postular
 				</span>
-				<div class="controls">
+				<div class="controls curso-post">
 					<label class="radio">
 						<input type="radio" name="curso" value="pre" default>
-						Pre-Kínder
+						<span class="lname">Pre-Kínder</span>
 						<div class="alert alert-warning">Nuevo tercer Pre-Kínder, plazo hasta <strong>martes 9 de diciembre</strong></div>
 					</label>
 					<label class="radio disabled">
 						<input type="radio" name="curso" value="kin" disabled>
-						Kínder (completo)
+						<span class="lname">Kínder (completo)</span>
 					</label>
 					<label class="radio">
 						<input type="radio" name="curso" value="1bas">
-						1º Básico
+						<span class="lname">1º Básico</span>
 					</label>
 					<label class="radio">
 						<input type="radio" name="curso" value="2bas">
-						2º Básico
+						<span class="lname">2º Básico</span>
 					</label>
 					<label class="radio">
 						<input type="radio" name="curso" value="3bas">
-						3º Básico
+						<span class="lname">3º Básico</span>
 					</label>
 				</div>
 			</div>
@@ -182,7 +182,7 @@ function fspm_putdata($data) {
 						);
 	$lastid = $wpdb->insert_id;
 	if($lastid) {
-		echo '<div class="alert alert-success"><p style="text-align:center;"><i class="fa fa-4x fa-smile-o"></i></p><h4>Postulación enviada exitosamente</h4><p style="text-align:center;">Gracias por postular a Colegio Seminario Pontificio Menor, te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> y pronto te contactaremos para continuar el proceso.</p></div>';
+		echo '<div class="alert alert-success"><p style="text-align:center;"><i class="fa fa-4x fa-smile-o"></i></p><h4>Postulación enviada exitosamente</h4><p style="text-align:center;">Gracias por postular a Colegio Seminario Pontificio Menor, te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> y te contactaremos vía teléfono en máximo <strong>1 día hábil</strong> para continuar el proceso.</p></div>';
 	} else {
 		echo '<div class="alert alert-error"><p><i class="fa fa-meh-o fa-4x"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente.</p></div>';
 	}
@@ -245,13 +245,88 @@ function fspm_validate() {
 	}
 }
 
+function fspm_cursequi($curso) {
+	//transforma los valores de curso en valores legibles
+	switch($curso) {
+		case('pre'):
+			$lcurso = 'Pre-Kínder';
+		break;
+		case('kin'):
+			$lcurso = 'Kínder';
+		break;
+		case('1bas'):
+			$lcurso = '1º Básico';
+		break;
+		case('2bas'):
+			$lcurso = '2º Básico';
+		break;
+		case('3bas'):
+			$lcurso = '3º Básico';
+		break;	
+	}
+	return $lcurso;
+}
+
 //Envío de correos
 function fspm_mails($data) {
-	$mensajeapoderado = 'Gracias por enviar prepostulación a SPM';
-	$mensajeadmin = 'Se envió inscripción a admisión SPM';
+	$mensajeapoderado = '<table width="60 cellspacing="0" cellpading="20" style="font-family:sans-serif;font-size:14px;background-color:#FEF1D6;border:1px solid #ccc;">
+		<tr>
+			<td>
+				<h3>Confirmación de pre-postulación</h3>
+				<p>Estimado '. $data['nombre'] .', hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono en <strong>1 día hábil</strong> como máximo para continuar el proceso.</p>
+				<p>Estos son los datos que usted envió:</p>
+			</td> 
+			<tr>
+						<td>
+							<h4>Datos</h4>
+							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
+							<p><strong>Teléfono Apoderado(a): </strong>' . $data['fono'] . '</p>
+							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
+							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['fspm_cursequi']) .'</p>
+							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
+							<p><strong>Consulta adicional: </strong>' .$data['mensaje'].'</p>
+						</td>
+					</tr>	
+			<tr>
+				<td>
+				<p>Muchas gracias por su interés.</p>
+				<p>Afectuosamente</p>
+				<p>Colegio Seminario Pontificio Menor</p>
+				</td>
+			</tr>
+		</tr>
+		
+						</table>';
+	$mensajeadmin = '
+					<table width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:#f0f0f0;border:1px solid #ccc;">
+					<tr>
+						<td>
+							<h3>Se ha enviado una prepostulación a SPM</h3>
+							<p></p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h4>Datos</h4>
+							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
+							<p><strong>Teléfono Apoderado(a): </strong>' . $data['fono'] . '</p>
+							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
+							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['fspm_cursequi']) .'</p>
+							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
+							<p><strong>Consulta adicional: </strong>' .$data['mensaje'].'</p>
+						</td>
+					</tr>	
+					</table>
+					';
+	$headers = 'From: "Colegio Seminario Pontificio Menor" <admision@spm.cl>';
 	
-	$mailapoderado = wp_mail( $data['email'], 'Prepostulación SPM', $mensajeapoderado);
-	$mailadmin = wp_mail( 'pablo@apie.cl', 'Prepostulación SPM', $mensajeadmin);
+	add_filter('wp_mail_content_type', function($content_type) {return 'text/html';});
+
+	$mailapoderado = wp_mail( $data['email'], 'Prepostulación SPM', $mensajeapoderado, $headers);
+	$mailadmin = wp_mail( 'pablo@apie.cl', 'Prepostulación SPM', $mensajeadmin, $headers);
+
+	add_filter('wp_mail_content_type', function($content_type) {return 'text/plain';});
+
 	if($mailapoderado && $mailadmin) {
 		echo '<div class="alert alert-success"><i class="fa fa-check"></i> <i class="fa fa-envelope"></i></div>';
 	} else {

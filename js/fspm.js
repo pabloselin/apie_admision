@@ -24,10 +24,18 @@ var isMobile = {
 $(document).ready(function() {
 	$('#fspm_prepostulacion').validate({
 		messages: {
-			nombre_apoderado: 'Falta nombre de apoderado',
-			fono_apoderado: 'Falta teléfono apoderado',
-			email_apoderado: 'Falta email apoderado',
-			nombre_alumno: 'Falta nombre alumno',
+			nombre_apoderado: 'Falta nombre de apoderado(a)',
+			fono_apoderado: {
+				required: 'Falta teléfono apoderado(a)',
+				minlength: 'El número telefónico parece ser demasiado corto',
+				maxlength: 'El número telefónico parece ser demasiado largo',
+				digits: 'Sólo se pueden poner números en este campo'
+			},
+			email_apoderado: {
+				required: 'Falta email apoderado(a)',
+				email: 'Por favor introduzca un email válido'	
+			},
+			nombre_alumno: 'Falta nombre del alumno(a)',
 			curso: 'Falta elegir un curso para postular'
 		},
 		submitHandler: function(form) {
@@ -39,6 +47,12 @@ $(document).ready(function() {
 			email_apoderado: {
 				required: true,
 				email: true
+			},
+			fono_apoderado: {
+				required: true,
+				minlength: 8,
+				maxlength: 8,
+				digits: true
 			}
 		}
 	});

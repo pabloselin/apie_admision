@@ -18,6 +18,8 @@ function fspm_doadmin() {
 		<h2>Prepostulación SPM</h2>
 		<table class="widefat wp-list-table fspmlist">
 			<thead>
+				<th>Fecha</th>
+				<th>Hora</th>
 				<th>Nombre Apoderado</th>
 				<th>Nombre Alumno</th>
 				<th>E-Mail Apoderado</th>
@@ -29,6 +31,8 @@ function fspm_doadmin() {
 		<?php
 			foreach($inscritos as $inscrito) {?>
 				<tr>
+					<td><?php echo mysql2date( 'j F', $inscrito->time );?></td>
+					<td><?php echo mysql2date( 'h:i', $inscrito->time );?></td>
 					<td><?php echo $inscrito->apname;?></td>
 					<td><?php echo $inscrito->alname;?></td>
 					<td><?php echo $inscrito->apmail;?></td>
