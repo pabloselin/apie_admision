@@ -84,35 +84,38 @@ function fspm_form() {
 			<input type="hidden" name="" value="fspm_prepost" placeholder="">
 			<!--formel-->
 			<div class="control-group">
-				<label class="control-label" for="nombre_apoderado">Nombre apoderado</label>
+				<label class="control-label" for="nombre_apoderado">Nombre apoderado(a)</label>
 					<div class="controls">
-						<input type="text" name="nombre_apoderado" value="" placeholder="Nombre Apoderado" required>
+						<input type="text" name="nombre_apoderado" value="" placeholder="Nombre Apoderado(a)" required>
 					</div>
 				</div>
 			<!--formel-->
 			<div class="control-group">
-				<label class="control-label" for="fono_apoderado">Teléfono apoderado</label>
+				<label class="control-label" for="fono_apoderado">Celular apoderado(a)</label>
 				<div class="controls">
-					<input type="text" name="fono_apoderado" value="" placeholder="Teléfono Apoderado" required>
+					<div class="input-prepend">
+						<span class="add-on">+56 9</span>
+						<input type="text" name="fono_apoderado" value="" placeholder="" required>
+					</div>
 				</div>
 			</div>
 			<!--formel-->
 			<div class="control-group">
-				<label class="control-label" for="email_apoderado">E-Mail apoderado</label>
+				<label class="control-label" for="email_apoderado">E-Mail apoderado(a)</label>
 				<div class="controls">
-					<input type="email" name="email_apoderado" value="" placeholder="Email Apoderado" required>
+					<input type="email" name="email_apoderado" value="" placeholder="Email Apoderado(a)" required>
 				</div>
 			</div>
 			<!--formel-->
 			<div class="control-group">
-				<label class="control-label" for="nombre_alumno">Nombre alumno</label>
+				<label class="control-label" for="nombre_alumno">Nombre alumno(a)</label>
 				<div class="controls">
-					<input type="text" name="nombre_alumno" value="" placeholder="Nombre alumno" required>
+					<input type="text" name="nombre_alumno" value="" placeholder="Nombre alumno(a)" required>
 				</div>
 			</div>
 			<!--formel-->
 			<div class="control-group">
-				<label class="control-label" for="mensaje_apoderado">Mensaje</label>
+				<label class="control-label" for="mensaje_apoderado">Consulta u observación especial</label>
 				<div class="controls">
 					<textarea name="mensaje"></textarea>
 				</div>
@@ -126,6 +129,7 @@ function fspm_form() {
 					<label class="radio">
 						<input type="radio" name="curso" value="pre" default>
 						Pre-Kínder
+						<div class="alert alert-warning">Nuevo tercer Pre-Kínder, plazo hasta <strong>martes 9 de diciembre</strong></div>
 					</label>
 					<label class="radio disabled">
 						<input type="radio" name="curso" value="kin" disabled>
@@ -147,7 +151,7 @@ function fspm_form() {
 			</div>
 			<!--submit-->
 			<p class="aligncenter">
-				<input type="submit" name="Enviar" value="Enviar" placeholder="" class="btn btn-danger btn-lg">
+				<input type="submit" name="Postular" value="Postular" placeholder="" class="btn btn-danger btn-lg">
 			</p>
 		</form>';
 		if($nonce){	
@@ -178,9 +182,9 @@ function fspm_putdata($data) {
 						);
 	$lastid = $wpdb->insert_id;
 	if($lastid) {
-		echo '<div class="alert alert-success">Inscripción registrada</div>';
+		echo '<div class="alert alert-success"><p style="text-align:center;"><i class="fa fa-4x fa-smile-o"></i></p><h4>Postulación enviada exitosamente</h4><p style="text-align:center;">Gracias por postular a Colegio Seminario Pontificio Menor, te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> y pronto te contactaremos para continuar el proceso.</p></div>';
 	} else {
-		echo '<div class="alert alert-error">Falló registro de inscripción</div>';
+		echo '<div class="alert alert-error"><p><i class="fa fa-meh-o fa-4x"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente.</p></div>';
 	}
 }
 
@@ -249,9 +253,9 @@ function fspm_mails($data) {
 	$mailapoderado = wp_mail( $data['email'], 'Prepostulación SPM', $mensajeapoderado);
 	$mailadmin = wp_mail( 'pablo@apie.cl', 'Prepostulación SPM', $mensajeadmin);
 	if($mailapoderado && $mailadmin) {
-		echo '<div class="alert alert-success">E-Mails enviados</div>';
+		echo '<div class="alert alert-success"><i class="fa fa-check"></i> <i class="fa fa-envelope"></i></div>';
 	} else {
-		echo '<div class="alert alert-error">Falló el envío de emails</div>';
+		echo '<div class="alert alert-error"><i class="fa fa-times"></i> <i class="fa fa-envelope"></i></div>';
 	}
 }
 

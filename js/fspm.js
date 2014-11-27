@@ -22,9 +22,6 @@ var isMobile = {
 
 //Fspm script
 $(document).ready(function() {
-	function spmSubmit(form) {
-		$.ajax()
-	};
 	$('#fspm_prepostulacion').validate({
 		messages: {
 			nombre_apoderado: 'Falta nombre de apoderado',
@@ -34,7 +31,9 @@ $(document).ready(function() {
 			curso: 'Falta elegir un curso para postular'
 		},
 		submitHandler: function(form) {
-			$(form).submit();
+			$('#fspm_prepostulacion input[type="submit"]').empty().html('<i class="fa fa-circle-o-notch fa-spin"></i> Enviando Postulación');
+			console.log('enviando');
+			form.submit();
 		},
 		rules: {
 			email_apoderado: {
