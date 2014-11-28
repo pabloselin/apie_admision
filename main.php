@@ -279,12 +279,12 @@ function fspm_mails($data) {
 		<tr>
 			<td>
 				<h3>Confirmación de pre-postulación</h3>
-				<p>Estimado '. $data['nombre'] .', hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono en <strong>1 día hábil</strong> como máximo para continuar el proceso.</p>
+				<p>Estimado <strong>'. $data['nombre'] .'</strong>, hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono en <strong>1 día hábil</strong> como máximo para continuar el proceso.</p>
 				<p>Estos son los datos que usted envió:</p>
 			</td> 
 			<tr>
 						<td>
-							<h4>Datos</h4>
+							<h4 style="text-align:center;font-size:18px;">Datos</h4>
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
 							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
@@ -295,20 +295,18 @@ function fspm_mails($data) {
 					</tr>	
 			<tr>
 				<td>
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p>Muchas gracias por su interés.</p>
-				<p>Afectuosamente</p>
-				<p><strong>Colegio Seminario Pontificio Menor</strong></p>
-				<p><strong>Correo: </strong> admision@spm.cl</p>
-				<p><strong>Teléfono: </strong> +56 (2) 29239902 - Carolina Gundermann S.</p>
-				<p><strong>Horario de atención telefónica y visitas: Lunes a viernes 8:15 a 13:30 y de 15:00 a 16:00 hrs.</strong></p>
-				<p><a href="http://admision.spm.cl">admision.spm.cl</a></p>
+				<p>Muchas gracias por su interés.<br>
+				Afectuosamente<br>
+				<strong>Colegio Seminario Pontificio Menor</strong></p>
+				<p><strong>Correo: </strong> admision@spm.cl <br>
+				<strong>Teléfono: </strong> +56 (2) 29239902 - Carolina Gundermann S. <br>
+				<strong>Horario de atención telefónica y visitas: Lunes a viernes 8:15 a 13:30 y de 15:00 a 16:00 hrs.</strong><br>
+				<a href="http://admision.spm.cl">admision.spm.cl</a></p>
 				';
 
 	
 	if($data['curso'] == 'pre'):
-		$mensajeapoderado .= '<p style="color:#FFAE00;">Recuerda:Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.El plazo máximo para postular es el jueves 11 de diciembre, 18.00 hrs. Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos de postulantes, desde el mismo viernes 12 se deberá proceder a la matrícula.</p>';
+		$mensajeapoderado .= '<p style="color:#555;font-style:italic;"><strong>Recuerda:</strong> Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.El plazo máximo para postular es el jueves 11 de diciembre, 18.00 hrs. Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos de postulantes, desde el mismo viernes 12 se deberá proceder a la matrícula.</p>';
 	endif;
 
 	$mensajeapoderado .=	'</td>
