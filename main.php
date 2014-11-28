@@ -192,7 +192,7 @@ function fspm_putdata($data) {
 						);
 	$lastid = $wpdb->insert_id;
 	if($lastid) {
-		echo '<div class="alert alert-success"><p style="text-align:center;"><i class="fa fa-4x fa-smile-o"></i></p><h4>Postulación enviada exitosamente</h4><p style="text-align:center;">Gracias por postular a Colegio Seminario Pontificio Menor, te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> y te contactaremos vía teléfono en máximo <strong>1 día hábil</strong> para continuar el proceso.</p></div>';
+		echo '<div class="alert alert-success"><p style="text-align:center;"><i class="fa fa-4x fa-smile-o"></i></p><h4>Postulación enviada exitosamente</h4><p style="text-align:center;">Gracias por postular a Colegio Seminario Pontificio Menor, te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono en máximo <strong>1 día hábil</strong> para continuar el proceso.</p></div>';
 	} else {
 		echo '<div class="alert alert-error"><p><i class="fa fa-meh-o fa-4x"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente.</p></div>';
 	}
@@ -213,7 +213,7 @@ function spm_shareshortcode($atts) {
   				<i class="fa fa-phone fa-stack-1x"></i>
 			</span></i></a>';
     $share['facebook'] = '<a target="_blank" class="fb" href="https://facebook.com/sharer.php?u='.get_permalink($post->ID).'" class="facebook"><i class="fa fa-facebook"></i></a>';
-    $share['twitter'] = '<a target="_blank" href="https://twitter.com/intent/tweet?url='.get_permalink($post->ID).'&text='.urlencode($soctitle).'" class="twt"><i class="fa fa-twitter"></i></a>';
+    //$share['twitter'] = '<a target="_blank" href="https://twitter.com/intent/tweet?url='.get_permalink($post->ID).'&text='.urlencode($soctitle).'" class="twt"><i class="fa fa-twitter"></i></a>';
     $share['gmas'] = '<a target="_blank" href="https://plus.google.com/share?url='.get_permalink($post->ID).'" class="gpl"><i class="fa fa-google-plus"></i></a>';
     $share = implode(' ', $share);
     $share = '<div class="sharing_toolbox">'.$share.'</div>';
