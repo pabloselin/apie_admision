@@ -276,16 +276,16 @@ function fspm_cursequi($curso) {
 //Envío de correos
 function fspm_mails($data) {
 	$mensajeapoderado = '<style>table p {line-height:1,4em;}</style>
-		<table width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:#FEF1D6;border:1px solid #ccc;">
+		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:#FEF1D6;border:1px solid #ccc;">
 		<tr>
 			<td>
-				<p style="text-align:center;"><img src="http://devadmspm.apie.cl/wp-content/themes/spm-admision/i/logospm_header_interior.png" alt="Colegio Seminario Pontificio Menor"><br><h1 style="font-size:24px;font-weight:normal;">Colegio Seminario Pontificio Menor</h1></p>
+				<p style="text-align:center;"><img src="http://devadmspm.apie.cl/wp-content/themes/spm-admision/i/logospm_header_interior.png" alt="Colegio Seminario Pontificio Menor"><br><h1 style="font-size:24px;font-weight:normal;text-align:center;">Colegio Seminario Pontificio Menor</h1></p>
 				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de pre-postulación</h3>
 				<p>Estimado <strong>'. $data['nombre'] .'</strong>, hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono en <strong>1 día hábil</strong> como máximo para continuar el proceso.</p>
 				<p>Estos son los datos que usted envió:</p>
 			</td> 
 			<tr>
-						<td style="border:1px dotted #ccc;">
+						<td style="border-width:1px 0 1px 0;border-style:dotted;border-color:#ccc;background-color:white;">
 							<h4 style="text-align:center;font-size:18px;font-weight:normal;">Datos</h4>
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
 							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono'] . '</p>
