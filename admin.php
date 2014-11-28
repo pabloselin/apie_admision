@@ -36,13 +36,51 @@ function fspm_doadmin() {
 					<td><?php echo $inscrito->apname;?></td>
 					<td><?php echo $inscrito->alname;?></td>
 					<td><?php echo $inscrito->apmail;?></td>
-					<td><?php echo $inscrito->apfono;?></td>
+					<td><?php echo '+56 9' . $inscrito->apfono;?></td>
 					<td><?php echo fspm_cursequi($inscrito->cursoi);?></td>
 					<td><?php echo $inscrito->apextr;?></td>
 				</tr>
 			<?php }
 		?>
 		</table>
+		<?php 
+		$csv = fspm_csv();
+		echo '<p><a class="button" href="'.$csv.'"> Descargar archivo CSV con inscripciones </a> </p>';
+		?>
 	</div>
 	<?php
+}
+
+function fspm_csv() {
+	//Genera un csv con todos los datos
+	global $wpdb;
+	global $tbname;
+	$inscritos = fspm_getdata();
+
+	// output headers so that the file is downloaded rather than displayed
+		//header('Content-Type: text/csv; charset=utf-8');
+		//header('Content-Disposition: attachment; filename=data.csv');
+
+	$filename = 'spm_admision_prepostulacion-'.date('d-m-y').'.csv';
+
+	$output = fopen(FSPM_CSVPATH . $filename, 'w');
+
+	fputcsv($output, array('DIA', 'HORA', 'Nombre Apoderado(a)', 'Nombre Alumno(a)', 'E-mail Apoderado(a)', 'Teléfono Apoderado(a)', 'Curso que postula', 'Consulta'), "\t");
+
+	foreach($inscritos as $inscrito) {
+		$inscarr = array();
+		$inscarr[] = mysql2date('j F', $inscrito->time );
+		$inscarr[] = mysql2date('H:i', $inscrito->time );
+		$inscarr[] = $inscrito->apname;
+		$inscarr[] = $inscrito->alname;
+		$inscarr[] = $inscrito->apmail;
+		$inscarr[] = '+56 9' . $inscrito->apfono;
+		$inscarr[] = fspm_cursequi($inscrito->cursoi);
+		$inscarr[] = $inscrito->apextr;
+		fputcsv($output, $inscarr, "\t");
+	}
+
+	$csvfile = FSPM_CSVURL . $filename;
+	return $csvfile;
+
 }

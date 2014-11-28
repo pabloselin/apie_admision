@@ -3,7 +3,7 @@
  * Plugin Name: Formulario de solicitud de admisión
  * Plugin URI: http://admision.spm.cl
  * Description: Generador de formulario y almacenamiento de datos para admisión
- * Version: 0.1
+ * Version: 0.2
  * Author: Pablo Selín Carrasco Armijo
  * Author URI: http://www.apie.cl
  * License: A short license name. Example: GPL2
@@ -20,6 +20,16 @@ TODO:
 global $dbver;
 $dbver = '0.5';
 $tbname = $wpdb->prefix . 'fspmapdata';
+
+
+//Crear directorios
+define( 'FSPM_CSVPATH', WP_CONTENT_DIR . '/spmcsv/');
+define( 'FSPM_CSVURL', WP_CONTENT_URL . '/spmcsv/');
+
+if(!is_dir(FSPM_CSVPATH)){
+	mkdir(WP_CONTENT_DIR . '/spmcsv', 0755);
+}
+
 
 //admin page
 include( plugin_dir_path( __FILE__ ) . 'admin.php');
@@ -221,10 +231,6 @@ function fspm_buttonshortcode($atts) {
 
 add_shortcode('fspm_btnform', 'fspm_buttonshortcode');
 
-//Visualización en admin
-function fspm_adminviews() {
-
-}
 
 //Validación
 function fspm_validate() {
@@ -280,7 +286,7 @@ function fspm_mails($data) {
 						<td>
 							<h4>Datos</h4>
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
-							<p><strong>Teléfono Apoderado(a): </strong>' . $data['fono'] . '</p>
+							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
 							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['curso']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
@@ -294,10 +300,16 @@ function fspm_mails($data) {
 				<p>Muchas gracias por su interés.</p>
 				<p>Afectuosamente</p>
 				<p><strong>Colegio Seminario Pontificio Menor</strong></p>
-				</td>
-			</tr>
-		</tr>
-		
+				<p><strong>Correo: </strong> admision@spm.cl</p>
+				<p><strong>Teléfono: </strong> +56 (2) 29239902 - Carolina Gundermann S.</p>
+				<p><strong>Horario de atención telefónica y visitas: Lunes a viernes 8:15 a 13:30 y de 15:00 a 16:00 hrs.</strong></p>';
+	
+	if($data['curso'] == 'pre'):
+		$mensajeapoderado .= '<p style="color:#FFAE00;">Recuerda:Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.El plazo máximo para postular es el jueves 11 de diciembre, 18.00 hrs. Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos, el mismo viernes 12 se deberá proceder a la matrícula.</p>';
+	endif;
+
+	$mensajeapoderado .=	'</td>
+							</tr>
 						</table>';
 	$mensajeadmin = '
 					<table width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:#f0f0f0;border:1px solid #ccc;">
@@ -311,7 +323,7 @@ function fspm_mails($data) {
 						<td>
 							<h4>Datos</h4>
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
-							<p><strong>Teléfono Apoderado(a): </strong>' . $data['fono'] . '</p>
+							<p><strong>Teléfono Apoderado(a): </strong>+56 9 ' . $data['fono'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
 							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['curso']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
