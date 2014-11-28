@@ -301,7 +301,7 @@ function fspm_mails($data) {
 							</tr>';
 	endif;
 
-	$mensajeapoderado = .'<tr>
+	$mensajeapoderado .= '<tr>
 				<td>
 				<p>Muchas gracias por su interés.<br>
 				Afectuosamente<br>
