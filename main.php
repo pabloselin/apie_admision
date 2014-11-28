@@ -313,7 +313,7 @@ function fspm_mails($data) {
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
 							<p><strong>Teléfono Apoderado(a): </strong>' . $data['fono'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
-							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['fspm_cursequi']) .'</p>
+							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['curso']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
 							<p><strong>Consulta adicional: </strong>' .$data['mensaje'].'</p>
 						</td>
