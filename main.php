@@ -129,7 +129,7 @@ function fspm_form() {
 					<label class="radio">
 						<input type="radio" name="curso" value="pre" default>
 						<span class="lname">Pre-Kínder</span>
-						<div class="alert alert-warning">Nuevo tercer Pre-Kínder, plazo hasta <strong>martes 9 de diciembre</strong></div>
+						<div class="alert alert-warning">Nuevo tercer Pre-Kínder, plazo hasta <strong>jueves 11 de diciembre</strong></div>
 					</label>
 					<label class="radio disabled">
 						<input type="radio" name="curso" value="kin" disabled>
