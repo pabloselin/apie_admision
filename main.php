@@ -292,8 +292,16 @@ function fspm_mails($data) {
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
 							<p><strong>Consulta adicional: </strong>' .$data['mensaje'].'</p>
 						</td>
-					</tr>	
-			<tr>
+					</tr>';
+
+	if($data['curso'] == 'pre'):
+		$mensajeapoderado .= '<tr>
+								<td><p style="color:#555;font-style:italic;"><strong style="font-size:18px;">Recuerda:</strong> <br>Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.El plazo máximo para postular es el jueves 11 de diciembre, 18.00 hrs. Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos de postulantes, desde el mismo viernes 12 se deberá proceder a la matrícula.</p>
+								</td>
+							</tr>';
+	endif;
+
+	$mensajeapoderado = .'<tr>
 				<td>
 				<p>Muchas gracias por su interés.<br>
 				Afectuosamente<br>
@@ -303,11 +311,6 @@ function fspm_mails($data) {
 				<strong>Horario de atención telefónica y visitas: Lunes a viernes 8:15 a 13:30 y de 15:00 a 16:00 hrs.</strong><br>
 				<a href="http://admision.spm.cl">admision.spm.cl</a></p>
 				';
-
-	
-	if($data['curso'] == 'pre'):
-		$mensajeapoderado .= '<p style="color:#555;font-style:italic;"><strong>Recuerda:</strong> Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.El plazo máximo para postular es el jueves 11 de diciembre, 18.00 hrs. Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos de postulantes, desde el mismo viernes 12 se deberá proceder a la matrícula.</p>';
-	endif;
 
 	$mensajeapoderado .=	'</td>
 							</tr>
