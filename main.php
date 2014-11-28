@@ -275,16 +275,18 @@ function fspm_cursequi($curso) {
 
 //Envío de correos
 function fspm_mails($data) {
-	$mensajeapoderado = '<table width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:#FEF1D6;border:1px solid #ccc;">
+	$mensajeapoderado = '<style>table p {line-height:1,4em;}</style>
+		<table width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:#FEF1D6;border:1px solid #ccc;">
 		<tr>
 			<td>
-				<h3>Confirmación de pre-postulación</h3>
+				<p style="text-align:center;"><img src="http://devadmspm.apie.cl/wp-content/themes/spm-admision/i/logospm_header_interior.png" alt="Colegio Seminario Pontificio Menor"><br><h1 style="font-size:24px;font-weight:normal;">Colegio Seminario Pontificio Menor</h1></p>
+				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de pre-postulación</h3>
 				<p>Estimado <strong>'. $data['nombre'] .'</strong>, hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono en <strong>1 día hábil</strong> como máximo para continuar el proceso.</p>
 				<p>Estos son los datos que usted envió:</p>
 			</td> 
 			<tr>
-						<td>
-							<h4 style="text-align:center;font-size:18px;">Datos</h4>
+						<td style="border:1px dotted #ccc;">
+							<h4 style="text-align:center;font-size:18px;font-weight:normal;">Datos</h4>
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
 							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
@@ -296,7 +298,7 @@ function fspm_mails($data) {
 
 	if($data['curso'] == 'pre'):
 		$mensajeapoderado .= '<tr>
-								<td><p style="color:#555;font-style:italic;"><strong style="font-size:18px;">Recuerda:</strong> <br>Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.El plazo máximo para postular es el jueves 11 de diciembre, 18.00 hrs. Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos de postulantes, desde el mismo viernes 12 se deberá proceder a la matrícula.</p>
+								<td><p style="color:#555;font-style:italic;line-height:1.4em;"><strong style="font-size:18px;font-style:normal;">Recuerda:</strong> <br>Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.El plazo máximo para postular es el jueves 11 de diciembre, 18.00 hrs. Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos de postulantes, desde el mismo viernes 12 se deberá proceder a la matrícula.</p>
 								</td>
 							</tr>';
 	endif;
@@ -309,7 +311,7 @@ function fspm_mails($data) {
 				<p><strong>Correo: </strong> admision@spm.cl <br>
 				<strong>Teléfono: </strong> +56 (2) 29239902 - Carolina Gundermann S. <br>
 				<strong>Horario de atención telefónica y visitas: Lunes a viernes 8:15 a 13:30 y de 15:00 a 16:00 hrs.</strong><br>
-				<a href="http://admision.spm.cl">admision.spm.cl</a></p>
+				<strong>Página Web: </strong><a href="http://admision.spm.cl">admision.spm.cl</a></p>
 				';
 
 	$mensajeapoderado .=	'</td>
