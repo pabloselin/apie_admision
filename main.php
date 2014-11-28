@@ -302,10 +302,13 @@ function fspm_mails($data) {
 				<p><strong>Colegio Seminario Pontificio Menor</strong></p>
 				<p><strong>Correo: </strong> admision@spm.cl</p>
 				<p><strong>Teléfono: </strong> +56 (2) 29239902 - Carolina Gundermann S.</p>
-				<p><strong>Horario de atención telefónica y visitas: Lunes a viernes 8:15 a 13:30 y de 15:00 a 16:00 hrs.</strong></p>';
+				<p><strong>Horario de atención telefónica y visitas: Lunes a viernes 8:15 a 13:30 y de 15:00 a 16:00 hrs.</strong></p>
+				<p><a href="http://admision.spm.cl">admision.spm.cl</a></p>
+				';
+
 	
 	if($data['curso'] == 'pre'):
-		$mensajeapoderado .= '<p style="color:#FFAE00;">Recuerda:Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.El plazo máximo para postular es el jueves 11 de diciembre, 18.00 hrs. Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos, el mismo viernes 12 se deberá proceder a la matrícula.</p>';
+		$mensajeapoderado .= '<p style="color:#FFAE00;">Recuerda:Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.El plazo máximo para postular es el jueves 11 de diciembre, 18.00 hrs. Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos de postulantes, desde el mismo viernes 12 se deberá proceder a la matrícula.</p>';
 	endif;
 
 	$mensajeapoderado .=	'</td>
