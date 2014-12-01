@@ -338,7 +338,7 @@ function fspm_mails($data) {
 					</tr>	
 					</table>
 					';
-	$admins = 'pablo@apie.cl, pabloselin@gmail.com';
+	$admins = 'contacto@apie.cl, rectoria@spm.cl, admision@spm.cl, pablobravo@apie.cl, mariaceciliagn@gmail.com, pjuancarloscortez@gmail.com';
 	$headers = 'From: "Colegio Seminario Pontificio Menor" <admision@spm.cl>';
 	
 	add_filter('wp_mail_content_type', function($content_type) {return 'text/html';});
