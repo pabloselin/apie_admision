@@ -310,7 +310,7 @@ function fspm_mails($data) {
 				<strong>Colegio Seminario Pontificio Menor</strong></p>
 				<p><strong>Correo: </strong> admision@spm.cl <br>
 				<strong>Teléfono: </strong> +56 (2) 29239902 - Carolina Gundermann S. <br>
-				<strong>Horario de atención telefónica y visitas: Lunes a viernes 8:15 a 13:30 y de 15:00 a 16:00 hrs.</strong><br>
+				<strong>Horario de atención telefónica y visitas: Lunes a viernes 8:15 a 13:45 y de 15:00 a 16:15 hrs.</strong><br>
 				<strong>Página Web: </strong><a href="http://admision.spm.cl">admision.spm.cl</a></p>
 				';
 
