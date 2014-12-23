@@ -316,7 +316,7 @@ function fspm_mails($data) {
 
 	if($data['curso'] == 'pre'):
 		$mensajeapoderado .= '<tr>
-								<td><p style="color:#555;font-style:italic;line-height:1.4em;"><strong style="font-size:18px;font-style:normal;">Recuerda:</strong> <br>Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso. Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos de postulantes, desde el mismo viernes 12 se deberá proceder a la matrícula.</p>
+								<td><p style="color:#555;font-style:italic;line-height:1.4em;"><strong style="font-size:18px;font-style:normal;">Recuerda:</strong> <br>Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.</p>
 								</td>
 							</tr>';
 	endif;
