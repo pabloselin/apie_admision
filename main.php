@@ -139,7 +139,6 @@ function fspm_form() {
 					<label class="radio">
 						<input type="radio" name="curso" value="pre" default>
 						<span class="lname">Pre-Kínder</span>
-						<!--<div class="alert alert-warning">Nuevo tercer Pre-Kínder, plazo hasta <strong>jueves 11 de diciembre</strong></div>-->
 					</label>
 					<label class="radio">
 						<input type="radio" name="curso" value="kin">
@@ -317,7 +316,7 @@ function fspm_mails($data) {
 
 	if($data['curso'] == 'pre'):
 		$mensajeapoderado .= '<tr>
-								<td><p style="color:#555;font-style:italic;line-height:1.4em;"><strong style="font-size:18px;font-style:normal;">Recuerda:</strong> <br>Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.<!--El plazo máximo para postular es el jueves 11 de diciembre, 18.00 hrs.--> Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos de postulantes, desde el mismo viernes 12 se deberá proceder a la matrícula.</p>
+								<td><p style="color:#555;font-style:italic;line-height:1.4em;"><strong style="font-size:18px;font-style:normal;">Recuerda:</strong> <br>Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso. Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos de postulantes, desde el mismo viernes 12 se deberá proceder a la matrícula.</p>
 								</td>
 							</tr>';
 	endif;
