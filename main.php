@@ -139,7 +139,7 @@ function fspm_form() {
 					<label class="radio">
 						<input type="radio" name="curso" value="pre" default>
 						<span class="lname">Pre-Kínder</span>
-						<div class="alert alert-warning">Nuevo tercer Pre-Kínder, plazo hasta <strong>jueves 11 de diciembre</strong></div>
+						<!--<div class="alert alert-warning">Nuevo tercer Pre-Kínder, plazo hasta <strong>jueves 11 de diciembre</strong></div>-->
 					</label>
 					<label class="radio">
 						<input type="radio" name="curso" value="kin">
@@ -272,6 +272,25 @@ function fspm_cursequi($curso) {
 	}
 	return $lcurso;
 }
+//Envío de correos
+function fspm_mails_clone($data) {
+	$mensajeapoderado = 'mensaje de prueba para la función de MAIL';
+	
+	$admins = 'contacto@apie.cl, jorge@apie.cl, pablo@apie.cl';
+	$headers = 'From: "Colegio Seminario Pontificio Menor" <admision@spm.cl>';
+	
+	add_filter('wp_mail_content_type', function($content_type) {return 'text/html';});
+
+	$mailadmin = wp_mail( $admins, 'Prepostulación SPM', $mensajeadmin, $headers);
+
+	add_filter('wp_mail_content_type', function($content_type) {return 'text/plain';});
+
+	if($mailapoderado && $mailadmin) {
+		echo '<div class="alert alert-success"><i class="fa fa-check"></i> <i class="fa fa-envelope"></i></div>';
+	} else {
+		echo '<div class="alert alert-error"><i class="fa fa-times"></i> <i class="fa fa-envelope"></i></div>';
+	}
+}
 
 //Envío de correos
 function fspm_mails($data) {
@@ -298,7 +317,7 @@ function fspm_mails($data) {
 
 	if($data['curso'] == 'pre'):
 		$mensajeapoderado .= '<tr>
-								<td><p style="color:#555;font-style:italic;line-height:1.4em;"><strong style="font-size:18px;font-style:normal;">Recuerda:</strong> <br>Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.El plazo máximo para postular es el jueves 11 de diciembre, 18.00 hrs. Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos de postulantes, desde el mismo viernes 12 se deberá proceder a la matrícula.</p>
+								<td><p style="color:#555;font-style:italic;line-height:1.4em;"><strong style="font-size:18px;font-style:normal;">Recuerda:</strong> <br>Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.<!--El plazo máximo para postular es el jueves 11 de diciembre, 18.00 hrs.--> Confirmaremos la posibilidad de matricular a cada uno/a de los/as postulantes el día viernes 12 de diciembre a las 10.00 hrs.De completarse los cupos mínimos de postulantes, desde el mismo viernes 12 se deberá proceder a la matrícula.</p>
 								</td>
 							</tr>';
 	endif;
