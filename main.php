@@ -3,7 +3,7 @@
  * Plugin Name: Formulario de solicitud de admisión
  * Plugin URI: http://admision.spm.cl
  * Description: Generador de formulario y almacenamiento de datos para admisión
- * Version: 0.2
+ * Version: 0.3
  * Author: Pablo Selín Carrasco Armijo
  * Author URI: http://www.apie.cl
  * License: A short license name. Example: GPL2
@@ -18,7 +18,7 @@ TODO:
 */
 
 global $dbver;
-$dbver = '0.5';
+$dbver = '0.6';
 $tbname = $wpdb->prefix . 'fspmapdata';
 
 
@@ -57,6 +57,7 @@ function fspm_table() {
 			apmail text NOT NULL,
 			apextr text NOT NULL,
 			cursoi text NOT NULL,
+			otrocurso text NOT NULL,
 			UNIQUE KEY id (id)
 		) $charset_collate;";
 		
@@ -156,7 +157,21 @@ function fspm_form() {
 						<input type="radio" name="curso" value="3bas">
 						<span class="lname">3º Básico</span>
 					</label>
+					<label class="radio">
+						<input type="radio" name="curso" value="otros">
+						<span class="lname">Otros cursos <span class="lnamewarn">(Sujeto a disponibilidad de cupos)</span></span>
+					</label>
 				</div>
+				<div class="control-group otrocurso-control">
+					<label class="control-label" for="otrocurso">¿Cuál?</label>
+					<div class="controls">
+						<input type="text" name="otrocurso" value="" placeholder="Curso">
+						<span class="help-block">
+							Indique qué otro curso es el que le interesa postular
+						</span>
+					</div>
+				</div>
+
 			</div>
 			<!--submit-->
 			<p class="aligncenter">
@@ -186,7 +201,8 @@ function fspm_putdata($data) {
 							'apfono' => $data['fono'],
 							'apmail' => $data['email'],
 							'apextr' => $data['mensaje'],
-							'cursoi' => $data['curso']
+							'cursoi' => $data['curso'],
+							'otrocurso' => $data['otrocurso']
 							)
 						);
 	$lastid = $wpdb->insert_id;
@@ -243,6 +259,7 @@ function fspm_validate() {
 		$data['nalumno'] = sanitize_text_field($_POST['nombre_alumno'] );
 		$data['mensaje'] = sanitize_text_field($_POST['mensaje']);
 		$data['curso'] = sanitize_text_field($_POST['curso']);
+		$data['otrocurso'] = sanitize_text_field($_POST['otrocurso']);
 		//Meter en la base de datos
 		fspm_putdata($data);
 		//Enviar mensaje y correr funciones
@@ -250,7 +267,7 @@ function fspm_validate() {
 	}
 }
 
-function fspm_cursequi($curso) {
+function fspm_cursequi($curso, $otro = NULL) {
 	//transforma los valores de curso en valores legibles
 	switch($curso) {
 		case('pre'):
@@ -267,6 +284,9 @@ function fspm_cursequi($curso) {
 		break;
 		case('3bas'):
 			$lcurso = '3º Básico';
+		break;
+		case('otros'):
+			$lcurso = $otro;
 		break;	
 	}
 	return $lcurso;
@@ -349,7 +369,7 @@ function fspm_mails($data) {
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
 							<p><strong>Teléfono Apoderado(a): </strong>+56 9 ' . $data['fono'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
-							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['curso']) .'</p>
+							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['curso'], $data['otrocurso']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
 							<p><strong>Consulta adicional: </strong>' .$data['mensaje'].'</p>
 						</td>

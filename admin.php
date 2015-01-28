@@ -37,7 +37,7 @@ function fspm_doadmin() {
 					<td><?php echo $inscrito->alname;?></td>
 					<td><?php echo $inscrito->apmail;?></td>
 					<td><?php echo '+56 9' . $inscrito->apfono;?></td>
-					<td><?php echo fspm_cursequi($inscrito->cursoi);?></td>
+					<td><?php echo fspm_cursequi($inscrito->cursoi, $inscrito->otrocurso);?></td>
 					<td><?php echo $inscrito->apextr;?></td>
 				</tr>
 			<?php }

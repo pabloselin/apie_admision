@@ -59,10 +59,23 @@ $(document).ready(function() {
 
 	$('.curso-post input:checked').addClass('selected');
 
+	var otrocurso = $('.otrocurso-control');
+
 	$('.curso-post input[type="radio"]').on('click', function(event) {
 		$('.curso-post label').removeClass('selected');
 		$(this).parent('label').addClass('selected');
+		if($(this).attr('value') == 'otros') {
+			otrocurso.show().addClass('visible');
+		} else {
+			if(otrocurso.hasClass('visible')) {
+				otrocurso.hide().removeClass('visible');
+			}
+		}
 	});
+
+	//para opción otro curso
+	otrocurso.hide();
+
 
 	if(!isMobile.any()) {
 		$('.sharing_toolbox a.wa').hide();
