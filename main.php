@@ -167,7 +167,7 @@ function fspm_form() {
 					<div class="controls">
 						<input type="text" name="otrocurso" value="" placeholder="Curso">
 						<span class="help-block">
-							Indique qué otro curso es el que le interesa postular
+							Indique a qué otro curso le interesa postular
 						</span>
 					</div>
 				</div>
