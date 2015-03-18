@@ -55,6 +55,12 @@ $(document).ready(function() {
 				minlength: 8,
 				maxlength: 8,
 				digits: true
+			},
+			curso: {
+				required: true
+			},
+			year: {
+				required: true
 			}
 		}
 	});
