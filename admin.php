@@ -54,10 +54,10 @@ function fspm_doadmin() {
 }
 
 function fspm_parseyear($year) {
-	if($year != '2016') {
+	if(!$year || $year == 'actual') {
 		return '2015';
 	} else {
-		return $year;
+		return '2016';
 	}
 }
 

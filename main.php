@@ -172,25 +172,24 @@ function fspm_form() {
 						</span>
 					</div>
 				</div>
-
-				<div class="control-group year-control">
+			</div>
+			<div class="control-group year-control">
 					<span class="help-block">Año al que postula</span>
 					<div class="controls year-post">
 						<label class="radio">
-							<input type="radio" name="year" value="2015">
+							<input type="radio" name="year" value="actual">
 							<span class="lname">2015</span>
 						</label>
 						<label class="radio">
-							<input type="radio" name="year" value="2016">
+							<input type="radio" name="year" value="proximo">
 							<span class="lname">2016</span>
 						</label>
 					</div>
-				</div>		
+			</div>	
 
-			</div>
 			<!--submit-->
 			<p class="aligncenter">
-				<input type="submit" name="Postular" value="Postular" placeholder="" class="btn btn-danger btn-lg">
+				<input type="submit" name="Postular" value="Postular" class="btn btn-danger btn-lg">
 			</p>
 		</form>';
 		if($nonce){	
@@ -265,6 +264,7 @@ add_shortcode('fspm_btnform', 'fspm_buttonshortcode');
 
 //Validación
 function fspm_validate() {
+
 	if(!wp_verify_nonce( $_POST['prepostnonce'], 'fspm_prepost' )) {
 		echo 'nonce inválido';
 	} else {

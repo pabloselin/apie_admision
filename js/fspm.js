@@ -23,6 +23,7 @@ var isMobile = {
 //Fspm script
 $(document).ready(function() {
 	$('#fspm_prepostulacion').validate({
+		debug: true,
 		messages: {
 			nombre_apoderado: 'Falta nombre de apoderado(a)',
 			fono_apoderado: {
@@ -36,11 +37,12 @@ $(document).ready(function() {
 				email: 'Por favor introduzca un email válido'	
 			},
 			nombre_alumno: 'Falta nombre del alumno(a)',
-			curso: 'Falta elegir un curso para postular'
+			curso: 'Falta elegir un curso para postular',
+			year: 'Falta elegir año al que postula'
 		},
 		submitHandler: function(form) {
 			$('#fspm_prepostulacion input[type="submit"]').empty().html('<i class="fa fa-circle-o-notch fa-spin"></i> Enviando Postulación');
-			console.log('enviando');
+			console.log('enviando test');
 			form.submit();
 		},
 		rules: {
@@ -57,7 +59,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.curso-post input:checked').addClass('selected');
+	$('.curso-post input:checked, .year-post input:checked').addClass('selected');
 
 	var otrocurso = $('.otrocurso-control');
 
