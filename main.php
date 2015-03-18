@@ -177,12 +177,12 @@ function fspm_form() {
 					<span class="help-block">Año al que postula</span>
 					<div class="controls year-post">
 						<label class="radio">
-							<input type="radio" name="year" value="actual">
-							<span class="lname">2015</span>
-						</label>
-						<label class="radio">
 							<input type="radio" name="year" value="proximo">
 							<span class="lname">2016</span>
+						</label>
+						<label class="radio">
+							<input type="radio" name="year" value="actual">
+							<span class="lname">2015</span>
 						</label>
 					</div>
 			</div>	
