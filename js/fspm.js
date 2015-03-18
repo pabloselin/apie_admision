@@ -73,6 +73,11 @@ $(document).ready(function() {
 		}
 	});
 
+	$('.year-post input[type="radio"]').on('click', function(event) {
+		$('.year-post label').removeClass('selected');
+		$(this).parent('label').addClass('selected');
+	});
+
 	//para opción otro curso
 	otrocurso.hide();
 
