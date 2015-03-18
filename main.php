@@ -376,7 +376,7 @@ function fspm_mails($data) {
 					<table width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:#f0f0f0;border:1px solid #ccc;">
 					<tr>
 						<td>
-							<h3>Se ha enviado una prepostulación a SPM para el año '.$data['year'].'</h3>
+							<h3>Se ha enviado una prepostulación a SPM para el año '.fspm_parseyear($data['year']).'</h3>
 							<p></p>
 						</td>
 					</tr>
@@ -388,7 +388,7 @@ function fspm_mails($data) {
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
 							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['curso'], $data['otrocurso']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
-							<p><strong>Año al que postula: </strong>' . $data['year'] . '</p>
+							<p><strong>Año al que postula: </strong>' . fspm_parseyear($data['year']) . '</p>
 							<p><strong>Consulta adicional: </strong>' .$data['mensaje'].'</p>
 						</td>
 					</tr>	
