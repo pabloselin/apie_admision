@@ -3,7 +3,7 @@
  * Plugin Name: Formulario de solicitud de admisión
  * Plugin URI: http://admision.spm.cl
  * Description: Generador de formulario y almacenamiento de datos para admisión
- * Version: 0.3
+ * Version: 0.4
  * Author: Pablo Selín Carrasco Armijo
  * Author URI: http://www.apie.cl
  * License: A short license name. Example: GPL2
@@ -18,7 +18,7 @@ TODO:
 */
 
 global $dbver;
-$dbver = '0.6';
+$dbver = '0.8';
 $tbname = $wpdb->prefix . 'fspmapdata';
 
 
@@ -58,6 +58,7 @@ function fspm_table() {
 			apextr text NOT NULL,
 			cursoi text NOT NULL,
 			otrocurso text NOT NULL,
+			year text NOT NULL
 			UNIQUE KEY id (id)
 		) $charset_collate;";
 		
@@ -172,6 +173,20 @@ function fspm_form() {
 					</div>
 				</div>
 
+				<div class="control-group year-control">
+					<span class="help-block">Año al que postula</span>
+					<div class="controls curso-post">
+						<label class="radio">
+							<input type="radio" name="year" value="2015">
+							<span class="lname">2015</span>
+						</label>
+						<label class="radio">
+							<input type="radio" name="year" value="2016">
+							<span class="lname">2016</span>
+						</label>
+					</div>
+				</div>		
+
 			</div>
 			<!--submit-->
 			<p class="aligncenter">
@@ -202,7 +217,8 @@ function fspm_putdata($data) {
 							'apmail' => $data['email'],
 							'apextr' => $data['mensaje'],
 							'cursoi' => $data['curso'],
-							'otrocurso' => $data['otrocurso']
+							'otrocurso' => $data['otrocurso'],
+							'year' => $data['year']
 							)
 						);
 	$lastid = $wpdb->insert_id;
@@ -260,6 +276,7 @@ function fspm_validate() {
 		$data['mensaje'] = sanitize_text_field($_POST['mensaje']);
 		$data['curso'] = sanitize_text_field($_POST['curso']);
 		$data['otrocurso'] = sanitize_text_field($_POST['otrocurso']);
+		$data['year'] = sanitize_text_field($_POST['year']); 
 		//Meter en la base de datos
 		fspm_putdata($data);
 		//Enviar mensaje y correr funciones
@@ -293,7 +310,6 @@ function fspm_cursequi($curso, $otro = NULL) {
 }
 //Envío de correos
 function fspm_mails_clone($data) {
-	$mensajeapoderado = 'mensaje de prueba para la función de MAIL';
 	
 	$admins = 'contacto@apie.cl, jorge@apie.cl, pablo@apie.cl';
 	$headers = 'From: "Colegio Seminario Pontificio Menor" <admision@spm.cl>';

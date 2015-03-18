@@ -26,6 +26,7 @@ function fspm_doadmin() {
 				<th>Teléfono Apoderado</th>
 				<th>Curso</th>
 				<th>Mensaje adicional</th>
+				<th>Año de postulación</th>
 			</thead>
 		
 		<?php
@@ -39,6 +40,7 @@ function fspm_doadmin() {
 					<td><?php echo '+56 9' . $inscrito->apfono;?></td>
 					<td><?php echo fspm_cursequi($inscrito->cursoi, $inscrito->otrocurso);?></td>
 					<td><?php echo $inscrito->apextr;?></td>
+					<td><?php echo fspm_parseyear($inscrito->year);?></td>
 				</tr>
 			<?php }
 		?>
@@ -49,6 +51,14 @@ function fspm_doadmin() {
 		?>
 	</div>
 	<?php
+}
+
+function fspm_parseyear($year) {
+	if($year != '2016') {
+		return '2015';
+	} else {
+		return $year;
+	}
 }
 
 function fspm_csv() {
@@ -65,7 +75,7 @@ function fspm_csv() {
 
 	$output = fopen(FSPM_CSVPATH . $filename, 'w');
 
-	fputcsv($output, array('DIA', 'HORA', 'Nombre Apoderado(a)', 'Nombre Alumno(a)', 'E-mail Apoderado(a)', 'Teléfono Apoderado(a)', 'Curso que postula', 'Consulta'), "\t");
+	fputcsv($output, array('DIA', 'HORA', 'Nombre Apoderado(a)', 'Nombre Alumno(a)', 'E-mail Apoderado(a)', 'Teléfono Apoderado(a)', 'Curso que postula', 'Consulta', 'Año de postulación'), "\t");
 
 	foreach($inscritos as $inscrito) {
 		$inscarr = array();
@@ -77,6 +87,7 @@ function fspm_csv() {
 		$inscarr[] = '+56 9' . $inscrito->apfono;
 		$inscarr[] = fspm_cursequi($inscrito->cursoi);
 		$inscarr[] = $inscrito->apextr;
+		$inscarr[] = fspm_parseyear($inscrito->year);
 		fputcsv($output, $inscarr, "\t");
 	}
 
