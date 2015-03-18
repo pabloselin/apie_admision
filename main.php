@@ -334,7 +334,7 @@ function fspm_mails($data) {
 		<tr>
 			<td>
 				<p style="text-align:center;"><img src="http://devadmspm.apie.cl/wp-content/themes/spm-admision/i/logospm_header_interior.png" alt="Colegio Seminario Pontificio Menor"><br><h1 style="font-size:24px;font-weight:normal;text-align:center;">Colegio Seminario Pontificio Menor</h1></p>
-				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de pre-postulación</h3>
+				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de pre-postulación para el año '.$data['year'].'</h3>
 				<p>Estimado <strong>'. $data['nombre'] .'</strong>, hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono en <strong>1 día hábil</strong> como máximo para continuar el proceso.</p>
 				<p>Estos son los datos que usted envió:</p>
 			</td> 
@@ -344,6 +344,7 @@ function fspm_mails($data) {
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
 							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
+							<p><strong>Año al que postula: </strong>' . $data['year'] . '</p>
 							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['curso']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
 							<p><strong>Consulta adicional: </strong>' .$data['mensaje'].'</p>
@@ -375,7 +376,7 @@ function fspm_mails($data) {
 					<table width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:#f0f0f0;border:1px solid #ccc;">
 					<tr>
 						<td>
-							<h3>Se ha enviado una prepostulación a SPM</h3>
+							<h3>Se ha enviado una prepostulación a SPM para el año '.$data['year'].'</h3>
 							<p></p>
 						</td>
 					</tr>
@@ -387,6 +388,7 @@ function fspm_mails($data) {
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
 							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['curso'], $data['otrocurso']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
+							<p><strong>Año al que postula: </strong>' . $data['year'] . '</p>
 							<p><strong>Consulta adicional: </strong>' .$data['mensaje'].'</p>
 						</td>
 					</tr>	
