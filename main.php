@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: Formulario de solicitud de admisión
- * Plugin URI: http://admision.spm.cl
+ * Plugin URI: http://apie.cl
  * Description: Generador de formulario y almacenamiento de datos para admisión
- * Version: 0.4
+ * Version: 0.5
  * Author: Pablo Selín Carrasco Armijo
  * Author URI: http://www.apie.cl
  * License: A short license name. Example: GPL2
@@ -18,7 +18,7 @@ TODO:
 */
 
 global $dbver;
-$dbver = '0.9';
+$dbver = '1.2';
 $tbname = $wpdb->prefix . 'fcsdappdata';
 
 
