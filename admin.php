@@ -3,7 +3,7 @@
 add_action('admin_menu', 'fspm_admin');
 
 function fspm_admin() {
-	add_options_page( __( 'Prepostulaciones Admisión SPM', 'spm' ), __( 'Prepostulaciones Admisión SPM', 'spm' ), 'manage_options', 'prepost_admision', 'fspm_doadmin' );
+	add_options_page( __( 'Prepostulaciones Admisión CSD', 'spm' ), __( 'Prepostulaciones Admisión CSD', 'spm' ), 'manage_options', 'prepost_admision', 'fspm_doadmin' );
 }
 
 function fspm_doadmin() {
@@ -15,7 +15,7 @@ function fspm_doadmin() {
 	$inscritos = fspm_getdata();
 	?>
 	<div class="wrap">
-		<h2>Prepostulación SPM</h2>
+		<h2>Prepostulación CSD</h2>
 		<table class="widefat wp-list-table fspmlist">
 			<thead>
 				<th>Fecha</th>
@@ -71,7 +71,7 @@ function fspm_csv() {
 		//header('Content-Type: text/csv; charset=utf-8');
 		//header('Content-Disposition: attachment; filename=data.csv');
 
-	$filename = 'spm_admision_prepostulacion-'.date('d-m-y').'.csv';
+	$filename = 'csd_admision_prepostulacion-'.date('d-m-y').'.csv';
 
 	$output = fopen(FSPM_CSVPATH . $filename, 'w');
 

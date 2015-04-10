@@ -22,8 +22,8 @@ var isMobile = {
 
 //Fspm script
 $(document).ready(function() {
-	$('#fspm_prepostulacion').validate({
-		debug: true,
+	$('#fcsd_prepostulacion').validate({
+		debug: false,
 		messages: {
 			nombre_apoderado: 'Falta nombre de apoderado(a)',
 			fono_apoderado: {
@@ -68,10 +68,11 @@ $(document).ready(function() {
 	$('.curso-post input:checked, .year-post input:checked').addClass('selected');
 
 	var otrocurso = $('.otrocurso-control');
+	var cursocontrol = $('.curso-control div.radio');
 
 	$('.curso-post input[type="radio"]').on('click', function(event) {
-		$('.curso-post label').removeClass('selected');
-		$(this).parent('label').addClass('selected');
+		$('.curso-post div.radio').removeClass('selected');
+		$(this).parent('label').parent('div.radio').addClass('selected');
 		if($(this).attr('value') == 'otros') {
 			otrocurso.show().addClass('visible');
 		} else {
@@ -82,12 +83,24 @@ $(document).ready(function() {
 	});
 
 	$('.year-post input[type="radio"]').on('click', function(event) {
-		$('.year-post label').removeClass('selected');
-		$(this).parent('label').addClass('selected');
+		$('.year-post div.radio').removeClass('selected');
+		$(this).parent('label').parent('div.radio').addClass('selected');
+		var selected = $(this).attr('value');
+		if(selected == 'proximo') {
+			$('.curso-control div.radio.showed').hide().removeClass('showed').prop('checked',false);
+			$('.curso-control div.radio[data-target~="proximo"]').fadeIn().addClass('showed');
+		} else {
+			$('.curso-control div.radio.showed').hide().removeClass('showed').prop('checked', false);
+			$('.curso-control div.radio[data-target~="actual"]').fadeIn().addClass('showed');
+		}
 	});
+
 
 	//para opción otro curso
 	otrocurso.hide();
+	//para opcion año
+	cursocontrol.hide();
+	
 
 
 	if(!isMobile.any()) {

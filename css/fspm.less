@@ -1,13 +1,22 @@
 // Fspm.less
 
 form#fspm_prepostulacion {
-	max-width:480px;
+	max-width:580px;
 	margin:24px auto;
 	background-color:#f0f0f0;
 	border-radius:15px;
 	padding:12px 12px 24px 12px;
 	text-align: left;
 	
+	label {
+		font-size:16px;
+		font-weight:normal;	
+	}
+
+	.help-block {
+		font-size:18px;
+	}
+
 	h2 {
 		margin-top:0;
 		font-size:18px;
@@ -33,6 +42,7 @@ form#fspm_prepostulacion {
 	}
 	label.error {
 		color:#F24835;
+		font-weight:normal;
 	}
 	label.disabled {
 	color:#AFAFAF;
@@ -63,7 +73,7 @@ div.control-group.year-control, div.control-group.curso-control {
 	width:159px;
 }
 
-label.radio {
+div.radio {
 	padding:12px;
 	background-color:white;
 	border-radius:10px;
@@ -82,7 +92,7 @@ label.radio {
 		}
 	}
 	&.selected {
-		background-color:#214A82;
+		background-color:#EC971F;
 		color:white;
 	}
 }

@@ -1,0 +1,7 @@
+Colegio Santo Domingo Admisión - Cambios
+
+- Deshacerse o al menos organizar datos de contacto, nombre, etc.
+- Coordinar estilo formulario con estilo CSD
+- Hacer pruebas de correo
+- Hacer pruebas de registro en base de datos
+- Hacer el envío del formulario vía ajax para evitar recarga de página.

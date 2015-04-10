@@ -18,8 +18,8 @@ TODO:
 */
 
 global $dbver;
-$dbver = '0.8';
-$tbname = $wpdb->prefix . 'fspmapdata';
+$dbver = '0.9';
+$tbname = $wpdb->prefix . 'fcsdappdata';
 
 
 //Crear directorios
@@ -58,7 +58,7 @@ function fspm_table() {
 			apextr text NOT NULL,
 			cursoi text NOT NULL,
 			otrocurso text NOT NULL,
-			year text NOT NULL
+			year text NOT NULL,
 			UNIQUE KEY id (id)
 		) $charset_collate;";
 		
@@ -88,104 +88,124 @@ function fspm_getdata() {
 
 //Html del formulario
 function fspm_form() {
-	$nonce = $_POST['prepostnonce'];
-	$form = '<form class="form-horizontal" id="fspm_prepostulacion" action="" method="POST">
-			<h2>Pre-postulación Seminario Pontificio Menor</h2>
+	if($_POST['prepostnonce']) {
+		$nonce = $_POST['prepostnonce'];
+	};
+	$form = '<form class="form-horizontal" id="fcsd_prepostulacion" action="" method="POST">
 			<!--nonce-->
 			'.wp_nonce_field('fspm_prepost', 'prepostnonce').'
 			<input type="hidden" name="" value="fspm_prepost" placeholder="">
 			<!--formel-->
-			<div class="control-group">
-				<label class="control-label" for="nombre_apoderado">Nombre apoderado(a)</label>
-					<div class="controls">
-						<input type="text" name="nombre_apoderado" value="" placeholder="Nombre Apoderado(a)" required>
+			<div class="form-group">
+				<label class="control-label col-sm-5" for="nombre_apoderado">Nombre apoderado(a)</label>
+					<div class="col-sm-7">
+						<input type="text" name="nombre_apoderado" value="" placeholder="Nombre Apoderado(a)" required class="form-control">
 					</div>
 				</div>
 			<!--formel-->
-			<div class="control-group">
-				<label class="control-label" for="fono_apoderado">Celular apoderado(a)</label>
-				<div class="controls">
-					<div class="input-prepend">
-						<span class="add-on">+56 9</span>
-						<input type="text" name="fono_apoderado" value="" placeholder="" required>
+			<div class="form-group">
+				<label class="control-label col-sm-5" for="fono_apoderado">Celular apoderado(a)</label>
+				<div class="col-sm-7">
+					<div class="input-group">
+						<span class="input-group-addon">+56 9</span>
+						<input class="form-control" type="text" name="fono_apoderado" value="" placeholder="" required">
 					</div>
 				</div>
 			</div>
 			<!--formel-->
-			<div class="control-group">
-				<label class="control-label" for="email_apoderado">E-Mail apoderado(a)</label>
-				<div class="controls">
-					<input type="email" name="email_apoderado" value="" placeholder="Email Apoderado(a)" required>
+			<div class="form-group">
+				<label class="control-label col-sm-5" for="email_apoderado">E-Mail apoderado(a)</label>
+				<div class="col-sm-7">
+					<input class="form-control" type="email" name="email_apoderado" value="" placeholder="Email Apoderado(a)" required>
 				</div>
 			</div>
 			<!--formel-->
-			<div class="control-group">
-				<label class="control-label" for="nombre_alumno">Nombre alumno(a)</label>
-				<div class="controls">
-					<input type="text" name="nombre_alumno" value="" placeholder="Nombre alumno(a)" required>
+			<div class="form-group">
+				<label class="control-label col-sm-5" for="nombre_alumno">Nombre alumno(a)</label>
+				<div class="col-sm-7">
+					<input class="form-control" type="text" name="nombre_alumno" value="" placeholder="Nombre alumno(a)" required>
 				</div>
 			</div>
 			<!--formel-->
-			<div class="control-group">
-				<label class="control-label" for="mensaje_apoderado">Consulta u observación especial</label>
-				<div class="controls">
-					<textarea name="mensaje"></textarea>
+			<div class="form-group">
+				<label class="control-label col-sm-5" for="mensaje_apoderado">Consulta u observación especial</label>
+				<div class="col-sm-7">
+					<textarea class="form-control" name="mensaje"></textarea>
 				</div>
 			</div>
 			<!--formel-->
-			<div class="control-group curso-control">
-				<span class="help-block">
-					Curso a postular
-				</span>
-				<div class="controls curso-post">
-					<label class="radio">
-						<input type="radio" name="curso" value="pre" default>
-						<span class="lname">Pre-Kínder</span>
-					</label>
-					<label class="radio">
-						<input type="radio" name="curso" value="kin">
-						<span class="lname">Kínder</span>
-					</label>
-					<label class="radio">
-						<input type="radio" name="curso" value="1bas">
-						<span class="lname">1º Básico</span>
-					</label>
-					<label class="radio">
-						<input type="radio" name="curso" value="2bas">
-						<span class="lname">2º Básico</span>
-					</label>
-					<label class="radio">
-						<input type="radio" name="curso" value="3bas">
-						<span class="lname">3º Básico</span>
-					</label>
-					<label class="radio">
-						<input type="radio" name="curso" value="otros">
-						<span class="lname">Otros cursos <span class="lnamewarn">(Sujeto a disponibilidad de cupos)</span></span>
-					</label>
-				</div>
-				<div class="control-group otrocurso-control">
-					<label class="control-label" for="otrocurso">¿Cuál?</label>
-					<div class="controls">
-						<input type="text" name="otrocurso" value="" placeholder="Curso">
-						<span class="help-block">
-							Indique a qué otro curso le interesa postular
-						</span>
+			<div class="form-group year-control">
+					<div class="col-sm-12 help-block">
+						<p>Año al que postula</p>
 					</div>
-				</div>
-			</div>
-			<div class="control-group year-control">
-					<span class="help-block">Año al que postula</span>
-					<div class="controls year-post">
-						<label class="radio">
-							<input type="radio" name="year" value="proximo">
-							<span class="lname">2016</span>
-						</label>
-						<label class="radio">
-							<input type="radio" name="year" value="actual">
-							<span class="lname">2015</span>
-						</label>
+					<div class="col-sm-7 year-post">
+						<div class="radio">
+							<label>
+								<input type="radio" name="year" value="proximo">
+								<span class="lname">2016</span>
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="year" value="actual">
+								<span class="lname">2015</span>
+							</label>
+						</div>
 					</div>
 			</div>	
+			<div class="form-group curso-control">
+				<div class="col-sm-12 help-block">
+					<p>Curso a postular</p>
+				</div>
+				<div class="col-sm-12 curso-post">
+					<div class="radio" data-target="proximo actual">
+						<label>
+							<input type="radio" name="curso" value="jardin" default>
+							<span class="lname">Jardín</span>
+						</label>
+					</div>
+					<div class="radio" data-target="proximo actual">
+						<label>
+							<input type="radio" name="curso" value="pre" default>
+							<span class="lname">Pre-Kínder</span>
+						</label>
+					</div>
+					<div class="radio" data-target="proximo actual">
+						<label>
+							<input type="radio" name="curso" value="kin">
+							<span class="lname">Kínder</span>
+						</label>
+					</div>
+					<div class="radio" data-target="proximo">
+						<label>
+							<input type="radio" name="curso" value="1bas">
+							<span class="lname">1º Básico</span>
+						</label>
+					</div>
+					<div class="radio" data-target="proximo">
+						<label>
+							<input type="radio" name="curso" value="2bas">
+							<span class="lname">2º Básico</span>
+						</label>
+					</div>
+					<div class="radio" data-target="proximo actual">
+						<label>
+							<input type="radio" name="curso" value="otros">
+							<span class="lname">Otros cursos <span class="lnamewarn">(Sujeto a disponibilidad de cupos)</span></span>
+						</label>
+					</div>
+				</div>
+				<div class="form-group otrocurso-control">
+					<label class="control-label col-sm-5" for="otrocurso">¿Cuál?</label>
+						<div class="col-sm-5">
+							<input type="text" name="otrocurso" value="" placeholder="Curso" class="form-control" aria-describedby="otrocurso">
+							<p>
+								Indique a qué otro curso le interesa postular
+							</p>
+						</div>
+				</div>
+			</div>
+			
 
 			<!--submit-->
 			<p class="aligncenter">
@@ -233,7 +253,7 @@ function fspm_formshortcode($atts) {
 	return fspm_form();
 }
 
-add_shortcode('fspm_admform', 'fspm_formshortcode');
+add_shortcode('fcsd_admform', 'fspm_formshortcode');
 
 function spm_shareshortcode($atts) {
 	global $post;
@@ -250,7 +270,7 @@ function spm_shareshortcode($atts) {
     return $share;
 }
 
-add_shortcode('spm_share', 'spm_shareshortcode');
+add_shortcode('csd_share', 'spm_shareshortcode');
 
 //shortcode para el botón
 function fspm_buttonshortcode($atts) {
@@ -259,7 +279,7 @@ function fspm_buttonshortcode($atts) {
 	return '<a href="'.$link.'" class="prepostbtn btn btn-lg btn-warning">'.$text.'</a>';
 }
 
-add_shortcode('fspm_btnform', 'fspm_buttonshortcode');
+add_shortcode('fcsd_btnform', 'fspm_buttonshortcode');
 
 
 //Validación
@@ -311,12 +331,12 @@ function fspm_cursequi($curso, $otro = NULL) {
 //Envío de correos
 function fspm_mails_clone($data) {
 	
-	$admins = 'contacto@apie.cl, jorge@apie.cl, pablo@apie.cl';
-	$headers = 'From: "Colegio Seminario Pontificio Menor" <admision@spm.cl>';
+	$admins = 'pabloselin@gmail.com, jorgeloayza@gmail.com';
+	$headers = 'From: "Colegio Santo Domingo" <admision@colegiosantodomingo.cl>';
 	
 	add_filter('wp_mail_content_type', function($content_type) {return 'text/html';});
 
-	$mailadmin = wp_mail( $admins, 'Prepostulación SPM', $mensajeadmin, $headers);
+	$mailadmin = wp_mail( $admins, 'Prepostulación CSD', $mensajeadmin, $headers);
 
 	add_filter('wp_mail_content_type', function($content_type) {return 'text/plain';});
 
@@ -330,10 +350,10 @@ function fspm_mails_clone($data) {
 //Envío de correos
 function fspm_mails($data) {
 	$mensajeapoderado = '<style>table p {line-height:1,4em;}</style>
-		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:#FEF1D6;border:1px solid #ccc;">
+		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;border:1px solid #ccc;">
 		<tr>
 			<td>
-				<p style="text-align:center;"><img src="http://devadmspm.apie.cl/wp-content/themes/spm-admision/i/logospm_header_interior.png" alt="Colegio Seminario Pontificio Menor"><br><h1 style="font-size:24px;font-weight:normal;text-align:center;">Colegio Seminario Pontificio Menor</h1></p>
+				<p style="text-align:center;"><img src="default.jpg" alt="Colegio Santo Domingo"><br><h1 style="font-size:24px;font-weight:normal;text-align:center;">Colegio Santo Domingo</h1></p>
 				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de pre-postulación para el año '.fspm_parseyear($data['year']).'</h3>
 				<p>Estimado <strong>'. $data['nombre'] .'</strong>, hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono en <strong>1 día hábil</strong> como máximo para continuar el proceso.</p>
 				<p>Estos son los datos que usted envió:</p>
@@ -362,7 +382,7 @@ function fspm_mails($data) {
 				<td>
 				<p>Muchas gracias por su interés.<br>
 				Afectuosamente<br>
-				<strong>Colegio Seminario Pontificio Menor</strong></p>
+				<strong>Colegio Santo Domingo</strong></p>
 				<p><strong>Correo: </strong> admision@spm.cl <br>
 				<strong>Teléfono: </strong> +56 (2) 29239902 - Carolina Gundermann S. <br>
 				<strong>Horario de atención telefónica y visitas: Lunes a viernes 8:15 a 13:45 y de 15:00 a 16:15 hrs.</strong><br>
@@ -376,7 +396,7 @@ function fspm_mails($data) {
 					<table width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:#f0f0f0;border:1px solid #ccc;">
 					<tr>
 						<td>
-							<h3>Se ha enviado una prepostulación a SPM para el año '.fspm_parseyear($data['year']).'</h3>
+							<h3>Se ha enviado una prepostulación a CSD para el año '.fspm_parseyear($data['year']).'</h3>
 							<p></p>
 						</td>
 					</tr>
@@ -395,7 +415,7 @@ function fspm_mails($data) {
 					</table>
 					';
 	$admins = 'contacto@apie.cl, rectoria@spm.cl, admision@spm.cl, pablobravo@apie.cl, mariaceciliagn@gmail.com, pjuancarloscortez@gmail.com';
-	$headers = 'From: "Colegio Seminario Pontificio Menor" <admision@spm.cl>';
+	$headers = 'From: "Colegio Santo Domingo" <admision@spm.cl>';
 	
 	add_filter('wp_mail_content_type', function($content_type) {return 'text/html';});
 
