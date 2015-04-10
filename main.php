@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Formulario de solicitud de admisión
+ * Plugin Name: Formulario de solicitud de admisión para CSD
  * Plugin URI: http://apie.cl
  * Description: Generador de formulario y almacenamiento de datos para admisión
  * Version: 0.5
@@ -29,7 +29,9 @@ define( 'FSPM_CSVURL', WP_CONTENT_URL . '/spmcsv/');
 define( 'FSPM_NCOLEGIO', 'Colegio Santo Domingo');
 define( 'FSPM_FROMMAIL', 'admision@colegiosantodomingo.cl');
 define( 'FSPM_TOMAILS', 'admision@colegiosantodomingo.cl, jorgeloayza@gmail.com, lmsanchezpintor@gmail.com, pbravo@bbrgroup.cl, pabloselin@gmail.com');
+define( 'FSPM_FONO', '+56 2 2652 78 30');
 //define( 'FSPM_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
+define( 'FSPM_LOGO', 'http://admisioncsd.apie.cl/wp-content/themes/csd-admision/assets/img/logocsd2014_7.png');
 
 if(!is_dir(FSPM_CSVPATH)){
 	mkdir(WP_CONTENT_DIR . '/spmcsv', 0755);
@@ -131,14 +133,7 @@ function fspm_form() {
 					<input class="form-control" type="text" name="nombre_alumno" value="" placeholder="Nombre alumno(a)" required>
 				</div>
 			</div>
-			<!--formel-->
-			<div class="form-group">
-				<label class="control-label col-sm-5" for="mensaje_apoderado">Consulta u observación especial</label>
-				<div class="col-sm-7">
-					<textarea class="form-control" name="mensaje"></textarea>
-				</div>
-			</div>
-			<!--formel-->
+			
 			<div class="form-group year-control">
 					<div class="col-sm-12 help-block">
 						<p>Año al que postula</p>
@@ -211,6 +206,14 @@ function fspm_form() {
 				</div>
 			</div>
 			
+			<!--formel-->
+			<div class="form-group col-sm-12">
+				<label class="control-label" for="mensaje_apoderado">Consulta u observación especial</label>
+				<div>
+					<textarea class="form-control" name="mensaje"></textarea>
+				</div>
+			</div>
+			<!--formel-->			
 
 			<!--submit-->
 			<p class="aligncenter">
@@ -398,40 +401,38 @@ function fspm_mails($data) {
 	$mensajeapoderado = '<style>table p {line-height:1,4em;}</style>
 		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;border:1px solid #ccc;">
 		<tr>
-			<td>
-				<p style="text-align:center;"><img src="default.jpg" alt="'.FSPM_NCOLEGIO.'"><br><h1 style="font-size:24px;font-weight:normal;text-align:center;">'.FSPM_NCOLEGIO.'</h1></p>
+			<td style="background-color:#555;color:white;">
+				<p style="text-align:center;"><img src="'.FSPM_LOGO.'" alt="'.FSPM_NCOLEGIO.'"><br><h1 style="font-family:serif;font-size:24px;font-weight:normal;text-align:center;">'.FSPM_NCOLEGIO.'</h1></p>
 				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de pre-postulación para el año '.fspm_parseyear($data['year']).'</h3>
-				<p>Estimado <strong>'. $data['nombre'] .'</strong>, hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono o correo en <strong>2 días hábiles</strong> como máximo para continuar el proceso.</p>
-				<p>Estos son los datos que usted envió:</p>
 			</td> 
+			<tr>
+				<td>
+					<p>Estimado/a <strong>'. $data['nombre'] .'</strong>, hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono o correo en <strong>2 días hábiles</strong> como máximo para continuar el proceso.</p>
+					<p>Estos son los datos que usted envió:</p>
+				</td>
+			</tr>
 			<tr>
 						<td style="border-width:1px 0 1px 0;border-style:dotted;border-color:#ccc;background-color:white;">
 							<h4 style="text-align:center;font-size:18px;font-weight:normal;">Datos</h4>
+							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
+							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['curso'], $data['otrocurso']) .'</p>
+							<p><strong>Año al que postula: </strong>' . fspm_parseyear($data['year']) . '</p>
+							<p>&nbsp;</p>
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
 							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
-							<p><strong>Año al que postula: </strong>' . fspm_parseyear($data['year']) . '</p>
-							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['curso'], $data['otrocurso']) .'</p>
-							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
+							<p>&nbsp;</p>
 							<p><strong>Consulta adicional: </strong>' .$data['mensaje'].'</p>
 						</td>
 					</tr>';
-
-	if($data['curso'] == 'pre'):
-		$mensajeapoderado .= '<tr>
-								<td><p style="color:#555;font-style:italic;line-height:1.4em;"><strong style="font-size:18px;font-style:normal;">Recuerda:</strong> <br>Luego de pre-postular te contactaremos en máximo dos días hábiles vía teléfono o correo para continuar con el proceso.</p>
-								</td>
-							</tr>';
-	endif;
 
 	$mensajeapoderado .= '<tr>
 				<td>
 				<p>Muchas gracias por su interés.<br>
 				Afectuosamente<br>
 				<strong>'.FSPM_NCOLEGIO.'</strong></p>
-				<p><strong>Correo: </strong> admision@spm.cl <br>
-				<strong>Teléfono: </strong> +56 (2) 29239902 - Carolina Gundermann S. <br>
-				<strong>Horario de atención telefónica y visitas: Lunes a viernes 8:15 a 13:45 y de 15:00 a 16:15 hrs.</strong><br>
+				<p><strong>Correo: </strong> '.FSPM_FROMMAIL.' <br>
+				<strong>Teléfono: </strong> '.FSPM_FONO.'  <br>
 				<strong>Página Web: </strong><a href="'.get_bloginfo('url').'">'.get_bloginfo('url').'</a></p>
 				';
 
@@ -465,7 +466,7 @@ function fspm_mails($data) {
 	
 	add_filter('wp_mail_content_type', function($content_type) {return 'text/html';});
 
-	$mailapoderado = wp_mail( $data['email'], 'Prepostulación' . FSPM_NCOLEGIO, $mensajeapoderado, $headers);
+	$mailapoderado = wp_mail( $data['email'], 'Prepostulación ' . FSPM_NCOLEGIO, $mensajeapoderado, $headers);
 	$mailadmin = wp_mail( $admins, 'Prepostulación '. FSPM_NCOLEGIO , $mensajeadmin, $headers);
 
 	add_filter('wp_mail_content_type', function($content_type) {return 'text/plain';});
