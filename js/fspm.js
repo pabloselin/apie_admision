@@ -67,7 +67,7 @@ $(document).ready(function() {
 
 	$('.curso-post input:checked, .year-post input:checked').addClass('selected');
 
-	var otrocurso = $('.otrocurso-control');
+	var otrocurso = $('.otrocurso-control, .curso-control .help-block');
 	var cursocontrol = $('.curso-control div.radio');
 
 	$('.curso-post input[type="radio"]').on('click', function(event) {
@@ -83,6 +83,7 @@ $(document).ready(function() {
 	});
 
 	$('.year-post input[type="radio"]').on('click', function(event) {
+		$('.curso-control .help-block').show();
 		$('.year-post div.radio').removeClass('selected');
 		$(this).parent('label').parent('div.radio').addClass('selected');
 		var selected = $(this).attr('value');
@@ -95,6 +96,7 @@ $(document).ready(function() {
 		}
 	});
 
+	$('div#success, div#error').modal('show');
 
 	//para opción otro curso
 	otrocurso.hide();

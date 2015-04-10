@@ -25,7 +25,11 @@ $tbname = $wpdb->prefix . 'fcsdappdata';
 //Crear directorios
 define( 'FSPM_CSVPATH', WP_CONTENT_DIR . '/spmcsv/');
 define( 'FSPM_CSVURL', WP_CONTENT_URL . '/spmcsv/');
+//Variables de mails y nombres
 define( 'FSPM_NCOLEGIO', 'Colegio Santo Domingo');
+define( 'FSPM_FROMMAIL', 'admision@colegiosantodomingo.cl');
+define( 'FSPM_TOMAILS', 'admision@colegiosantodomingo.cl, jorgeloayza@gmail.com, lmsanchezpintor@gmail.com, pbravo@bbrgroup.cl, pabloselin@gmail.com');
+//define( 'FSPM_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
 
 if(!is_dir(FSPM_CSVPATH)){
 	mkdir(WP_CONTENT_DIR . '/spmcsv', 0755);
@@ -214,11 +218,11 @@ function fspm_form() {
 			</p>
 		</form>';
 		if($_POST && $nonce){	
-			fspm_validate();
+			$output = fspm_validate();
 		} else {
-			return $form;	
+			$output = $form;	
 		}
-		
+		return $output;
 }
 
 
@@ -242,11 +246,45 @@ function fspm_putdata($data) {
 							)
 						);
 	$lastid = $wpdb->insert_id;
+	$okmess = '<div class="alert alert-success">
+						<p style="text-align:center;font-size:32px;"><span class="glyphicon glyphicon-ok-sign"></span></p>
+						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Pre-postulación enviada con éxito</h4>
+						<p style="text-align:center;">Gracias por prepostular a '. FSPM_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>
+						</div>';
+	$errmess = '<div class="alert alert-error"><p><span class="glyphicon glyphicon-remove-sign"></span></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en admision@colegiosantodomingo.cl.</p></div>';
 	if($lastid) {
-		echo '<div class="alert alert-success"><p style="text-align:center;"><i class="fa fa-4x fa-smile-o"></i></p><h4>Postulación enviada exitosamente</h4><p style="text-align:center;">Gracias por postular a '. FSPM_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono en máximo <strong>1 día hábil</strong> para continuar el proceso.</p></div>';
+		$message = $okmess;
+		$message .=  '<div class="modal fade" id="success" role="dialog" tabindex="-1" aria-labelledby="Inscripción Exitosa en '.FSPM_NCOLEGIO.'" aria-hidden="true">';
+		$message .= '<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						'.$okmess.'
+						<div class="modal-footer">
+        				<button type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Cerrar</button>
+      				</div>
+					</div>
+					 
+				</div>
+			</div>';
 	} else {
-		echo '<div class="alert alert-error"><p><i class="fa fa-meh-o fa-4x"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente.</p></div>';
+		$message = $errmess;
+		$message .= '<div class="modal fade" id="error" role="dialog" tabindex="-1" aria-labelledby="Error en la Inscripción">
+			<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					'.$errmess.'
+				</div>
+				<div class="modal-footer">
+        				<button type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Cerrar</button>
+      				</div>
+			</div>
+			</div>
+			</div>';
 	}
+	//Enviar mensaje y correr funciones
+	$message .= fspm_mails($data);
+
+	return $message;
 }
 
 //Shortcode para el formulario
@@ -287,7 +325,7 @@ add_shortcode('fcsd_btnform', 'fspm_buttonshortcode');
 //Añadir esta función por AJAX
 function fspm_validate() {
 	if(!wp_verify_nonce( $_POST['prepostnonce'], 'fspm_prepost' )) {
-		echo 'nonce inválido';
+		return 'nonce inválido';
 	} else {
 		//Sanitizar
 		$data['nombre'] = sanitize_text_field($_POST['nombre_apoderado']);
@@ -299,9 +337,8 @@ function fspm_validate() {
 		$data['otrocurso'] = sanitize_text_field($_POST['otrocurso']);
 		$data['year'] = sanitize_text_field($_POST['year']); 
 		//Meter en la base de datos
-		fspm_putdata($data);
-		//Enviar mensaje y correr funciones
-		fspm_mails($data);
+		$output = fspm_putdata($data);
+		return $output;
 	}
 }
 
@@ -327,6 +364,12 @@ function fspm_cursequi($curso, $otro = NULL) {
 		break;
 		case('otros'):
 			$lcurso = $otro;
+		break;
+		case('jardin'):
+			$lcurso = 'Jardín';
+		break;
+		default:
+			$lcurso = $curso;
 		break;	
 	}
 	return $lcurso;
@@ -334,8 +377,8 @@ function fspm_cursequi($curso, $otro = NULL) {
 //Envío de correos
 function fspm_mails_clone($data) {
 	
-	$admins = 'pabloselin@gmail.com, jorgeloayza@gmail.com';
-	$headers = 'From: "Colegio Santo Domingo" <admision@colegiosantodomingo.cl>';
+	$admins = FSPM_TOMAILS;
+	$headers = 'From: "'.FSPM_NCOLEGIO.'" <'.FSPM_FROMMAIL.'>';
 	
 	add_filter('wp_mail_content_type', function($content_type) {return 'text/html';});
 
@@ -356,9 +399,9 @@ function fspm_mails($data) {
 		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;border:1px solid #ccc;">
 		<tr>
 			<td>
-				<p style="text-align:center;"><img src="default.jpg" alt="Colegio Santo Domingo"><br><h1 style="font-size:24px;font-weight:normal;text-align:center;">Colegio Santo Domingo</h1></p>
+				<p style="text-align:center;"><img src="default.jpg" alt="'.FSPM_NCOLEGIO.'"><br><h1 style="font-size:24px;font-weight:normal;text-align:center;">'.FSPM_NCOLEGIO.'</h1></p>
 				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de pre-postulación para el año '.fspm_parseyear($data['year']).'</h3>
-				<p>Estimado <strong>'. $data['nombre'] .'</strong>, hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono en <strong>1 día hábil</strong> como máximo para continuar el proceso.</p>
+				<p>Estimado <strong>'. $data['nombre'] .'</strong>, hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono o correo en <strong>2 días hábiles</strong> como máximo para continuar el proceso.</p>
 				<p>Estos son los datos que usted envió:</p>
 			</td> 
 			<tr>
@@ -368,7 +411,7 @@ function fspm_mails($data) {
 							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
 							<p><strong>Año al que postula: </strong>' . fspm_parseyear($data['year']) . '</p>
-							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['curso']) .'</p>
+							<p><strong>Curso al que postula: </strong>' . fspm_cursequi($data['curso'], $data['otrocurso']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
 							<p><strong>Consulta adicional: </strong>' .$data['mensaje'].'</p>
 						</td>
@@ -376,7 +419,7 @@ function fspm_mails($data) {
 
 	if($data['curso'] == 'pre'):
 		$mensajeapoderado .= '<tr>
-								<td><p style="color:#555;font-style:italic;line-height:1.4em;"><strong style="font-size:18px;font-style:normal;">Recuerda:</strong> <br>Luego de pre-postular te contactaremos en máximo un día hábil para continuar con el proceso.</p>
+								<td><p style="color:#555;font-style:italic;line-height:1.4em;"><strong style="font-size:18px;font-style:normal;">Recuerda:</strong> <br>Luego de pre-postular te contactaremos en máximo dos días hábiles vía teléfono o correo para continuar con el proceso.</p>
 								</td>
 							</tr>';
 	endif;
@@ -385,11 +428,11 @@ function fspm_mails($data) {
 				<td>
 				<p>Muchas gracias por su interés.<br>
 				Afectuosamente<br>
-				<strong>Colegio Santo Domingo</strong></p>
+				<strong>'.FSPM_NCOLEGIO.'</strong></p>
 				<p><strong>Correo: </strong> admision@spm.cl <br>
 				<strong>Teléfono: </strong> +56 (2) 29239902 - Carolina Gundermann S. <br>
 				<strong>Horario de atención telefónica y visitas: Lunes a viernes 8:15 a 13:45 y de 15:00 a 16:15 hrs.</strong><br>
-				<strong>Página Web: </strong><a href="http://admision.spm.cl">admision.spm.cl</a></p>
+				<strong>Página Web: </strong><a href="'.get_bloginfo('url').'">'.get_bloginfo('url').'</a></p>
 				';
 
 	$mensajeapoderado .=	'</td>
@@ -417,20 +460,20 @@ function fspm_mails($data) {
 					</tr>	
 					</table>
 					';
-	$admins = 'contacto@apie.cl, pabloselin@gmail.com';
-	$headers = 'From: "Colegio Santo Domingo" <admision@colegiosantodomingo.cl>';
+	$admins = FSPM_TOMAILS;
+	$headers = 'From: "'.FSPM_NCOLEGIO.'" <'.FSPM_FROMMAIL.'>';
 	
 	add_filter('wp_mail_content_type', function($content_type) {return 'text/html';});
 
-	$mailapoderado = wp_mail( $data['email'], 'Prepostulación Colegio Santo Domingo', $mensajeapoderado, $headers);
-	$mailadmin = wp_mail( $admins, 'Prepostulación Colegio Santo Domingo', $mensajeadmin, $headers);
+	$mailapoderado = wp_mail( $data['email'], 'Prepostulación' . FSPM_NCOLEGIO, $mensajeapoderado, $headers);
+	$mailadmin = wp_mail( $admins, 'Prepostulación '. FSPM_NCOLEGIO , $mensajeadmin, $headers);
 
 	add_filter('wp_mail_content_type', function($content_type) {return 'text/plain';});
 
 	if($mailapoderado && $mailadmin) {
-		echo '<div class="alert alert-success"><i class="fa fa-check"></i> <i class="fa fa-envelope"></i></div>';
+		return '<div class="alert alert-success"><i class="fa fa-check"></i> <i class="fa fa-envelope"></i></div>';
 	} else {
-		echo '<div class="alert alert-error"><i class="fa fa-times"></i> <i class="fa fa-envelope"></i></div>';
+		return '<div class="alert alert-error"><i class="fa fa-times"></i> <i class="fa fa-envelope"></i></div>';
 	}
 }
 
