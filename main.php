@@ -25,6 +25,7 @@ $tbname = $wpdb->prefix . 'fcsdappdata';
 //Crear directorios
 define( 'FSPM_CSVPATH', WP_CONTENT_DIR . '/spmcsv/');
 define( 'FSPM_CSVURL', WP_CONTENT_URL . '/spmcsv/');
+define( 'FSPM_NCOLEGIO', 'Colegio Santo Domingo');
 
 if(!is_dir(FSPM_CSVPATH)){
 	mkdir(WP_CONTENT_DIR . '/spmcsv', 0755);
@@ -88,7 +89,7 @@ function fspm_getdata() {
 
 //Html del formulario
 function fspm_form() {
-	if($_POST['prepostnonce']) {
+	if($_POST && $_POST['prepostnonce']) {
 		$nonce = $_POST['prepostnonce'];
 	};
 	$form = '<form class="form-horizontal" id="fcsd_prepostulacion" action="" method="POST">
@@ -212,7 +213,7 @@ function fspm_form() {
 				<input type="submit" name="Postular" value="Postular" class="btn btn-danger btn-lg">
 			</p>
 		</form>';
-		if($nonce){	
+		if($_POST && $nonce){	
 			fspm_validate();
 		} else {
 			return $form;	
@@ -242,7 +243,7 @@ function fspm_putdata($data) {
 						);
 	$lastid = $wpdb->insert_id;
 	if($lastid) {
-		echo '<div class="alert alert-success"><p style="text-align:center;"><i class="fa fa-4x fa-smile-o"></i></p><h4>Postulación enviada exitosamente</h4><p style="text-align:center;">Gracias por postular a Colegio Seminario Pontificio Menor, te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono en máximo <strong>1 día hábil</strong> para continuar el proceso.</p></div>';
+		echo '<div class="alert alert-success"><p style="text-align:center;"><i class="fa fa-4x fa-smile-o"></i></p><h4>Postulación enviada exitosamente</h4><p style="text-align:center;">Gracias por postular a '. FSPM_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono en máximo <strong>1 día hábil</strong> para continuar el proceso.</p></div>';
 	} else {
 		echo '<div class="alert alert-error"><p><i class="fa fa-meh-o fa-4x"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente.</p></div>';
 	}
@@ -283,8 +284,8 @@ add_shortcode('fcsd_btnform', 'fspm_buttonshortcode');
 
 
 //Validación
+//Añadir esta función por AJAX
 function fspm_validate() {
-
 	if(!wp_verify_nonce( $_POST['prepostnonce'], 'fspm_prepost' )) {
 		echo 'nonce inválido';
 	} else {
@@ -303,6 +304,8 @@ function fspm_validate() {
 		fspm_mails($data);
 	}
 }
+
+
 
 function fspm_cursequi($curso, $otro = NULL) {
 	//transforma los valores de curso en valores legibles
@@ -414,13 +417,13 @@ function fspm_mails($data) {
 					</tr>	
 					</table>
 					';
-	$admins = 'contacto@apie.cl, rectoria@spm.cl, admision@spm.cl, pablobravo@apie.cl, mariaceciliagn@gmail.com, pjuancarloscortez@gmail.com';
-	$headers = 'From: "Colegio Santo Domingo" <admision@spm.cl>';
+	$admins = 'contacto@apie.cl, pabloselin@gmail.com';
+	$headers = 'From: "Colegio Santo Domingo" <admision@colegiosantodomingo.cl>';
 	
 	add_filter('wp_mail_content_type', function($content_type) {return 'text/html';});
 
-	$mailapoderado = wp_mail( $data['email'], 'Prepostulación SPM', $mensajeapoderado, $headers);
-	$mailadmin = wp_mail( $admins, 'Prepostulación SPM', $mensajeadmin, $headers);
+	$mailapoderado = wp_mail( $data['email'], 'Prepostulación Colegio Santo Domingo', $mensajeapoderado, $headers);
+	$mailadmin = wp_mail( $admins, 'Prepostulación Colegio Santo Domingo', $mensajeadmin, $headers);
 
 	add_filter('wp_mail_content_type', function($content_type) {return 'text/plain';});
 
