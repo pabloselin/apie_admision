@@ -433,7 +433,7 @@ function fspm_mails($data) {
 				<strong>'.FSPM_NCOLEGIO.'</strong></p>
 				<p><strong>Correo: </strong> '.FSPM_FROMMAIL.' <br>
 				<strong>Teléfono: </strong> '.FSPM_FONO.'  <br>
-				<strong>Página Web: </strong><a href="'.get_bloginfo('url').'">'.get_bloginfo('url').'</a></p>
+				<strong>Web: </strong><a href="'.get_bloginfo('url').'">'.get_bloginfo('url').'</a></p>
 				';
 
 	$mensajeapoderado .=	'</td>
