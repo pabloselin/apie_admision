@@ -25,7 +25,7 @@ function fspm_doadmin() {
 				<th>E-Mail Apoderado</th>
 				<th>Teléfono Apoderado</th>
 				<th>Curso</th>
-				<th>Mensaje adicional</th>
+				<th>Información adicional</th>
 				<th>Año de postulación</th>
 			</thead>
 		

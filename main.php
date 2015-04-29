@@ -208,7 +208,7 @@ function fspm_form() {
 			
 			<!--formel-->
 			<div class="form-group col-sm-12">
-				<label class="control-label" for="mensaje_apoderado">Consulta u observación especial</label>
+				<label class="control-label" for="mensaje_apoderado">Información adicional</label>
 				<div>
 					<textarea class="form-control" name="mensaje"></textarea>
 				</div>
@@ -216,9 +216,11 @@ function fspm_form() {
 			<!--formel-->			
 
 			<!--submit-->
-			<p class="aligncenter">
-				<input type="submit" name="Postular" value="Postular" class="btn btn-danger btn-lg">
-			</p>
+			<div class="submitplaceholder">
+				<div class="alert">
+					Necesitas JavaScript activado para poder usar el formulario
+				</div>
+			</div>
 		</form>';
 		if($_POST && $nonce){	
 			$output = fspm_validate();
@@ -333,12 +335,12 @@ function fspm_validate() {
 		//Sanitizar
 		$data['nombre'] = sanitize_text_field($_POST['nombre_apoderado']);
 		$data['fono'] = sanitize_text_field($_POST['fono_apoderado']);
-		$data['email'] = sanitize_text_field($_POST['email_apoderado']);
+		$data['email'] = sanitize_email($_POST['email_apoderado']);
 		$data['nalumno'] = sanitize_text_field($_POST['nombre_alumno'] );
 		$data['mensaje'] = sanitize_text_field($_POST['mensaje']);
-		$data['curso'] = sanitize_text_field($_POST['curso']);
+		$data['curso'] = sanitize_key($_POST['curso']);
 		$data['otrocurso'] = sanitize_text_field($_POST['otrocurso']);
-		$data['year'] = sanitize_text_field($_POST['year']); 
+		$data['year'] = sanitize_key($_POST['year']); 
 		//Meter en la base de datos
 		$output = fspm_putdata($data);
 		return $output;

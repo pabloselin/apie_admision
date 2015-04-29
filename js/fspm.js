@@ -22,6 +22,11 @@ var isMobile = {
 
 //Fspm script
 $(document).ready(function() {
+	var hasJs = $('body').hasClass('js');
+	if(hasJs) {
+		$('.submitplaceholder').empty().append('<p class="aligncenter"><input type="submit" name="Postular" value="Postular" class="btn btn-danger btn-lg"></p>');
+	}
+
 	$('#fcsd_prepostulacion').validate({
 		debug: false,
 		messages: {
