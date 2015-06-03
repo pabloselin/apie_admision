@@ -28,7 +28,7 @@ define( 'FSPM_CSVURL', WP_CONTENT_URL . '/spmcsv/');
 //Variables de mails y nombres
 define( 'FSPM_NCOLEGIO', 'Colegio Santo Domingo');
 define( 'FSPM_FROMMAIL', 'admision@colegiosantodomingo.cl');
-define( 'FSPM_TOMAILS', 'admision@colegiosantodomingo.cl, jorgeloayza@gmail.com, lmsanchezpintor@gmail.com, pbravo@bbrgroup.cl, pabloselin@gmail.com');
+define( 'FSPM_TOMAILS', 'admision@colegiosantodomingo.cl, jorgeloayza@gmail.com, lmsanchezpintor@gmail.com, imprentabbr@gmail.com, pabloselin@gmail.com');
 define( 'FSPM_FONO', '+56 2 2652 78 30');
 //define( 'FSPM_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
 define( 'FSPM_LOGO', 'http://admisioncsd.apie.cl/wp-content/themes/csd-admision/assets/img/logocsd2014_7.png');
