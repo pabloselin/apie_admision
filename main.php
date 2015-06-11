@@ -29,7 +29,7 @@ define( 'FSPM_CSVURL', WP_CONTENT_URL . '/spmcsv/');
 define( 'FSPM_NCOLEGIO', 'Colegio Santo Domingo');
 define( 'FSPM_FROMMAIL', 'admision@colegiosantodomingo.cl');
 define( 'FSPM_TOMAILS', 'admision@colegiosantodomingo.cl, jorgeloayza@gmail.com, lmsanchezpintor@gmail.com, imprentabbr@gmail.com, pabloselin@gmail.com');
-define( 'FSPM_FONO', '+56 2 2652 78 30');
+define( 'FSPM_FONO', '+56 2 265 278 73');
 //define( 'FSPM_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
 define( 'FSPM_LOGO', 'http://admisioncsd.apie.cl/wp-content/themes/csd-admision/assets/img/logocsd2014_7.png');
 
@@ -434,7 +434,7 @@ function fspm_mails($data) {
 				Afectuosamente<br>
 				<strong>'.FSPM_NCOLEGIO.'</strong></p>
 				<p><strong>Correo: </strong> '.FSPM_FROMMAIL.' <br>
-				<strong>Teléfono: </strong> '.FSPM_FONO.'  <br>
+				<strong>Teléfono: </strong> <a href="tel:'.FSPM_FONO.'">'.FSPM_FONO.'</a>  <br>
 				<strong>Web: </strong><a href="'.get_bloginfo('url').'">'.get_bloginfo('url').'</a></p>
 				';
 
