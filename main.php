@@ -31,7 +31,7 @@ define( 'FSPM_FROMMAIL', 'admision@colegiosantodomingo.cl');
 define( 'FSPM_TOMAILS', 'admision@colegiosantodomingo.cl, jorgeloayza@gmail.com, lmsanchezpintor@gmail.com, imprentabbr@gmail.com, pabloselin@gmail.com');
 define( 'FSPM_FONO', '+56 2 265 278 73');
 //define( 'FSPM_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
-define( 'FSPM_LOGO', 'http://admision.colegiosantodmingo.cl/wp-content/themes/csd-admision/assets/img/logocsd2014_7.png');
+define( 'FSPM_LOGO', 'http://admision.colegiosantodomingo.cl/wp-content/themes/csd-admision/assets/img/logocsd2014_7.png');
 
 if(!is_dir(FSPM_CSVPATH)){
 	mkdir(WP_CONTENT_DIR . '/spmcsv', 0755);
