@@ -485,7 +485,7 @@ function fspm_stylesetscripts() {
 	if(!is_admin()) {
 		wp_register_style( 'fspm', plugins_url('/css/fspm.css', __FILE__) , array(), '1.0', 'screen' );
 		wp_register_script( 'fspm', plugins_url('/js/fspm.js', __FILE__), array('jquery'), '1.0', false);
-		wp_register_script( 'jqvalidate', plugins_url('/bower_components/jquery-validation/dist/jquery.validate.js', __FILE__), array('jquery'), '1.0', false);
+		wp_register_script( 'jqvalidate', plugins_url('/js/jquery.validate.min.js', __FILE__), array('jquery'), '1.14.0', false);
 		wp_enqueue_style( 'fspm' );
 		wp_enqueue_script( 'fspm' );
 		wp_enqueue_script('jqvalidate');
