@@ -141,16 +141,16 @@ function fspm_form() {
 					<div class="col-sm-7 year-post">
 						<div class="radio">
 							<label>
-								<input type="radio" name="year" value="proximo">
+								<input type="radio" name="year" value="proximo" checked>
 								<span class="lname">2016</span>
 							</label>
 						</div>
-						<div class="radio">
+						<!--<div class="radio">
 							<label>
 								<input type="radio" name="year" value="actual">
 								<span class="lname">2015</span>
 							</label>
-						</div>
+						</div>-->
 					</div>
 			</div>	
 			<div class="form-group curso-control">
