@@ -72,8 +72,8 @@ $(document).ready(function() {
 
 	$('.curso-post input:checked, .year-post input:checked').addClass('selected');
 
-	var otrocurso = $('.otrocurso-control, .curso-control .help-block');
-	var cursocontrol = $('.curso-control div.radio');
+	var otrocurso = $('.otrocurso-control');
+	var cursocontrol = $('.curso-control div.radio, .curso-control .help-block');
 
 	$('.curso-post input[type="radio"]').on('click', function(event) {
 		$('.curso-post div.radio').removeClass('selected');
