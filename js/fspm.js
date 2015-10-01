@@ -87,19 +87,19 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.year-post input[type="radio"]').on('click', function(event) {
-		$('.curso-control .help-block').show();
-		$('.year-post div.radio').removeClass('selected');
-		$(this).parent('label').parent('div.radio').addClass('selected');
-		var selected = $(this).attr('value');
-		if(selected == 'proximo') {
-			$('.curso-control div.radio.showed').hide().removeClass('showed').prop('checked',false);
-			$('.curso-control div.radio[data-target~="proximo"]').fadeIn().addClass('showed');
-		} else {
-			$('.curso-control div.radio.showed').hide().removeClass('showed').prop('checked', false);
-			$('.curso-control div.radio[data-target~="actual"]').fadeIn().addClass('showed');
-		}
-	});
+	// $('.year-post input[type="radio"]').on('click', function(event) {
+	// 	$('.curso-control .help-block').show();
+	// 	$('.year-post div.radio').removeClass('selected');
+	// 	$(this).parent('label').parent('div.radio').addClass('selected');
+	// 	var selected = $(this).attr('value');
+	// 	if(selected == 'proximo') {
+	// 		$('.curso-control div.radio.showed').hide().removeClass('showed').prop('checked',false);
+	// 		$('.curso-control div.radio[data-target~="proximo"]').fadeIn().addClass('showed');
+	// 	} else {
+	// 		$('.curso-control div.radio.showed').hide().removeClass('showed').prop('checked', false);
+	// 		$('.curso-control div.radio[data-target~="actual"]').fadeIn().addClass('showed');
+	// 	}
+	// });
 
 
 	$('div#success, div#error').modal('show');
