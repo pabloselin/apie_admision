@@ -476,12 +476,12 @@ function fspm_mails($data) {
 	$admins = FSPM_TOMAILS;
 	$headers = 'From: "'.FSPM_NCOLEGIO.'" <'.FSPM_FROMMAIL.'>';
 	
-	add_filter('wp_mail_content_type', function($content_type) {return 'text/html';});
+	add_filter('wp_mail_content_type', 'fspm_content_type_html');
 
 	$mailapoderado = wp_mail( $data['email'], 'Prepostulación ' . FSPM_NCOLEGIO, $mensajeapoderado, $headers);
 	$mailadmin = wp_mail( $admins, 'Prepostulación '. FSPM_NCOLEGIO , $mensajeadmin, $headers);
 
-	add_filter('wp_mail_content_type', function($content_type) {return 'text/plain';});
+	add_filter('wp_mail_content_type', 'fspm_content_type_plain');
 
 	if($mailapoderado && $mailadmin) {
 		return '<div class="alert alert-success"><i class="fa fa-check"></i> <i class="fa fa-envelope"></i></div>';
