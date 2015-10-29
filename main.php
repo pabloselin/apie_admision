@@ -380,16 +380,26 @@ function fspm_cursequi($curso, $otro = NULL) {
 	return $lcurso;
 }
 //Envío de correos
+
+function fspm_content_type_html() {
+	return 'text/html';
+}
+
+function fspm_content_type_plain() {
+	return 'text/plain';
+}
+
 function fspm_mails_clone($data) {
 	
 	$admins = FSPM_TOMAILS;
 	$headers = 'From: "'.FSPM_NCOLEGIO.'" <'.FSPM_FROMMAIL.'>';
 	
-	add_filter('wp_mail_content_type', function($content_type) {return 'text/html';});
+
+	add_filter('wp_mail_content_type', 'fspm_content_type_html');
 
 	$mailadmin = wp_mail( $admins, 'Prepostulación CSD', $mensajeadmin, $headers);
 
-	add_filter('wp_mail_content_type', function($content_type) {return 'text/plain';});
+	add_filter('wp_mail_content_type', 'fspm_content_type_plain');
 
 	if($mailapoderado && $mailadmin) {
 		echo '<div class="alert alert-success"><i class="fa fa-check"></i> <i class="fa fa-envelope"></i></div>';
