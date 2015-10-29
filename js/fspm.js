@@ -47,7 +47,6 @@ $(document).ready(function() {
 		},
 		submitHandler: function(form) {
 			$('#fspm_prepostulacion input[type="submit"]').empty().html('<i class="fa fa-circle-o-notch fa-spin"></i> Enviando Postulación');
-			console.log('enviando test');
 			form.submit();
 		},
 		rules: {
