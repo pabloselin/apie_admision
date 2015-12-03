@@ -13,8 +13,9 @@ if($_POST && $nonce){
 			<input type="hidden" name="" value="FPOST_prepost" placeholder="">
 			<!--formel-->
 			<div class="form-group year-control">
+				<h2>Año al que postula</h2>
 					<div class="help-block">
-						<p>Año al que postula</p>
+						
 					</div>
 					<div class=" year-post">
 						<div class="radio">
@@ -114,14 +115,6 @@ if($_POST && $nonce){
 					<input class="form-control" type="email" name="email_apoderado" value="" placeholder="Email Apoderado(a)" required>
 				</div>
 			</div>
-			<!--formel-->
-			<div class="form-group">
-				<label class="control-label" for="nombre_alumno">Nombre alumno(a)</label>
-				<div class="">
-					<input class="form-control" type="text" name="nombre_alumno" value="" placeholder="Nombre alumno(a)" required>
-				</div>
-			</div>
-			
 			
 			<h2>Información adicional</h2>
 			<!--formel-->
