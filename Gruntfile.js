@@ -9,7 +9,7 @@ module.exports = function(grunt) {
 					compress: true
 				},
 				files: {
-					'css/fspm.css':'css/fspm.less'
+					'css/postulacion.css':'css/postulacion.less'
 				}
 			}
 		},

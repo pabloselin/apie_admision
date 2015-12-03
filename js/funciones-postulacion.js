@@ -27,7 +27,7 @@ $(document).ready(function() {
 		$('.submitplaceholder').empty().append('<p class="aligncenter"><input type="submit" name="Postular" value="Postular" class="btn btn-danger btn-lg"></p>');
 	}
 
-	$('#fcsd_prepostulacion').validate({
+	$('#formulario-postulacion').validate({
 		debug: false,
 		messages: {
 			nombre_apoderado: 'Falta nombre de apoderado(a)',
@@ -46,7 +46,7 @@ $(document).ready(function() {
 			year: 'Falta elegir año al que postula'
 		},
 		submitHandler: function(form) {
-			$('#fspm_prepostulacion input[type="submit"]').empty().html('<i class="fa fa-circle-o-notch fa-spin"></i> Enviando Postulación');
+			$('#formulario-postulacion input[type="submit"]').empty().html('<i class="fa fa-circle-o-notch fa-spin"></i> Enviando Postulación');
 			form.submit();
 		},
 		rules: {
