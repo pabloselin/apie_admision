@@ -1,4 +1,4 @@
-//Check mobile stuff
+//Simple Agent detector
 var isMobile = {
     Android: function() {
     return navigator.userAgent.match(/Android/i);
@@ -20,7 +20,14 @@ var isMobile = {
     }
 };
 
-//Fspm script
+//Formulario postulación script
+
+//Añadir método validación de RUT
+$.validator.addMethod('rut', function(value, element) {
+	return this.optional(element) || $.Rut.validar(value);
+}, 'Por favor revise que el RUT esté bien escrito');
+
+
 $(document).ready(function() {
 	var hasJs = $('html').hasClass('js');
 	if(hasJs) {
@@ -54,6 +61,10 @@ $(document).ready(function() {
 				required: true,
 				email: true
 			},
+			rut_alumno: {
+				required: true,
+				rut: true
+			},
 			fono_apoderado: {
 				required: true,
 				minlength: 8,
@@ -65,6 +76,21 @@ $(document).ready(function() {
 			},
 			year: {
 				required: true
+			}
+		},
+		errorPlacement: function(error, element) {
+			if(element.attr('name') == 'year') {
+				error.appendTo('.error-placement');
+			} else if(element.parent().hasClass('input-group')) {
+				error.insertAfter(element.parent());
+			} else {
+				error.insertAfter(element);
+			}
+		},
+		messages: {
+			rut: {
+				required: 'El RUT es requerido',
+				rut:  'Por favor escriba un RUT válido'
 			}
 		}
 	});

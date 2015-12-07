@@ -18,8 +18,8 @@ TODO:
 */
 
 global $dbver;
-$dbver = '1.2';
-$tbname = $wpdb->prefix . 'fcsdappdata';
+$dbver = '1.3';
+$tbname = $wpdb->prefix . 'postulaciones';
 
 
 //Crear directorios
@@ -34,7 +34,7 @@ define( 'FPOST_FONO', '+56 2 265 278 73');
 define( 'FPOST_LOGO', 'http://admision.colegiosantodomingo.cl/wp-content/themes/csd-admision/assets/img/logocsd2014_7.png');
 
 if(!is_dir(FPOST_CSVPATH)){
-	mkdir(WP_CONTENT_DIR . '/spmcsv', 0755);
+	mkdir(WP_CONTENT_DIR . '/postulaciones', 0755);
 }
 
 
@@ -46,7 +46,7 @@ function fpost_table() {
 	global $wpdb;
 	global $dbver;
 	global $tbname;
-	$actver = get_option('FPOST_dbver');
+	$actver = get_option('fpost_dbver');
 	$charset_collate = $wpdb->get_charset_collate();
 	//Datos a recopilar
 	//Nombre apoderado
@@ -58,27 +58,19 @@ function fpost_table() {
 	$sql = "CREATE TABLE $tbname (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
 			time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-			-- apname text NOT NULL,
-			-- alname text NOT NULL,
-			-- apfono text NOT NULL,
-			-- apmail text NOT NULL,
-			-- apextr text NOT NULL,
-			-- cursoi text NOT NULL,
-			-- otrocurso text NOT NULL,
 			data text NOT NULL,
-			-- year text NOT NULL,
 			UNIQUE KEY id (id)
 		) $charset_collate;";
 		
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta($sql);
 		
-		add_option('FPOST_dbver', $dbver);
+		add_option('fpost_dbver', $dbver);
 }
 
 function fpost_checkupdate() {
 	global $dbver;
-	if(!get_site_option('FPOST_dbver') || $dbver != get_site_option('FPOST_dbver')) {
+	if(!get_site_option('fpost_dbver') || $dbver != get_site_option('fpost_dbver')) {
 		fpost_table();
 	}
 }
@@ -416,7 +408,7 @@ function fpost_mails($data) {
 //Scripts y estilos extras
 function fpost_styleandscripts() {
 	if(!is_admin()) {
-		wp_register_style( 'postulacion', plugins_url('/css/postulacion.css', __FILE__) , array(), '1.0', 'screen' );
+		wp_register_style( 'postulacion', plugins_url('/css/postulacion.css', __FILE__), 'screen' );
 		wp_register_script( 'modernizr', plugins_url('/lib/modernizr/modernizr.js', __FILE__ ), array(), '3.2.0', false);
 		wp_register_script( 'funciones-postulacion', plugins_url('/js/funciones-postulacion.js', __FILE__), array('jqvalidate'), '1.0', false);
 		wp_register_script( 'jquery-rut', plugins_url('/lib/jquery.rut/jquery.rut.min.js', __FILE__ ), array(), '0.5', false);
