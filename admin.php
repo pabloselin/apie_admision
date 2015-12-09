@@ -18,29 +18,52 @@ function fpost_doadmin() {
 		<h2>Postulaciones</h2>
 		<table class="widefat wp-list-table fspmlist">
 			<thead>
-				<th>Fecha</th>
+				<th>ID</th>
+				<th>Fecha Insc.</th>
 				<th>Hora</th>
+				<th>Apellido Apoderado</th>
 				<th>Nombre Apoderado</th>
-				<th>Nombre Alumno</th>
-				<th>E-Mail Apoderado</th>
-				<th>Teléfono Apoderado</th>
-				<th>Curso</th>
-				<th>Información adicional</th>
+				<th>E-Mail</th>
+				<th>Teléfono</th>
+
 				<th>Año de postulación</th>
+				<th>Datos Alumno</th>
+				<th>Curso al que postula</th>
+
+				
+				
+				<th>Mensaje adicional</th>
+				<th>Cómo conoció el colegio</th>
 			</thead>
 		
 		<?php
-			foreach($inscritos as $inscrito) {?>
+			foreach($inscritos as $inscrito) {
+				$datos = unserialize($inscrito->data);
+				?>
 				<tr>
-					<td><?php echo mysql2date( 'j F', $inscrito->time );?></td>
-					<td><?php echo mysql2date( 'H:i', $inscrito->time );?></td>
-					<td><?php echo $inscrito->apname;?></td>
-					<td><?php echo $inscrito->alname;?></td>
-					<td><?php echo $inscrito->apmail;?></td>
-					<td><?php echo '+56 9' . $inscrito->apfono;?></td>
-					<td><?php echo fpost_cursequi($inscrito->cursoi, $inscrito->otrocurso);?></td>
-					<td><?php echo $inscrito->apextr;?></td>
-					<td><?php echo fpost_parseyear($inscrito->year);?></td>
+					<td><?php echo $inscrito->id;?></td>
+					<td><?php echo mysql2date( 'l, j \d\e F, Y ', $inscrito->time );?></td>
+					<td><?php echo mysql2date( 'H:i,s', $inscrito->time );?></td>
+					<td><?php echo $datos['apellido_apoderado'];?></td>
+					<td><?php echo $datos['nombre_apoderado'];?></td>
+					<td><?php echo $datos['email_apoderado'];?></td>
+					<td><?php echo $datos['fono_apoderado'];?></td>
+					
+					<td><?php echo $datos['postulacion_year'];?></td>
+
+					<td>
+						<p><strong><?php echo $datos['nombre_alumno'];?> <?php echo $datos['apellido_alumno'];?></strong></p>
+						
+						<p><strong>Nac.</strong> <?php echo $datos['alumno_dia_nacimiento'];?> de <?php echo $datos['alumno_mes_nacimiento'];?>, <?php echo $datos['alumno_an_nacimiento'];?></p>
+
+						<p><strong>Procedencia:</strong> <?php echo $datos['procedencia_alumno'];?></p>
+	
+					</td>
+
+					<td><?php echo $datos['curso_postula'];?></td>
+					
+					<td><?php echo $datos['postulacion_mensaje'];?></td>
+					<td><?php echo $datos['xtra_apoderado'];?></td>
 				</tr>
 			<?php }
 		?>

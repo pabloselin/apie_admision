@@ -53,7 +53,8 @@ $(document).ready(function() {
 			year: 'Falta elegir año al que postula'
 		},
 		submitHandler: function(form) {
-			$('#formulario-postulacion input[type="submit"]').empty().html('<i class="fa fa-circle-o-notch fa-spin"></i> Enviando Postulación');
+			console.log('clicko');
+			$('#formulario-postulacion .submitplaceholder').empty().html('<i class="fa fa-circle-o-notch fa-spin"></i> Enviando Postulación');
 			form.submit();
 		},
 		rules: {

@@ -1,16 +1,17 @@
 <?php 
 //Si es que se ha enviado el formulario ejecuto otras cosas
-if($_POST && $_POST['prepostnonce']) {
-		$nonce = $_POST['prepostnonce'];
+
+if($_POST && $_POST['postulacion_nonce']) {
+		$nonce = $_POST['postulacion_nonce'];
 	};
 if($_POST && $nonce){	
 	echo fpost_validate();
 	} else { ?>
 
-<form class="form" id="formulario-postulacion" action="" method="POST">
+<form class="form" id="formulario-postulacion" action="<?php bloginfo('url');?>/formulario-postulacion" method="POST" enctype="multipart/form-data" >
 			<!--nonce-->
-			<?php echo wp_nonce_field('fpost_prepost', 'prepostnonce');?>
-			<input type="hidden" name="" value="FPOST_prepost" placeholder="">
+			<?php echo wp_nonce_field('fpost_prepost', 'postulacion_nonce');?>
+			<input type="hidden" name="" value="fpost_prepost" placeholder="">
 			<!--formel-->
 			<div class="form-group year-control">
 				<h2>Año al que postula</h2>
@@ -20,13 +21,13 @@ if($_POST && $nonce){
 					<div class="year-post">
 						<div class="radio">
 							<label>
-								<input type="radio" name="year" value="2016">
+								<input type="radio" name="postulacion_year" value="2016">
 								<span class="lname">2016</span>
 							</label>
 						</div>
 						<div class="radio">
 							<label>
-								<input type="radio" name="year" value="2017">
+								<input type="radio" name="postulacion_year" value="2017">
 								<span class="lname">2017</span>
 							</label>
 						</div>
@@ -155,9 +156,9 @@ if($_POST && $nonce){
 			</div>
 
 			<div class="form-group">
-				<label for="curso" class="control-label">Curso al que postula</label>
+				<label for="curso_postula" class="control-label">Curso al que postula</label>
 				<div>
-					<select name="curso" id="curso_postula" class="form-control">
+					<select name="curso_postula" id="curso_postula" class="form-control">
 						<option value="pk">PreKinder</option>
 						<option value="k">Kinder</option>
 						<option value="1">1º Básico</option>
@@ -215,9 +216,9 @@ if($_POST && $nonce){
 			<h2>Información adicional</h2>
 			<!--formel-->
 			<div class="form-group">
-				<label class="control-label" for="mensaje_apoderado">Mensaje adicional</label>
+				<label class="control-label" for="postulacion_mensaje">Mensaje adicional</label>
 				<div>
-					<textarea class="form-control" name="mensaje"></textarea>
+					<textarea class="form-control" name="postulacion_mensaje"></textarea>
 				</div>
 			</div>
 

@@ -244,18 +244,30 @@ add_shortcode('fpost_btnform', 'fpost_buttonshortcode');
 //Validación
 //Añadir esta función por AJAX
 function fpost_validate() {
-	if(!wp_verify_nonce( $_POST['prepostnonce'], 'FPOST_prepost' )) {
+	if(!wp_verify_nonce( $_POST['postulacion_nonce'], 'fpost_prepost' )) {
 		return 'nonce inválido';
 	} else {
-		//Sanitizar
-		$data['nombre'] = sanitize_text_field($_POST['nombre_apoderado']);
-		$data['fono'] = sanitize_text_field($_POST['fono_apoderado']);
-		$data['email'] = sanitize_email($_POST['email_apoderado']);
-		$data['nalumno'] = sanitize_text_field($_POST['nombre_alumno'] );
-		$data['mensaje'] = sanitize_text_field($_POST['mensaje']);
-		$data['curso'] = sanitize_key($_POST['curso']);
-		$data['otrocurso'] = sanitize_text_field($_POST['otrocurso']);
-		$data['year'] = sanitize_key($_POST['year']); 
+		//Sanitizar alumno
+
+		$data['postulacion_year'] = sanitize_text_field( $_POST['postulacion_year'] );
+		$data['nombre_alumno'] = sanitize_text_field( $_POST['nombre_alumno'] );
+		$data['apellido_alumno'] = sanitize_text_field( $_POST['apellido_alumno'] );
+		$data['rut_alumno'] = sanitize_text_field( $_POST['rut_alumno'] );
+		$data['alumno_dia_nacimiento'] = sanitize_text_field( $_POST['alumno_dia_nacimiento'] );
+		$data['alumno_mes_nacimiento'] = sanitize_text_field( $_POST['alumno_mes_nacimiento'] );
+		$data['alumno_an_nacimiento'] = sanitize_text_field( $_POST['alumno_an_nacimiento'] );
+		$data['procedencia_alumno'] = sanitize_text_field( $_POST['procedencia_alumno'] );
+		$data['curso_postula'] = sanitize_text_field( $_POST['curso_postula'] );
+
+		//Sanitizar apoderado
+
+		$data['nombre_apoderado'] = sanitize_text_field( $_POST['nombre_apoderado'] );
+		$data['apellido_apoderado'] = sanitize_text_field( $_POST['apellido_apoderado'] );
+		$data['fono_apoderado'] = sanitize_text_field( $_POST['fono_apoderado'] );
+		$data['email_apoderado'] = sanitize_text_field( $_POST['email_apoderado'] );
+		$data['postulacion_mensaje'] = sanitize_text_field( $_POST['postulacion_mensaje'] );
+		$data['xtra_apoderado'] = sanitize_text_field( $_POST['xtra_apoderado'] );
+
 		//Meter en la base de datos
 		$output = fpost_putserialdata($data);
 		return $output;
