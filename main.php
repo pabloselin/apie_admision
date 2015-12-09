@@ -28,9 +28,9 @@ define( 'FPOST_CSVURL', WP_CONTENT_URL . '/postulaciones/');
 //Variables de mails y nombres
 define( 'FPOST_NCOLEGIO', 'Colegio Santo Domingo');
 define( 'FPOST_FROMMAIL', 'admision@ciademariaseminario.cl');
-define( 'FPOST_TOMAILS', 'contacto@apie.cl, admision@ciademariaseminario.cl');
+//define( 'FPOST_TOMAILS', 'contacto@apie.cl, admision@ciademariaseminario.cl');
 define( 'FPOST_FONO', '+56 2 265 278 73');
-//define( 'FPOST_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
+define( 'FPOST_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
 define( 'FPOST_LOGO', 'http://admision.colegiosantodomingo.cl/wp-content/themes/csd-admision/assets/img/logocsd2014_7.png');
 
 if(!is_dir(FPOST_CSVPATH)){
@@ -342,7 +342,7 @@ function fpost_mails($data) {
 		<tr>
 			<td style="background-color:#555;color:white;">
 				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:serif;font-size:24px;font-weight:normal;text-align:center;">'.FPOST_NCOLEGIO.'</h1></p>
-				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de pre-postulación para el año '.fpost_parseyear($data['year']).'</h3>
+				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de pre-postulación para el año '.fpost_parseyear($data['postulacion_year']).'</h3>
 			</td> 
 			<tr>
 				<td>
@@ -353,15 +353,15 @@ function fpost_mails($data) {
 			<tr>
 						<td style="border-width:1px 0 1px 0;border-style:dotted;border-color:#ccc;background-color:white;">
 							<h4 style="text-align:center;font-size:18px;font-weight:normal;">Datos</h4>
-							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
+							<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. $data['apellido_alumno'] . '</p>
 							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso'], $data['otrocurso']) .'</p>
-							<p><strong>Año al que postula: </strong>' . fpost_parseyear($data['year']) . '</p>
+							<p><strong>Año al que postula: </strong>' . fpost_parseyear($data['postulacion_year']) . '</p>
 							<p>&nbsp;</p>
-							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
-							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono'] . '</p>
-							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
+							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . '</p>
+							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono_apoderado'] . '</p>
+							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
 							<p>&nbsp;</p>
-							<p><strong>Consulta adicional: </strong>' .$data['mensaje'].'</p>
+							<p><strong>Consulta adicional: </strong>' .$data['xtra_apoderado'].'</p>
 						</td>
 					</tr>';
 
@@ -382,20 +382,20 @@ function fpost_mails($data) {
 					<table width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:#f0f0f0;border:1px solid #ccc;">
 					<tr>
 						<td>
-							<h3>Se ha enviado una prepostulación a CSD para el año '.fpost_parseyear($data['year']).'</h3>
+							<h3>Se ha enviado una prepostulación a CSD para el año '.fpost_parseyear($data['postulacion_year']).'</h3>
 							<p></p>
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<h4>Datos</h4>
-							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre'] . '</p>
+							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . '</p>
 							<p><strong>Teléfono Apoderado(a): </strong>+56 9 ' . $data['fono'] . '</p>
-							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email'] . '</p>
+							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
 							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso'], $data['otrocurso']) .'</p>
-							<p><strong>Nombre al Alumno(a): </strong>' .$data['nalumno']. '</p>
-							<p><strong>Año al que postula: </strong>' . fpost_parseyear($data['year']) . '</p>
-							<p><strong>Consulta adicional: </strong>' .$data['mensaje'].'</p>
+							<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. '</p>
+							<p><strong>Año al que postula: </strong>' . fpost_parseyear($data['postulacion_year']) . '</p>
+							<p><strong>Consulta adicional: </strong>' .$data['xtra_apoderado'].'</p>
 						</td>
 					</tr>	
 					</table>
@@ -405,7 +405,7 @@ function fpost_mails($data) {
 	
 	add_filter('wp_mail_content_type', 'fpost_content_type_html');
 
-	$mailapoderado = wp_mail( $data['email'], 'Prepostulación ' . FPOST_NCOLEGIO, $mensajeapoderado, $headers);
+	$mailapoderado = wp_mail( $data['email_apoderado'], 'Prepostulación ' . FPOST_NCOLEGIO, $mensajeapoderado, $headers);
 	$mailadmin = wp_mail( $admins, 'Prepostulación '. FPOST_NCOLEGIO , $mensajeadmin, $headers);
 
 	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
