@@ -18,7 +18,7 @@ TODO:
 */
 
 global $dbver;
-$dbver = '1.3';
+$dbver = '1.5';
 $tbname = $wpdb->prefix . 'postulaciones';
 
 
@@ -26,12 +26,12 @@ $tbname = $wpdb->prefix . 'postulaciones';
 define( 'FPOST_CSVPATH', WP_CONTENT_DIR . '/postulaciones/');
 define( 'FPOST_CSVURL', WP_CONTENT_URL . '/postulaciones/');
 //Variables de mails y nombres
-define( 'FPOST_NCOLEGIO', 'Colegio Santo Domingo');
+define( 'FPOST_NCOLEGIO', 'Compañía de María Seminario');
 define( 'FPOST_FROMMAIL', 'admision@ciademariaseminario.cl');
 //define( 'FPOST_TOMAILS', 'contacto@apie.cl, admision@ciademariaseminario.cl');
 define( 'FPOST_FONO', '+56 2 265 278 73');
 define( 'FPOST_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
-define( 'FPOST_LOGO', 'http://admision.colegiosantodomingo.cl/wp-content/themes/csd-admision/assets/img/logocsd2014_7.png');
+define( 'FPOST_LOGO', 'http://cms-dev.apie.cl/wp-content/themes/cms-admision/img/logo-cms-3.png');
 
 if(!is_dir(FPOST_CSVPATH)){
 	mkdir(WP_CONTENT_DIR . '/postulaciones', 0755);
@@ -39,7 +39,10 @@ if(!is_dir(FPOST_CSVPATH)){
 
 
 //admin page
-include( plugin_dir_path( __FILE__ ) . 'admin.php');
+include( plugin_dir_path( __FILE__ ) . 'admin.php' );
+
+//la parte de las consultas
+include( plugin_dir_path( __FILE__ ) . 'consultas.php' );
 
 //Tablas de datos
 function fpost_table() {
@@ -58,6 +61,7 @@ function fpost_table() {
 	$sql = "CREATE TABLE $tbname (
 			id mediumint(9) NOT NULL AUTO_INCREMENT,
 			time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+			type text NOT NULL,
 			data text NOT NULL,
 			UNIQUE KEY id (id)
 		) $charset_collate;";
@@ -82,7 +86,7 @@ register_activation_hook( __FILE__, 'fpost_table' );
 function fpost_getdata() {
 	global $wpdb;
 	global $tbname;
-	$inscritos = $wpdb->get_results("SELECT * FROM $tbname");
+	$inscritos = $wpdb->get_results("SELECT * FROM $tbname WHERE type LIKE postulacion");
 	return $inscritos;
 } 
 
@@ -101,6 +105,7 @@ function fpost_putserialdata($data) {
 						$tbname,
 						array(
 							'time'   => current_time('mysql'),
+							'type' => 'postulacion',
 							'data' => serialize($data)
 							)
 						);
@@ -110,7 +115,7 @@ function fpost_putserialdata($data) {
 						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Pre-postulación enviada con éxito</h4>
 						<p style="text-align:center;">Gracias por prepostular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>
 						</div>';
-	$errmess = '<div class="alert alert-error"><p><span class="glyphicon glyphicon-remove-sign"></span></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en admision@colegiosantodomingo.cl.</p></div>';
+	$errmess = '<div class="alert alert-error"><p><span class="glyphicon glyphicon-remove-sign"></span></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en admision@ciademariaseminario.cl.</p></div>';
 	if($lastid) {
 		$message = $okmess;
 		$message .=  '<div class="modal fade" id="success" role="dialog" tabindex="-1" aria-labelledby="Inscripción Exitosa en '.FPOST_NCOLEGIO.'" aria-hidden="true">';
@@ -171,7 +176,7 @@ function fpost_putdata($data) {
 						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Pre-postulación enviada con éxito</h4>
 						<p style="text-align:center;">Gracias por prepostular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>
 						</div>';
-	$errmess = '<div class="alert alert-error"><p><span class="glyphicon glyphicon-remove-sign"></span></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en admision@colegiosantodomingo.cl.</p></div>';
+	$errmess = '<div class="alert alert-error"><p><span class="glyphicon glyphicon-remove-sign"></span></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en admision@ciademariaseminario.cl.</p></div>';
 	if($lastid) {
 		$message = $okmess;
 		$message .=  '<div class="modal fade" id="success" role="dialog" tabindex="-1" aria-labelledby="Inscripción Exitosa en '.FPOST_NCOLEGIO.'" aria-hidden="true">';

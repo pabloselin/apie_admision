@@ -31,7 +31,8 @@ $.validator.addMethod('rut', function(value, element) {
 $(document).ready(function() {
 	var hasJs = $('html').hasClass('js');
 	if(hasJs) {
-		$('.submitplaceholder').empty().append('<p class="aligncenter"><input type="submit" name="Postular" value="Postular" class="btn btn-danger btn-lg"></p>');
+		$('#formulario-postulacion .submitplaceholder').empty().append('<p class="aligncenter"><input type="submit" name="Postular" value="Postular" class="btn btn-danger btn-lg"></p>');
+		$('#formulario_consultas .consultas-submitplaceholder').empty().append('<p class="aligncenter"><input type="submit" name="Enviar" value="Enviar" class="btn btn-danger btn-lg"></p>');
 	}
 
 	$('#formulario-postulacion').validate({
@@ -53,7 +54,6 @@ $(document).ready(function() {
 			year: 'Falta elegir año al que postula'
 		},
 		submitHandler: function(form) {
-			console.log('clicko');
 			$('#formulario-postulacion .submitplaceholder').empty().html('<i class="fa fa-circle-o-notch fa-spin"></i> Enviando Postulación');
 			form.submit();
 		},
@@ -96,6 +96,46 @@ $(document).ready(function() {
 		}
 	});
 
+	$('#formulario_consultas').validate({
+		debug: false,
+		messages: {
+			nombre_consultas: 'Falta nombre de quién envía',
+			fono_consultas: {
+				minlength: 'El número telefónico parece ser demasiado corto',
+				maxlength: 'El número telefónico parece ser demasiado largo',
+				digits: 'Sólo se pueden poner números en este campo'
+			},
+			email_consultas: {
+				required: 'Falta email de contacto',
+				email: 'Por favor introduzca un email válido'	
+			},
+			mensaje_consultas: 'Falta añadir un mensaje',
+		},
+		submitHandler: function(form) {
+			$('#formulario_consultas .consultas-submitplaceholder').empty().html('<i class="fa fa-circle-o-notch fa-spin"></i> Enviando Mensaje');
+			form.submit();
+		},
+		rules: {
+			email_consultas: {
+				required: true,
+				email: true
+			},
+			fono_consultas: {
+				minlength: 8,
+				maxlength: 8,
+				digits: true
+			}
+		},
+		errorPlacement: function(error, element) {
+			if(element.parent().hasClass('input-group')) {
+				error.insertAfter(element.parent());
+				}
+			else {
+				error.insertAfter(element);
+				}
+			}
+		});
+
 	$('.curso-post input:checked, .year-post input:checked').addClass('selected');
 
 	var otrocurso = $('.otrocurso-control');
@@ -112,21 +152,6 @@ $(document).ready(function() {
 			}
 		}
 	});
-
-	// $('.year-post input[type="radio"]').on('click', function(event) {
-	// 	$('.curso-control .help-block').show();
-	// 	$('.year-post div.radio').removeClass('selected');
-	// 	$(this).parent('label').parent('div.radio').addClass('selected');
-	// 	var selected = $(this).attr('value');
-	// 	if(selected == 'proximo') {
-	// 		$('.curso-control div.radio.showed').hide().removeClass('showed').prop('checked',false);
-	// 		$('.curso-control div.radio[data-target~="proximo"]').fadeIn().addClass('showed');
-	// 	} else {
-	// 		$('.curso-control div.radio.showed').hide().removeClass('showed').prop('checked', false);
-	// 		$('.curso-control div.radio[data-target~="actual"]').fadeIn().addClass('showed');
-	// 	}
-	// });
-
 
 	$('div#success, div#error').modal('show');
 
