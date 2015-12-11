@@ -87,7 +87,7 @@ function fpost_consultas_mails($data) {
 		<p><strong>Nombre:</strong>' . $data['nombre_consultas']. '</p>
 		<p><strong>Mensaje:</strong></p>
 		<p>' . $data['mensaje_consultas'] . '</p>
-		<p><strong>Teléfono:</strong>' . $data['fono_consultas']. '</p>
+		<p><strong>Teléfono:</strong> +56 9 ' . $data['fono_consultas']. '</p>
 		<p><strong>Email:</strong>' . $data['email_consultas']. '</p>';
 
 	add_filter('wp_mail_content_type', 'fpost_content_type_html');
