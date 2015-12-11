@@ -340,7 +340,7 @@ function fpost_cursequi($curso, $otro = NULL) {
 			$lcurso = 'Jardín';
 		break;
 		case('otro'):
-			$lcurso = $otro;
+			$lcurso = $data['otrocurso'];
 		default:
 			$lcurso = $curso;
 		break;	
