@@ -33,7 +33,7 @@ define( 'FPOST_FONO', '+56 2 236 453 00');
 //Cambia los mails según.
 if(get_bloginfo('url') == 'http://admision.ciademariaseminario.cl'):
 	// Mails reales: contacto@apie.cl, admision@ciademariaseminario.cl, abalospia@gmail.com, pablobravo@apie.cl
-	define( 'FPOST_TOMAILS', 'pablo@apie.cl, jorge@apie.cl');
+	define( 'FPOST_TOMAILS', 'pablo@apie.cl, jorge@apie.cl, jorgeloayza@gmail.com');
 else:
 	define( 'FPOST_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
 endif;
