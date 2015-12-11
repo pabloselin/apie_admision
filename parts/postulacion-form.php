@@ -158,7 +158,8 @@ if($_POST && $nonce){
 			<div class="form-group">
 				<label for="curso_postula" class="control-label">Curso al que postula</label>
 				<div>
-					<select name="curso_postula" id="curso_postula" class="form-control">
+					<select name="curso_postula" id="curso_postula" class="form-control" required>
+						<option value="">Escoja un curso</option>
 						<option value="pk">PreKinder</option>
 						<option value="k">Kinder</option>
 						<option value="1">1º Básico</option>
@@ -178,6 +179,16 @@ if($_POST && $nonce){
 
 				<div class="errorPlacement"></div>
 			</div>
+
+			<div class="control-group otrocurso-control">
+					<label class="control-label" for="otrocurso">¿Cuál?</label>
+					<div class="controls">
+						<input type="text" name="otrocurso" value="" placeholder="Curso" required>
+						<span class="help-block">
+							Indique a qué otro curso le interesa postular
+						</span>
+					</div>
+				</div>
 			<!--formel-->
 			<h2>Datos apoderado/a</h2>
 			<div class="form-group">

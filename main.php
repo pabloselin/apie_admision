@@ -86,9 +86,18 @@ register_activation_hook( __FILE__, 'fpost_table' );
 function fpost_getdata() {
 	global $wpdb;
 	global $tbname;
-	$inscritos = $wpdb->get_results("SELECT * FROM $tbname WHERE type LIKE postulacion");
+	$inscritos = $wpdb->get_results("SELECT * FROM $tbname WHERE type LIKE 'postulacion'");
 	return $inscritos;
 } 
+
+//Llamar inscritos y devolver un array
+function fpost_getconsultas() {
+	global $wpdb;
+	global $tbname;
+	$consultas = $wpdb->get_results("SELECT * FROM $tbname WHERE type LIKE 'consulta'");
+	return $consultas;
+} 
+
 
 //Html del formulario
 function fpost_form() {
@@ -284,27 +293,47 @@ function fpost_validate() {
 function fpost_cursequi($curso, $otro = NULL) {
 	//transforma los valores de curso en valores legibles
 	switch($curso) {
-		case('pre'):
+		case('pk'):
 			$lcurso = 'Pre-Kínder';
 		break;
-		case('kin'):
+		case('k'):
 			$lcurso = 'Kínder';
 		break;
-		case('1bas'):
+		case('1'):
 			$lcurso = '1º Básico';
 		break;
-		case('2bas'):
+		case('2'):
 			$lcurso = '2º Básico';
 		break;
-		case('3bas'):
+		case('3'):
 			$lcurso = '3º Básico';
 		break;
-		case('otros'):
-			$lcurso = $otro;
+		case('4'):
+			$lcurso = '4º Básico';
+		break;
+		case('5'):
+			$lcurso = '5º Básico';
+		break;
+		case('6'):
+			$lcurso = '6º Básico';
+		break;
+		case('7'):
+			$lcurso = '7º Básico';
+		break;
+		case('8'):
+			$lcurso = '8º Básico';
+		break;
+		case('9'):
+			$lcurso = 'Iº Medio';
+		break;
+		case('10'):
+			$lcurso = 'IIº Medio';
 		break;
 		case('jardin'):
 			$lcurso = 'Jardín';
 		break;
+		case('otro'):
+			$lcurso = $otro;
 		default:
 			$lcurso = $curso;
 		break;	
@@ -319,25 +348,6 @@ function fpost_content_type_html() {
 
 function fpost_content_type_plain() {
 	return 'text/plain';
-}
-
-function fpost_mails_clone($data) {
-	
-	$admins = FPOST_TOMAILS;
-	$headers = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
-	
-
-	add_filter('wp_mail_content_type', 'fpost_content_type_html');
-
-	$mailadmin = wp_mail( $admins, 'Prepostulación CSD', $mensajeadmin, $headers);
-
-	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
-
-	if($mailapoderado && $mailadmin) {
-		echo '<div class="alert alert-success"><i class="fa fa-check"></i> <i class="fa fa-envelope"></i></div>';
-	} else {
-		echo '<div class="alert alert-error"><i class="fa fa-times"></i> <i class="fa fa-envelope"></i></div>';
-	}
 }
 
 //Envío de correos

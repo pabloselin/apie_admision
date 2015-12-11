@@ -3,7 +3,8 @@
 add_action('admin_menu', 'fpost_admin');
 
 function fpost_admin() {
-	add_options_page( __( 'Postulaciones', 'spm' ), __( 'Postulaciones enviadas', 'spm' ), 'manage_options', 'prepost_admision', 'fpost_doadmin' );
+	add_options_page( __( 'Postulaciones', 'spm' ), __( 'Postulaciones enviadas', 'spm' ), 'manage_options', 'fpost_postulaciones', 'fpost_doadmin' );
+	add_options_page( __( 'Postulaciones', 'spm' ), __( 'Consultas enviadas', 'spm' ), 'manage_options', 'fpost_consultas', 'fpost_doadminconsultas' );
 }
 
 function fpost_doadmin() {
@@ -37,10 +38,14 @@ function fpost_doadmin() {
 			</thead>
 		
 		<?php
-			foreach($inscritos as $inscrito) {
+			foreach($inscritos as $key=>$inscrito) {
 				$datos = unserialize($inscrito->data);
 				?>
-				<tr>
+				<?php if($key %2 == 0):?>
+					<tr class="alternate">
+				<?php else:?>
+					<tr>
+				<?php endif;?>
 					<td><?php echo $inscrito->id;?></td>
 					<td><?php echo mysql2date( 'l, j \d\e F, Y ', $inscrito->time );?></td>
 					<td><?php echo mysql2date( 'H:i,s', $inscrito->time );?></td>
@@ -60,7 +65,7 @@ function fpost_doadmin() {
 	
 					</td>
 
-					<td><?php echo $datos['curso_postula'];?></td>
+					<td><?php echo fpost_cursequi($datos['curso_postula']);?></td>
 					
 					<td><?php echo $datos['postulacion_mensaje'];?></td>
 					<td><?php echo $datos['xtra_apoderado'];?></td>
@@ -69,8 +74,59 @@ function fpost_doadmin() {
 		?>
 		</table>
 		<?php 
-		$csv = fpost_csv();
-		echo '<p><a class="button" href="'.$csv.'"> Descargar archivo CSV con inscripciones </a> </p>';
+		// Desactivado por mientras 
+		//$csv = fpost_csv();
+		//echo '<p><a class="button" href="'.$csv.'"> Descargar archivo CSV con inscripciones </a> </p>';
+		?>
+	</div>
+	<?php
+}
+
+function fpost_doadminconsultas() {
+	if (!current_user_can('manage_options'))  {
+		wp_die( __('No tienes permisos suficientes para ver esta página.') );
+	}
+	global $wpdb;
+	//Llamando a los inscritos
+	$consultas = fpost_getconsultas();
+	?>
+	<div class="wrap">
+		<h2>Consultas</h2>
+		<table class="widefat wp-list-table fspmlist">
+			<thead>
+				<th>ID</th>
+				<th>Fecha Insc.</th>
+				<th>Hora</th>
+				<th>Nombre</th>
+				<th>E-Mail</th>
+				<th>Teléfono</th>
+				<th>Mensaje</th>
+			</thead>
+		
+		<?php
+			foreach($consultas as $key=>$consulta) {
+				$datos = unserialize($consulta->data);
+				?>
+				<?php if($key %2 == 0):?>
+					<tr class="alternate">
+				<?php else:?>
+					<tr>
+				<?php endif;?>
+					<td><?php echo $consulta->id;?></td>
+					<td><?php echo mysql2date( 'l, j \d\e F, Y ', $consulta->time );?></td>
+					<td><?php echo mysql2date( 'H:i,s', $consulta->time );?></td>
+					<td><?php echo $datos['nombre_consultas'];?></td>
+					<td><?php echo $datos['email_consultas'];?></td>
+					<td><?php echo $datos['fono_consultas'];?></td>
+					<td><?php echo $datos['mensaje_consultas'];?></td>
+				</tr>
+			<?php }
+		?>
+		</table>
+		<?php 
+		// Desactivado por mientras 
+		//$csv = fpost_csv();
+		//echo '<p><a class="button" href="'.$csv.'"> Descargar archivo CSV con inscripciones </a> </p>';
 		?>
 	</div>
 	<?php

@@ -1,3 +1,41 @@
+//Localización mensajes
+(function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+		define( ["jquery", "../jquery.validate"], factory );
+	} else {
+		factory( jQuery );
+	}
+}(function( $ ) {
+
+/*
+ * Translated default messages for the jQuery validation plugin.
+ * Locale: ES (Spanish; Español)
+ */
+$.extend($.validator.messages, {
+	required: "Este campo es obligatorio.",
+	remote: "Por favor, rellena este campo.",
+	email: "Por favor, escribe una dirección de correo válida.",
+	url: "Por favor, escribe una URL válida.",
+	date: "Por favor, escribe una fecha válida.",
+	dateISO: "Por favor, escribe una fecha (ISO) válida.",
+	number: "Por favor, escribe un número válido.",
+	digits: "Por favor, escribe sólo dígitos.",
+	creditcard: "Por favor, escribe un número de tarjeta válido.",
+	equalTo: "Por favor, escribe el mismo valor de nuevo.",
+	extension: "Por favor, escribe un valor con una extensión aceptada.",
+	maxlength: $.validator.format("Por favor, no escribas más de {0} caracteres."),
+	minlength: $.validator.format("Por favor, no escribas menos de {0} caracteres."),
+	rangelength: $.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
+	range: $.validator.format("Por favor, escribe un valor entre {0} y {1}."),
+	max: $.validator.format("Por favor, escribe un valor menor o igual a {0}."),
+	min: $.validator.format("Por favor, escribe un valor mayor o igual a {0}."),
+	nifES: "Por favor, escribe un NIF válido.",
+	nieES: "Por favor, escribe un NIE válido.",
+	cifES: "Por favor, escribe un CIF válido."
+});
+
+}));
+
 //Simple Agent detector
 var isMobile = {
     Android: function() {
@@ -29,11 +67,16 @@ $.validator.addMethod('rut', function(value, element) {
 
 
 $(document).ready(function() {
+	var otrocurso = $('.otrocurso-control');
 	var hasJs = $('html').hasClass('js');
+
 	if(hasJs) {
 		$('#formulario-postulacion .submitplaceholder').empty().append('<p class="aligncenter"><input type="submit" name="Postular" value="Postular" class="btn btn-danger btn-lg"></p>');
 		$('#formulario_consultas .consultas-submitplaceholder').empty().append('<p class="aligncenter"><input type="submit" name="Enviar" value="Enviar" class="btn btn-danger btn-lg"></p>');
 	}
+
+	//para opción otro curso
+	otrocurso.hide();
 
 	$('#formulario-postulacion').validate({
 		debug: false,
@@ -138,13 +181,9 @@ $(document).ready(function() {
 
 	$('.curso-post input:checked, .year-post input:checked').addClass('selected');
 
-	var otrocurso = $('.otrocurso-control');
-	var cursocontrol = $('.curso-control div.radio, .curso-control .help-block');
 
-	$('.curso-post input[type="radio"]').on('click', function(event) {
-		$('.curso-post div.radio').removeClass('selected');
-		$(this).parent('label').parent('div.radio').addClass('selected');
-		if($(this).attr('value') == 'otros') {
+	$('select#curso_postula').on('change', function(event) {
+		if($('option:selected', this).attr('value') == 'otro') {
 			otrocurso.show().addClass('visible');
 		} else {
 			if(otrocurso.hasClass('visible')) {
@@ -154,16 +193,26 @@ $(document).ready(function() {
 	});
 
 	$('div#success, div#error').modal('show');
-	$('div#modal-alert').modal('show');
-
-	//para opción otro curso
-	otrocurso.hide();
-	//para opcion año
-	//cursocontrol.hide();
+	$('div#modal-alert').modal('show');	
 	
-
 
 	if(!isMobile.any()) {
 		$('.sharing_toolbox a.wa').hide();
 	};
+
+	var siteurl = 'http://web.dev/cms-admision';
+
+	//console.log($('body[data-url="' + siteurl + '"]'));
+
+	//Tracking analytics
+	$('body[data-url="'+ siteurl + '"] div.hl__botones-recordatorio btn.formulario, body[data-url="'+ siteurl + '"] div.hl__accion a, body[data-url="'+ siteurl + '"] div.hl__como-postular a.link-formulario-en-paso').on('click', function(event) {
+			var datalabel = $(this).data('label');
+
+			//Se gatilla el click solo si está en url oficial
+			if(siteurl == 'http://admision.ciademariaseminario.cl') {
+				ga('send', 'event', 'Links "Cómo postular"', 'click', datalabel)
+			} else {
+				console.log($(this).data('label'));
+			}
+	});
 });

@@ -69,8 +69,14 @@ function fpost_consultas_mails($data) {
 	$mailapoderado = $data['email_consultas'];
 	$mailadmins = FPOST_TOMAILS;
 
-	$mensajeapoderado = 'Su consulta se envió exitosamente.';
-	$mensajeadmin = 'Alguien envió un mail de consulta en ' . FPOST_NCOLEGIO;
+	$mensajeapoderado = 'Su consulta se envió exitosamente. Muchas gracias por contactarse con nosotros.';
+	$mensajeadmin = '
+		<p>Alguien envió un mail de consulta en ' . FPOST_NCOLEGIO . '</p>
+		<p><strong>Nombre:</strong>' . $data['nombre_consultas']. '</p>
+		<p><strong>Mensaje:</strong></p>
+		<p>' . $data['mensaje_consultas'] . '</p>
+		<p><strong>Teléfono:</strong>' . $data['fono_consultas']. '</p>
+		<p><strong>Email:</strong>' . $data['email_consultas']. '</p>';
 
 	add_filter('wp_mail_content_type', 'fpost_content_type_html');
 
