@@ -28,9 +28,15 @@ define( 'FPOST_CSVURL', WP_CONTENT_URL . '/postulaciones/');
 //Variables de mails y nombres
 define( 'FPOST_NCOLEGIO', 'Compañía de María Seminario');
 define( 'FPOST_FROMMAIL', 'admision@ciademariaseminario.cl');
-//define( 'FPOST_TOMAILS', 'contacto@apie.cl, admision@ciademariaseminario.cl');
-define( 'FPOST_FONO', '+56 2 265 278 73');
-define( 'FPOST_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
+define( 'FPOST_FONO', '+56 2 236 453 00');
+
+//Cambia los mails según.
+if(get_bloginfo('url') == 'http://admision.ciademariaseminario.cl'):
+	define( 'FPOST_TOMAILS', 'contacto@apie.cl, admision@ciademariaseminario.cl, abalospia@gmail.com, pablobravo@apie.cl');
+else:
+	define( 'FPOST_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
+endif;
+
 define( 'FPOST_LOGO', 'http://cms-dev.apie.cl/wp-content/themes/cms-admision/img/logo-cms-3.png');
 
 if(!is_dir(FPOST_CSVPATH)){
@@ -355,7 +361,7 @@ function fpost_mails($data) {
 	$mensajeapoderado = '<style>table p {line-height:1,4em;}</style>
 		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;border:1px solid #ccc;">
 		<tr>
-			<td style="background-color:#555;color:white;">
+			<td style="background-color:white;color:#333;">
 				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:serif;font-size:24px;font-weight:normal;text-align:center;">'.FPOST_NCOLEGIO.'</h1></p>
 				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de pre-postulación para el año '.fpost_parseyear($data['postulacion_year']).'</h3>
 			</td> 
@@ -438,7 +444,7 @@ function fpost_styleandscripts() {
 		wp_register_style( 'postulacion', plugins_url('/css/postulacion.css', __FILE__), 'screen' );
 		wp_register_script( 'modernizr', plugins_url('/lib/modernizr/modernizr.js', __FILE__ ), array(), '3.2.0', false);
 		wp_register_script( 'funciones-postulacion', plugins_url('/js/funciones-postulacion.js', __FILE__), array('jqvalidate'), '1.0', false);
-		wp_register_script( 'jquery-rut', plugins_url('/lib/jquery.rut/jquery.rut.min.js', __FILE__ ), array(), '0.5', false);
+		wp_register_script( 'jquery-rut', plugins_url('/js/jquery.rut.min.js', __FILE__ ), array(), '0.5', false);
 		wp_register_script( 'jqvalidate', plugins_url('/lib/jquery-validation/dist/jquery.validate.min.js', __FILE__), array('jquery-rut'), '1.14.0', false);
 		
 		wp_enqueue_script( 'jquery-rut' );
