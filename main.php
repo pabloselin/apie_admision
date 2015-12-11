@@ -381,15 +381,19 @@ function fpost_mails($data) {
 							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Datos del alumno</h4>
 							<p><strong>Nombre Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . '</p>
 							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_dia_nacimiento'] . ' de ' . $data['alumno_mes_nacimiento'] . ' de ' . $data['alumno_an_nacimiento'] . '</p>
+							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
 							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula'], $data['otrocurso']) .'</p>
 							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
 							<p>&nbsp;</p>
 							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Datos del apoderado</h4>
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] .'</p>
+							<p><strong>RUT apoderado: </strong>' . $data['rut_apoderado'] .'</p>
 							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono_apoderado'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
 							<p>&nbsp;</p>
+
 							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Otros datos</h4>
+
 							<p><strong>Consulta adicional: </strong>' .$data['postulacion_mensaje'].'</p>
 							<p><strong>Como se enteró del colegio: </strong>' .$data['xtra_apoderado'].'</p>
 							<p><strong>Fecha y hora de envío: </strong>' . mysql2date( 'j F, G:i', $data['timestamp'] ) .'</p>
@@ -425,14 +429,23 @@ function fpost_mails($data) {
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] . '</p>
 							<p><strong>Teléfono Apoderado(a): </strong>+56 9 ' . $data['fono_apoderado'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
-							
+							<p><strong>RUT apoderado: </strong>' . $data['rut_apoderado'] .'</p>
+
 							<h4>Datos del Alumno</h4>
 							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula'], $data['otrocurso']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. '</p>
+							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
 							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_dia_nacimiento'] . ' de ' . $data['alumno_mes_nacimiento'] . ' de ' . $data['alumno_an_nacimiento'] . '</p>
 							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
 							<p><strong>Consulta adicional: </strong>' .$data['postulacion_mensaje'].'</p>
 							<p><strong>Como se enteró del colegio: </strong>' .$data['xtra_apoderado'].'</p>
+
+							<h4>Datos adicionales</h4>
+
+							<p><strong>Consulta adicional: </strong>' .$data['postulacion_mensaje'].'</p>
+							<p><strong>Como se enteró del colegio: </strong>' .$data['xtra_apoderado'].'</p>
+							<p><strong>Fecha y hora de envío: </strong>' . mysql2date( 'j F, G:i', $data['timestamp'] ) .'</p>
+							<p><strong>Número identificador (ID): </strong>' .$data['ID'].'</p>
 						</td>
 					</tr>	
 					</table>
