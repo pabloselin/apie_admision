@@ -35,23 +35,73 @@ function fpost_consultasvalidate() {
 
 function fpost_putserialdata_consultas($data) {
 	global $wpdb, $tbname;
+	$s_data = serialize($data);
 	$insert = $wpdb->insert(
 		$tbname,
 		array(
 			'time' => current_time('mysql'),
 			'type' => 'consulta',
-			'data' => serialize($data)
+			'data' => $s_data
 			)
 		);
 	$lastid = $wpdb->insert_id;
-	if($lastid){
-		$mensaje = '<div id="success">Gracias por enviar su mensaje, nos pondremos en contacto con usted a la brevedad.</div>';
+
+	//Mando el mail de consultas
+	$mandamail = fpost_consultas_mails($s_data);
+
+	if($lastid && $mandamail){
+		$tmess = 'Mensaje enviado exitosamente';
+		$mensaje = '<p class="text-center text-success"><i class="fa fa-4x fa-check"></i></p><p class="text-center text-success">Gracias por enviar su mensaje, nos pondremos en contacto con usted a la brevedad.</p>';
+		$inlinemess = '<div class="alert alert-success">
+						<p>Gracias por enviar su mensaje, nos pondremos en contacto con usted a la brevedad</p>
+					</div>';
 	} else {
-		$mensaje = '<div id="error">Hubo un error enviando el mensaje.</div>';
+		$tmess = 'Error en el envío';
+		$mensaje = '<p class="text-danger text-center"><i class="fa fa-4x fa-times"></i></p><p class="text-danger text-center">Hubo un error enviando el mensaje.</p>';
+		$inlinemess = '<div class="alert alert-danger">
+						<p>Hubo un error enviando su mensaje, por favor escriba directamente a admision@ciademariaseminario.cl.</p>
+					</div>';
 	}
-	return $mensaje;
+
+	$modalwrapper = '<div id="modal-alert" class="modal fade" tabindex="-1" role="dialog">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+					        <h4 class="modal-title">' . $tmess .'</h4>
+					      </div>
+					      <div class="modal-body">
+					        ' . $mensaje . '
+					      </div>
+					    </div><!-- /.modal-content -->
+					  </div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+					'. $inlinemess .'
+					';
+	return $modalwrapper;
 }
 
-function fpost_consultas_mails($data) {
+function fpost_consultas_mails($serialized_data) {
 
+	var_dump($s_data['email_consultas']);
+	$headers = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
+
+	$mailapoderado = $serialized_data['email_consultas'];
+	$mailadmins = FPOST_TOMAILS;
+
+	$mensajeapoderado = 'Su consulta se envió exitosamente.';
+	$mensajeadmin = 'Alguien envió un mail de consulta en ' . FPOST_NCOLEGIO;
+
+	add_filter('wp_mail_content_type', 'fpost_content_type_html');
+
+	$mensajeapoderado = wp_mail( $mailapoderado, 'Consulta en ' . FPOST_NCOLEGIO, $mensajeapoderado, $headers);
+	$mensajeadmin = wp_mail( $mailadmins, 'Consulta en '. FPOST_NCOLEGIO , $mensajeadmin, $headers);
+
+	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
+
+	if($mensajepoderado && $mensajeadmin) {
+		return true;
+	} else {
+		return false;
+	}
 }

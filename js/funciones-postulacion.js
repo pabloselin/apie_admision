@@ -154,6 +154,7 @@ $(document).ready(function() {
 	});
 
 	$('div#success, div#error').modal('show');
+	$('div#modal-alert').modal('show');
 
 	//para opción otro curso
 	otrocurso.hide();
