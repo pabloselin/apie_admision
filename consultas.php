@@ -63,7 +63,7 @@ function fpost_consultas_mails($data) {
 
 	$headers[] = 'From: '.FPOST_NCOLEGIO.' <'.FPOST_FROMMAIL.'>';
 	//$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <wordpress@admision.ciademariaseminario.cl>';
-	$headers[] = 'Reply-To: ' . $data['nombre_consultas'] . ' <' . $data['email_consultas'] . '>';
+	$headers[] = 'Reply-To:' . $data['nombre_consultas'] . '<' . $data['email_consultas'] . '>';
 
 	$headersapoderado[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
 
