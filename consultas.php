@@ -47,7 +47,7 @@ function fpost_putserialdata_consultas($data) {
 	$lastid = $wpdb->insert_id;
 
 	//Mando el mail de consultas
-	$mandamail = fpost_consultas_mails($s_data);
+	$mandamail = fpost_consultas_mails($data);
 
 	if($lastid && $mandamail){
 		$tmess = 'Mensaje enviado exitosamente';
@@ -81,12 +81,12 @@ function fpost_putserialdata_consultas($data) {
 	return $modalwrapper;
 }
 
-function fpost_consultas_mails($serialized_data) {
+function fpost_consultas_mails($data) {
 
-	var_dump($serialized_data['email_consultas']);
+	var_dump($data['email_consultas']);
 	$headers = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
 
-	$mailapoderado = $serialized_data['email_consultas'];
+	$mailapoderado = $data['email_consultas'];
 	$mailadmins = FPOST_TOMAILS;
 
 	$mensajeapoderado = 'Su consulta se envió exitosamente.';
