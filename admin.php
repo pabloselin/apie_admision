@@ -133,11 +133,7 @@ function fpost_doadminconsultas() {
 }
 
 function fpost_parseyear($year) {
-	if(!$year || $year == 'actual') {
-		return '2015';
-	} else {
-		return '2016';
-	}
+	return $year;
 }
 
 function fpost_csv() {
