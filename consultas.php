@@ -47,9 +47,40 @@ function fpost_putserialdata_consultas($data) {
 	$lastid = $wpdb->insert_id;
 
 	//Mando el mail de consultas
-	$mandamail = fpost_consultas_mails($data);
+	
+	
+	if($lastid) {
+		$output = fpost_consultas_mails($data);
+	} else {
+		$output = 'Error en el registro';
+	}
 
-	if($lastid && $mandamail){
+	
+	return $output;
+}
+
+function fpost_consultas_mails($data) {
+
+	$headers[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
+
+	$headersapoderado[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
+	$headersapoderado[] = 'Reply-to: "' . $data['nombre_consultas'] . '<' . $data['email_consultas'] . '>';
+
+	$mailapoderado = $data['email_consultas'];
+	$mailadmins = FPOST_TOMAILS;
+
+	$mensajeapoderado = 'Su consulta se envió exitosamente.';
+	$mensajeadmin = 'Alguien envió un mail de consulta en ' . FPOST_NCOLEGIO;
+
+	add_filter('wp_mail_content_type', 'fpost_content_type_html');
+
+	$enviadorapoderado = wp_mail( $mailapoderado, 'Consulta en ' . FPOST_NCOLEGIO, $mensajeapoderado, $headersapoderado);
+
+	$enviadoradmins = wp_mail( $mailadmins, 'Consulta en '. FPOST_NCOLEGIO , $mensajeadmin, $headers);
+
+	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
+
+	if($enviadorapoderado && $enviadoradmins) {
 		$tmess = 'Mensaje enviado exitosamente';
 		$mensaje = '<p class="text-center text-success"><i class="fa fa-4x fa-check"></i></p><p class="text-center text-success">Gracias por enviar su mensaje, nos pondremos en contacto con usted a la brevedad.</p>';
 		$inlinemess = '<div class="alert alert-success">
@@ -63,7 +94,7 @@ function fpost_putserialdata_consultas($data) {
 					</div>';
 	}
 
-	$modalwrapper = '<div id="modal-alert" class="modal fade" tabindex="-1" role="dialog">
+	$output = '<div id="modal-alert" class="modal fade" tabindex="-1" role="dialog">
 					  <div class="modal-dialog">
 					    <div class="modal-content">
 					      <div class="modal-header">
@@ -78,30 +109,6 @@ function fpost_putserialdata_consultas($data) {
 					</div><!-- /.modal -->
 					'. $inlinemess .'
 					';
-	return $modalwrapper;
-}
 
-function fpost_consultas_mails($data) {
-
-	var_dump($data['email_consultas']);
-	$headers = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
-
-	$mailapoderado = $data['email_consultas'];
-	$mailadmins = FPOST_TOMAILS;
-
-	$mensajeapoderado = 'Su consulta se envió exitosamente.';
-	$mensajeadmin = 'Alguien envió un mail de consulta en ' . FPOST_NCOLEGIO;
-
-	add_filter('wp_mail_content_type', 'fpost_content_type_html');
-
-	$mensajeapoderado = wp_mail( $mailapoderado, 'Consulta en ' . FPOST_NCOLEGIO, $mensajeapoderado, $headers);
-	$mensajeadmin = wp_mail( $mailadmins, 'Consulta en '. FPOST_NCOLEGIO , $mensajeadmin, $headers);
-
-	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
-
-	if($mensajepoderado && $mensajeadmin) {
-		return true;
-	} else {
-		return false;
-	}
+	return $output;
 }
