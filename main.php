@@ -451,7 +451,9 @@ function fpost_mails($data) {
 					</table>
 					';
 	$admins = FPOST_TOMAILS;
-	$headers = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
+	
+	$headers[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
+	$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <wordpress@admision.ciademariaseminario.cl>';
 	
 	add_filter('wp_mail_content_type', 'fpost_content_type_html');
 
