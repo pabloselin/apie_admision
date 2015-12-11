@@ -117,10 +117,11 @@ function fpost_form() {
 function fpost_putserialdata($data) {
 	global $wpdb;
 	global $tbname;
+	$timestamp = current_time('mysql');
 	$insert = $wpdb->insert(
 						$tbname,
 						array(
-							'time'   => current_time('mysql'),
+							'time'   => $timestamp,
 							'type' => 'postulacion',
 							'data' => serialize($data)
 							)
@@ -128,8 +129,8 @@ function fpost_putserialdata($data) {
 	$lastid = $wpdb->insert_id;
 	$okmess = '<div class="alert alert-success">
 						<p style="text-align:center;font-size:32px;"><span class="glyphicon glyphicon-ok-sign"></span></p>
-						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Pre-postulación enviada con éxito</h4>
-						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>
+						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
+						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email_apoderado'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>
 						</div>';
 	$errmess = '<div class="alert alert-error"><p><span class="glyphicon glyphicon-remove-sign"></span></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en admision@ciademariaseminario.cl.</p></div>';
 	if($lastid) {
@@ -162,6 +163,8 @@ function fpost_putserialdata($data) {
 			</div>';
 	}
 	//Enviar mensaje y correr funciones
+	$data['ID'] = $lastid;
+	$data['timestamp'] = $timestamp;
 	$message .= fpost_mails($data);
 
 	return $message;
@@ -189,7 +192,7 @@ function fpost_putdata($data) {
 	$lastid = $wpdb->insert_id;
 	$okmess = '<div class="alert alert-success">
 						<p style="text-align:center;font-size:32px;"><span class="glyphicon glyphicon-ok-sign"></span></p>
-						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Pre-postulación enviada con éxito</h4>
+						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
 						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>
 						</div>';
 	$errmess = '<div class="alert alert-error"><p><span class="glyphicon glyphicon-remove-sign"></span></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en admision@ciademariaseminario.cl.</p></div>';
@@ -302,10 +305,10 @@ function fpost_cursequi($curso, $otro = NULL) {
 	//transforma los valores de curso en valores legibles
 	switch($curso) {
 		case('pk'):
-			$lcurso = 'Pre-Kínder';
+			$lcurso = 'Pre-Kinder';
 		break;
 		case('k'):
-			$lcurso = 'Kínder';
+			$lcurso = 'Kinder';
 		break;
 		case('1'):
 			$lcurso = '1º Básico';
@@ -365,7 +368,7 @@ function fpost_mails($data) {
 		<tr>
 			<td style="background-color:white;color:#333;">
 				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:serif;font-size:24px;font-weight:normal;text-align:center;">'.FPOST_NCOLEGIO.'</h1></p>
-				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de pre-postulación para el año '.fpost_parseyear($data['postulacion_year']).'</h3>
+				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de postulación para el año '.fpost_parseyear($data['postulacion_year']).'</h3>
 			</td> 
 			<tr>
 				<td>
@@ -375,16 +378,23 @@ function fpost_mails($data) {
 			</tr>
 			<tr>
 						<td style="border-width:1px 0 1px 0;border-style:dotted;border-color:#ccc;background-color:white;">
-							<h4 style="text-align:center;font-size:18px;font-weight:normal;">Datos</h4>
-							<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . '</p>
+							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Datos del alumno</h4>
+							<p><strong>Nombre Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . '</p>
+							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_dia_nacimiento'] . ' de ' . $data['alumno_mes_nacimiento'] . ' de ' . $data['alumno_an_nacimiento'] . '</p>
 							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula'], $data['otrocurso']) .'</p>
 							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
 							<p>&nbsp;</p>
-							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . '</p>
+							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Datos del apoderado</h4>
+							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] .'</p>
 							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono_apoderado'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
 							<p>&nbsp;</p>
-							<p><strong>Consulta adicional: </strong>' .$data['xtra_apoderado'].'</p>
+							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Otros datos</h4>
+							<p><strong>Consulta adicional: </strong>' .$data['postulacion_mensaje'].'</p>
+							<p><strong>Como se enteró del colegio: </strong>' .$data['xtra_apoderado'].'</p>
+							<p><strong>Fecha y hora de envío: </strong>' . mysql2date( 'j F, G:i', $data['timestamp'] ) .'</p>
+							<p><strong>Número identificador (ID): </strong>' .$data['ID'].'</p>
+
 						</td>
 					</tr>';
 
@@ -421,7 +431,8 @@ function fpost_mails($data) {
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. '</p>
 							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_dia_nacimiento'] . ' de ' . $data['alumno_mes_nacimiento'] . ' de ' . $data['alumno_an_nacimiento'] . '</p>
 							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
-							<p><strong>Consulta adicional: </strong>' .$data['xtra_apoderado'].'</p>
+							<p><strong>Consulta adicional: </strong>' .$data['postulacion_mensaje'].'</p>
+							<p><strong>Como se enteró del colegio: </strong>' .$data['xtra_apoderado'].'</p>
 						</td>
 					</tr>	
 					</table>
