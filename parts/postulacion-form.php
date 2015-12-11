@@ -8,7 +8,7 @@ if($_POST && $nonce){
 	echo fpost_validate();
 	} else { ?>
 
-<form class="form" id="formulario-postulacion" action="<?php bloginfo('url');?>/formulario-postulacion" method="POST" enctype="multipart/form-data" >
+<form class="form" id="formulario-postulacion" action="" method="POST" enctype="multipart/form-data" >
 			<!--nonce-->
 			<?php echo wp_nonce_field('fpost_prepost', 'postulacion_nonce');?>
 			<input type="hidden" name="" value="fpost_prepost" placeholder="">

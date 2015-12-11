@@ -109,6 +109,10 @@ $(document).ready(function() {
 				required: true,
 				rut: true
 			},
+			rut_apoderado: {
+				required: true,
+				rut: true
+			},
 			fono_apoderado: {
 				required: true,
 				minlength: 8,
