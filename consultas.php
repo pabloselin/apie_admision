@@ -83,7 +83,7 @@ function fpost_putserialdata_consultas($data) {
 
 function fpost_consultas_mails($serialized_data) {
 
-	var_dump($s_data['email_consultas']);
+	var_dump($serialized_data['email_consultas']);
 	$headers = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
 
 	$mailapoderado = $serialized_data['email_consultas'];
