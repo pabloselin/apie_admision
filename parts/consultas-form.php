@@ -29,14 +29,14 @@ if($_POST && $nonce) {
 					<div class="form-group">
 					<label for="fono_consultas">Teléfono</label>
 					<div class="input-group">
-							<div class="input-group-addon"><i class="fa fa-phone"></i> </div>
+							<div class="input-group-addon"><i class="fa fa-phone"></i> +56 9</div>
 							<input type="text" class="form-control" name="fono_consultas" placeholder="Teléfono">
 						</div>
-						<span class="help-block">Opcional, utilizar formato +56 9</span>
+						<span class="help-block">Opcional</span>
 					</div>
 					<div class="form-group">
-						<label for="mensaje_consultas">Mensaje</label>
-						<textarea name="mensaje_consultas" class="form-control" rows="3" required ></textarea>
+						<label for="mensaje_consultas">Tu consulta:</label>
+						<textarea name="mensaje_consultas" class="form-control" rows="6" required ></textarea>
 					</div>
 
 					<div class="consultas-submitplaceholder">

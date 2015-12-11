@@ -62,14 +62,18 @@ function fpost_putserialdata_consultas($data) {
 function fpost_consultas_mails($data) {
 
 	$headers[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
+	$headers[] = 'Reply-to: "' . $data['nombre_consultas'] . '<' . $data['email_consultas'] . '>';
 
 	$headersapoderado[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
-	$headersapoderado[] = 'Reply-to: "' . $data['nombre_consultas'] . '<' . $data['email_consultas'] . '>';
 
 	$mailapoderado = $data['email_consultas'];
 	$mailadmins = FPOST_TOMAILS;
 
-	$mensajeapoderado = 'Su consulta se envió exitosamente. Muchas gracias por contactarse con nosotros.';
+	$mensajeapoderado = '
+	<p style="text-align:center;"><img src="' . FPOST_LOGO. '" alt="' . FPOST_NCOLEGIO .'"></p>
+	<p>Hemos recibido tu consulta exitosamente.</p>
+	<p>Te responderemos muy pronto, apróximadamente en <strong>dos días hábiles</strong></p>
+	';
 	$mensajeadmin = '
 		<p>Alguien envió un mail de consulta en ' . FPOST_NCOLEGIO . '</p>
 		<p><strong>Nombre:</strong>' . $data['nombre_consultas']. '</p>
