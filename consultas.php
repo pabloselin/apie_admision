@@ -72,8 +72,15 @@ function fpost_consultas_mails($data) {
 
 	$mensajeapoderado = '
 	<p style="text-align:center;"><img src="' . FPOST_LOGO. '" alt="' . FPOST_NCOLEGIO .'"></p>
-	<p>Hemos recibido tu consulta exitosamente.</p>
-	<p>Te responderemos muy pronto, apróximadamente en <strong>dos días hábiles</strong></p>
+	<p>Estimado/a ' . $data['nombre_consultas'] .'</p>
+	<p>Gracias por enviarnos tu consulta a ' . FPOST_NCOLEGIO . '. Te contactaremos a la brevedad.</p>
+	<p>&nbsp;</p>
+	<p>Muchas gracias por su interés.<br>
+	Afectuosamente<br>
+	<strong>'.FPOST_NCOLEGIO.'</strong></p>
+	<p><strong>Correo: </strong> '.FPOST_FROMMAIL.' <br>
+	<strong>Teléfono: </strong> <a href="tel:'.FPOST_FONO.'">'.FPOST_FONO.'</a>  <br>
+	<strong>Web: </strong><a href="'.get_bloginfo('url').'">'.get_bloginfo('url').'</a></p>
 	';
 	$mensajeadmin = '
 		<p>Alguien envió un mail de consulta en ' . FPOST_NCOLEGIO . '</p>
@@ -93,9 +100,9 @@ function fpost_consultas_mails($data) {
 
 	if($enviadorapoderado && $enviadoradmins) {
 		$tmess = 'Mensaje enviado exitosamente';
-		$mensaje = '<p class="text-center text-success"><i class="fa fa-4x fa-check"></i></p><p class="text-center text-success">Gracias por enviar su mensaje, nos pondremos en contacto con usted a la brevedad.</p>';
+		$mensaje = '<p class="text-center text-success"><i class="fa fa-4x fa-check"></i></p><p class="text-center text-success">Gracias por enviarnos tu consulta. Te contactaremos a la brevedad</p>';
 		$inlinemess = '<div class="alert alert-success">
-						<p>Gracias por enviar su mensaje, nos pondremos en contacto con usted a la brevedad</p>
+						<p>Gracias por enviarnos tu consulta. Te contactaremos a la brevedad.</p>
 					</div>';
 	} else {
 		$tmess = 'Error en el envío';

@@ -370,6 +370,7 @@ function fpost_mails($data) {
 				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:serif;font-size:24px;font-weight:normal;text-align:center;">'.FPOST_NCOLEGIO.'</h1></p>
 				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de postulación para el año '.fpost_parseyear($data['postulacion_year']).'</h3>
 			</td> 
+		</tr>
 			<tr>
 				<td>
 					<p>Estimado/a <strong>'. $data['nombre'] .'</strong>, hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono o correo en <strong>2 días hábiles</strong> como máximo para continuar el proceso.</p>
@@ -416,13 +417,14 @@ function fpost_mails($data) {
 							</tr>
 						</table>';
 	$mensajeadmin = '
-					<table width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:#f0f0f0;border:1px solid #ccc;">
+					<table width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:white;border:1px solid #ccc;">
 					<tr>
-						<td>
-							<h3>Se ha enviado una postulación a ' . FPOST_NCOLEGIO . ' para el año '. $data['postulacion_year'] .'</h3>
-							<p></p>
-						</td>
+						<td style="background-color:white;color:#333;">
+							<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:serif;font-size:24px;font-weight:normal;text-align:center;">'.FPOST_NCOLEGIO.'</h1></p>
+							<h3 style="text-align:center;font-size:18px;font-weight:normal;">Se ha enviado una postulación a ' . FPOST_NCOLEGIO . ' para el año '. $data['postulacion_year'] .'</h3>
+						</td> 
 					</tr>
+					
 					<tr>
 						<td>
 							<h4>Datos</h4>
@@ -431,7 +433,13 @@ function fpost_mails($data) {
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
 							<p><strong>RUT apoderado: </strong>' . $data['rut_apoderado'] .'</p>
 
-							<h4>Datos del Alumno</h4>
+							
+						</td>
+
+					</tr>
+					<tr>
+						<td>
+						<h4>Datos del Alumno</h4>
 							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula'], $data['otrocurso']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. '</p>
 							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
@@ -440,7 +448,12 @@ function fpost_mails($data) {
 							<p><strong>Consulta adicional: </strong>' .$data['postulacion_mensaje'].'</p>
 							<p><strong>Como se enteró del colegio: </strong>' .$data['xtra_apoderado'].'</p>
 
-							<h4>Datos adicionales</h4>
+							
+						</td>
+					</tr>	
+					<tr>
+						<td>
+						<h4>Datos adicionales</h4>
 
 							<p><strong>Consulta adicional: </strong>' .$data['postulacion_mensaje'].'</p>
 							<p><strong>Como se enteró del colegio: </strong>' .$data['xtra_apoderado'].'</p>
