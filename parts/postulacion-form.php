@@ -170,7 +170,6 @@ if($_POST && $nonce){
 						<option value="6">6º Básico</option>
 						<option value="7">7º Básico</option>
 						<option value="8">8º Básico</option>
-						<option value="8">8º Básico</option>
 						<option value="9">Iº Medio</option>
 						<option value="10">IIº Medio</option>
 						<option value="otro">Otro</option>
@@ -202,9 +201,9 @@ if($_POST && $nonce){
 					<input type="text" name="apellido_apoderado" value="" placeholder="Apellidos apoderado/a" required class="form-control">
 				</div>
 
-				<label class="control-label" for="rut_alumno">RUT</label>
+				<label class="control-label" for="rut_apoderado">RUT</label>
 				<div class="">
-					<input type="text" name="rut_alumno" value="" placeholder="RUT" required class="form-control">
+					<input type="text" name="rut_apoderado" value="" placeholder="RUT" required class="form-control">
 				</div>
 				<label class="control-label " for="fono_apoderado">Celular apoderado(a)</label>
 				<div class="">

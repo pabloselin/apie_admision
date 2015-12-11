@@ -282,6 +282,7 @@ function fpost_validate() {
 		//Sanitizar apoderado
 
 		$data['nombre_apoderado'] = sanitize_text_field( $_POST['nombre_apoderado'] );
+		$data['rut_apoderado'] = sanitize_text_field( $_POST['rut_apoderado'] );
 		$data['apellido_apoderado'] = sanitize_text_field( $_POST['apellido_apoderado'] );
 		$data['fono_apoderado'] = sanitize_text_field( $_POST['fono_apoderado'] );
 		$data['email_apoderado'] = sanitize_text_field( $_POST['email_apoderado'] );
@@ -375,8 +376,8 @@ function fpost_mails($data) {
 						<td style="border-width:1px 0 1px 0;border-style:dotted;border-color:#ccc;background-color:white;">
 							<h4 style="text-align:center;font-size:18px;font-weight:normal;">Datos</h4>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. $data['apellido_alumno'] . '</p>
-							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso'], $data['otrocurso']) .'</p>
-							<p><strong>Año al que postula: </strong>' . fpost_parseyear($data['postulacion_year']) . '</p>
+							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula'], $data['otrocurso']) .'</p>
+							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
 							<p>&nbsp;</p>
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . '</p>
 							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono_apoderado'] . '</p>
@@ -415,10 +416,10 @@ function fpost_mails($data) {
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
 							
 							<h4>Datos del Alumno</h4>
-							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso']) .'</p>
+							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula'], $data['otrocurso']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. '</p>
 							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_dia_nacimiento'] . ' de ' . $data['alumno_mes_nacimiento'] . ' de ' . $data['alumno_an_nacimiento'] . '</p>
-							<p><strong>Año al que postula: </strong>' . fpost_parseyear($data['postulacion_year']) . '</p>
+							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
 							<p><strong>Consulta adicional: </strong>' .$data['xtra_apoderado'].'</p>
 						</td>
 					</tr>	
