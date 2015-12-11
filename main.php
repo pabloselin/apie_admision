@@ -375,7 +375,7 @@ function fpost_mails($data) {
 			<tr>
 						<td style="border-width:1px 0 1px 0;border-style:dotted;border-color:#ccc;background-color:white;">
 							<h4 style="text-align:center;font-size:18px;font-weight:normal;">Datos</h4>
-							<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. $data['apellido_alumno'] . '</p>
+							<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . '</p>
 							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula'], $data['otrocurso']) .'</p>
 							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
 							<p>&nbsp;</p>
@@ -411,7 +411,7 @@ function fpost_mails($data) {
 					<tr>
 						<td>
 							<h4>Datos</h4>
-							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . $data['apellido_apoderado'] . '</p>
+							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] . '</p>
 							<p><strong>Teléfono Apoderado(a): </strong>+56 9 ' . $data['fono_apoderado'] . '</p>
 							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
 							
