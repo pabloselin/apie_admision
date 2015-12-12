@@ -26,6 +26,13 @@ if($_POST && $nonce) {
 							<input type="email" class="form-control" name="email_consultas" required placeholder="Correo">
 						</div>
 					</div>
+					<div class="form-group hidden">
+					<label for="email_falso">No llenar</label>
+						<div class="input-group">
+							<div class="input-group-addon"><i class="fa fa-envelope"></i></div>
+							<input type="email" class="form-control" name="email_falso" placeholder="Correo">
+						</div>
+					</div>
 					<div class="form-group">
 					<label for="fono_consultas">Teléfono</label>
 					<div class="input-group">

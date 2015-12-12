@@ -21,8 +21,8 @@ function fpost_consultasvalidate() {
 	 * Validador de consulta
 	 */
 
-	if(!wp_verify_nonce( $_POST['consultas_nonce'], 'fpost_consultas' )) {
-		return 'nonce inválido';
+	if(!wp_verify_nonce( $_POST['consultas_nonce'], 'fpost_consultas' ) && $data['email_falso'] == '') {
+		return '<p>Nonce inválido o spam detectado</p>';
 	} else {
 		$data['nombre_consultas'] = sanitize_text_field( $_POST['nombre_consultas'] );
 		$data['fono_consultas'] = sanitize_text_field( $_POST['fono_consultas'] );
