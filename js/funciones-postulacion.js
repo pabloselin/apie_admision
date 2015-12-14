@@ -209,7 +209,7 @@ $(document).ready(function() {
 	//console.log($('body[data-url="' + siteurl + '"]'));
 
 	//Tracking analytics
-	$('body[data-url="'+ siteurl + '"] div.hl__botones-recordatorio btn.formulario, body[data-url="'+ siteurl + '"] div.hl__accion a, body[data-url="'+ siteurl + '"] div.hl__como-postular a.link-formulario-en-paso').on('click', function(event) {
+	$('body[data-url="'+ siteurl + '"] div.hl__botones-recordatorio btn.formulario, body[data-url="'+ siteurl + '"] div.hl__accion a, body[data-url="'+ siteurl + '"] div.hl__como-postular a.link-formulario-en-paso, body[data-url="' +  siteurl + '"] .single .btn-accion').on('click', function(event) {
 			var datalabel = $(this).data('label');
 
 			//Se gatilla el click solo si está en url oficial

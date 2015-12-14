@@ -445,10 +445,6 @@ function fpost_mails($data) {
 							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
 							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_dia_nacimiento'] . ' de ' . $data['alumno_mes_nacimiento'] . ' de ' . $data['alumno_an_nacimiento'] . '</p>
 							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
-							<p><strong>Consulta adicional: </strong>' .$data['postulacion_mensaje'].'</p>
-							<p><strong>Como se enteró del colegio: </strong>' .$data['xtra_apoderado'].'</p>
-
-							
 						</td>
 					</tr>	
 					<tr>
@@ -466,7 +462,7 @@ function fpost_mails($data) {
 	$admins = FPOST_TOMAILS;
 	
 	$headers[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
-	$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <wordpress@admision.ciademariaseminario.cl>';
+	$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <admision@ciademariaseminario.cl>';
 	
 	add_filter('wp_mail_content_type', 'fpost_content_type_html');
 
