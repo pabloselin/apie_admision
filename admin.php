@@ -75,8 +75,8 @@ function fpost_doadmin() {
 		</table>
 		<?php 
 		// Desactivado por mientras 
-		//$csv = fpost_csv();
-		//echo '<p><a class="button" href="'.$csv.'"> Descargar archivo CSV con inscripciones </a> </p>';
+		$csv = fpost_csv();
+		echo '<p><a class="button" href="'.$csv.'"> Descargar archivo CSV con inscripciones </a> </p>';
 		?>
 	</div>
 	<?php
@@ -143,30 +143,44 @@ function fpost_csv() {
 	$inscritos = fpost_getdata();
 
 	// output headers so that the file is downloaded rather than displayed
-		//header('Content-Type: text/csv; charset=utf-8');
-		//header('Content-Disposition: attachment; filename=data.csv');
+		header('Content-Type: octet/stream');
+		header('Content-Disposition: attachment; filename=data.csv');
+		header('Content-Length: ' . filesize(FPOST_CSVPATH . $filename));
 
-	$filename = 'csd_admision_prepostulacion-'.date('d-m-y').'.csv';
+	$filename = FPOST_PREFIX . 'admision_prepostulacion-'.date('d-m-y').'.csv';
 
 	$output = fopen(FPOST_CSVPATH . $filename, 'w');
 
-	fputcsv($output, array('DIA', 'HORA', 'Nombre Apoderado(a)', 'Nombre Alumno(a)', 'E-mail Apoderado(a)', 'Teléfono Apoderado(a)', 'Curso que postula', 'Consulta', 'Año de postulación'), "\t");
+	fputcsv($output, array('Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'Curso al que postula', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
 
 	foreach($inscritos as $inscrito) {
+		
+		$data = $inscrito->data;
+		$arrdata = unserialize($data);
+
 		$inscarr = array();
 		$inscarr[] = mysql2date('j F', $inscrito->time );
 		$inscarr[] = mysql2date('H:i', $inscrito->time );
-		$inscarr[] = $inscrito->apname;
-		$inscarr[] = $inscrito->alname;
-		$inscarr[] = $inscrito->apmail;
-		$inscarr[] = '+56 9' . $inscrito->apfono;
-		$inscarr[] = fpost_cursequi($inscrito->cursoi);
-		$inscarr[] = $inscrito->apextr;
-		$inscarr[] = fpost_parseyear($inscrito->year);
+		$inscarr[] = $arrdata['apellido_apoderado'];
+		$inscarr[] = $arrdata['nombre_apoderado'];
+		$inscarr[] = $arrdata['email_apoderado'];
+		$inscarr[] = $arrdata['fono_apoderado'];
+		$inscarr[] = $arrdata['rut_apoderado'];
+		$inscarr[] = $arrdata['nombre_alumno'] . ' ' . $arrdata['apellido_alumno'];
+		$inscarr[] = $arrdata['alumno_dia_nacimiento'] . ' / ' . $arrdata['alumno_mes_nacimiento'] . ' / ' . $arrdata['alumno_an_nacimiento'];
+		$inscarr[] = fpost_cursequi($arrdata['curso_postula']);
+		$inscarr[] = $arrdata['postulacion_year'];
+		$inscarr[] = $arrdata['procedencia_alumno'];
+		$inscarr[] = $arrdata['postulacion_mensaje'];
+		$inscarr[] = $arrdata['xtra_apoderado'];
 		fputcsv($output, $inscarr, "\t");
 	}
 
 	$csvfile = FPOST_CSVURL . $filename;
 	return $csvfile;
+
+}
+
+function fpost_csv_consultas() {
 
 }

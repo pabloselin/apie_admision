@@ -29,6 +29,8 @@ define( 'FPOST_CSVURL', WP_CONTENT_URL . '/postulaciones/');
 define( 'FPOST_NCOLEGIO', 'Compañía de María Seminario');
 define( 'FPOST_FROMMAIL', 'admision@ciademariaseminario.cl');
 define( 'FPOST_FONO', '+56 2 236 453 00');
+//Prefijo para algunas cosas
+define( 'FPOST_PREFIX', 'cms_');
 
 //Cambia los mails según.
 if(get_bloginfo('url') == 'http://admision.ciademariaseminario.cl'):
