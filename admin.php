@@ -26,6 +26,7 @@ function fpost_doadmin() {
 				<th>Nombre Apoderado</th>
 				<th>E-Mail</th>
 				<th>Teléfono</th>
+				<th>RUT</th>
 
 				<th>Año de postulación</th>
 				<th>Datos Alumno</th>
@@ -53,6 +54,7 @@ function fpost_doadmin() {
 					<td><?php echo $datos['nombre_apoderado'];?></td>
 					<td><?php echo $datos['email_apoderado'];?></td>
 					<td><?php echo $datos['fono_apoderado'];?></td>
+					<td><?php echo $datos['rut_apoderado'];?></td>
 					
 					<td><?php echo $datos['postulacion_year'];?></td>
 
@@ -151,7 +153,7 @@ function fpost_csv() {
 
 	$output = fopen(FPOST_CSVPATH . $filename, 'w');
 
-	fputcsv($output, array('Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'Curso al que postula', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
+	fputcsv($output, array('Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)', 'RUT Alumno', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'Curso al que postula', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
 
 	foreach($inscritos as $inscrito) {
 		
