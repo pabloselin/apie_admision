@@ -163,7 +163,7 @@ function fpost_csv() {
 		$arrdata = unserialize($data);
 
 		$inscarr = array();
-		$inscarr[] = $inscrito->ID;
+		$inscarr[] = $inscrito->id;
 		$inscarr[] = mysql2date('j F', $inscrito->time );
 		$inscarr[] = mysql2date('H:i', $inscrito->time );
 		$inscarr[] = $arrdata['apellido_apoderado'];
