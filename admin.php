@@ -61,7 +61,7 @@ function fpost_doadmin() {
 					<td>
 						<p><strong><?php echo $datos['nombre_alumno'];?> <?php echo $datos['apellido_alumno'];?></strong></p>
 
-						<p><strong>RUT: </strong><?php echo $datos['rut_alumno'];?></p>
+						<p><strong>RUT: </strong><?php echo fpost_formatrut($datos['rut_alumno']);?></p>
 						
 						<p><strong>Nac.</strong> <?php echo $datos['alumno_dia_nacimiento'];?> de <?php echo $datos['alumno_mes_nacimiento'];?>, <?php echo $datos['alumno_an_nacimiento'];?></p>
 
@@ -173,7 +173,7 @@ function fpost_csv() {
 		$inscarr[] = fpost_formatrut($arrdata['rut_apoderado']);
 		$inscarr[] = $arrdata['nombre_alumno'] . ' ' . $arrdata['apellido_alumno'];
 		$inscarr[] = $arrdata['alumno_dia_nacimiento'] . ' / ' . $arrdata['alumno_mes_nacimiento'] . ' / ' . $arrdata['alumno_an_nacimiento'];
-		$inscarr[] = $arrdata['rut_alumno'];
+		$inscarr[] = fpost_formatrut($arrdata['rut_alumno']);
 		$inscarr[] = fpost_cursequi($arrdata['curso_postula']);
 		$inscarr[] = $arrdata['postulacion_year'];
 		$inscarr[] = $arrdata['procedencia_alumno'];
