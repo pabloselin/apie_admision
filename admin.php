@@ -26,7 +26,7 @@ function fpost_doadmin() {
 				<th>Nombre Apoderado</th>
 				<th>E-Mail</th>
 				<th>Teléfono</th>
-				<th>RUT</th>
+				<th>RUT Apoderado</th>
 
 				<th>Año de postulación</th>
 				<th>Datos Alumno</th>
@@ -60,6 +60,8 @@ function fpost_doadmin() {
 
 					<td>
 						<p><strong><?php echo $datos['nombre_alumno'];?> <?php echo $datos['apellido_alumno'];?></strong></p>
+
+						<p><strong>RUT: </strong><?php echo $datos['rut_alumno'];?></p>
 						
 						<p><strong>Nac.</strong> <?php echo $datos['alumno_dia_nacimiento'];?> de <?php echo $datos['alumno_mes_nacimiento'];?>, <?php echo $datos['alumno_an_nacimiento'];?></p>
 
@@ -153,7 +155,7 @@ function fpost_csv() {
 
 	$output = fopen(FPOST_CSVPATH . $filename, 'w');
 
-	fputcsv($output, array('Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)', 'RUT Apoderado', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'Curso al que postula', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
+	fputcsv($output, array('ID', 'Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)', 'RUT Apoderado', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'RUT Alumno(a)', 'Curso al que postula', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
 
 	foreach($inscritos as $inscrito) {
 		
@@ -161,6 +163,7 @@ function fpost_csv() {
 		$arrdata = unserialize($data);
 
 		$inscarr = array();
+		$inscarr[] = $inscrito->ID;
 		$inscarr[] = mysql2date('j F', $inscrito->time );
 		$inscarr[] = mysql2date('H:i', $inscrito->time );
 		$inscarr[] = $arrdata['apellido_apoderado'];
@@ -170,6 +173,7 @@ function fpost_csv() {
 		$inscarr[] = fpost_formatrut($arrdata['rut_apoderado']);
 		$inscarr[] = $arrdata['nombre_alumno'] . ' ' . $arrdata['apellido_alumno'];
 		$inscarr[] = $arrdata['alumno_dia_nacimiento'] . ' / ' . $arrdata['alumno_mes_nacimiento'] . ' / ' . $arrdata['alumno_an_nacimiento'];
+		$inscarr[] = $arrdata['rut_alumno'];
 		$inscarr[] = fpost_cursequi($arrdata['curso_postula']);
 		$inscarr[] = $arrdata['postulacion_year'];
 		$inscarr[] = $arrdata['procedencia_alumno'];
