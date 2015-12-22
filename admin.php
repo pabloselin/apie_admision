@@ -54,7 +54,7 @@ function fpost_doadmin() {
 					<td><?php echo $datos['nombre_apoderado'];?></td>
 					<td><?php echo $datos['email_apoderado'];?></td>
 					<td><?php echo $datos['fono_apoderado'];?></td>
-					<td><?php echo fpost_formatrut($datos['rut_apoderado']);?> Original: <?php echo $datos['rut_apoderado'];?></td>
+					<td><?php echo fpost_formatrut($datos['rut_apoderado']);?> <!--Original: <?php echo $datos['rut_apoderado'];?>--></td>
 					
 					<td><?php echo $datos['postulacion_year'];?></td>
 
@@ -187,6 +187,36 @@ function fpost_csv_consultas() {
 
 }
 
-function fpost_formatrut( $rut ) {
-    return number_format( substr ( $rut, 0 , -1 ) , 0, "", ".") . '-' . substr ( $rut, strlen($rut) -1 , 1 );
+function fpost_formatrut($r = false){
+    if((!$r) or (is_array($r)))
+        return false; /* Hace falta el rut */
+ 
+    if(!$r = preg_replace('|[^0-9kK]|i', '', $r))
+        return false; /* Era código basura */
+ 
+    if(!((strlen($r) == 8) or (strlen($r) == 9)))
+        return false; /* La cantidad de carácteres no es válida. */
+ 
+    $v = strtoupper(substr($r, -1));
+    if(!$r = substr($r, 0, -1))
+        return false;
+ 
+    if(!((int)$r > 0))
+        return false; /* No es un valor numérico */
+ 
+    $x = 2; $s = 0;
+    for($i = (strlen($r) - 1); $i >= 0; $i--){
+        if($x > 7)
+            $x = 2;
+        $s += ($r[$i] * $x);
+        $x++;
+    }
+    $dv=11-($s % 11);
+    if($dv == 10)
+        $dv = 'K';
+    if($dv == 11)
+        $dv = '0';
+    if($dv == $v)
+        return number_format($r, 0, '', '.').'-'.$v; /* Formatea el RUT */
+    return false;
 }
