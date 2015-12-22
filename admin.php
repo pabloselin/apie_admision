@@ -153,7 +153,7 @@ function fpost_csv() {
 
 	$output = fopen(FPOST_CSVPATH . $filename, 'w');
 
-	fputcsv($output, array('Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)', 'RUT Alumno', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'Curso al que postula', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
+	fputcsv($output, array('Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)', 'RUT Apoderado', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'Curso al que postula', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
 
 	foreach($inscritos as $inscrito) {
 		
