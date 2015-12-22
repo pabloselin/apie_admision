@@ -54,7 +54,7 @@ function fpost_doadmin() {
 					<td><?php echo $datos['nombre_apoderado'];?></td>
 					<td><?php echo $datos['email_apoderado'];?></td>
 					<td><?php echo $datos['fono_apoderado'];?></td>
-					<td><?php echo fpost_formatrut($datos['rut_apoderado']);?></td>
+					<td><?php echo fpost_formatrut($datos['rut_apoderado']);?> Original: <?php echo $datos['rut_apoderado'];?></td>
 					
 					<td><?php echo $datos['postulacion_year'];?></td>
 
