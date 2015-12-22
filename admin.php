@@ -54,7 +54,7 @@ function fpost_doadmin() {
 					<td><?php echo $datos['nombre_apoderado'];?></td>
 					<td><?php echo $datos['email_apoderado'];?></td>
 					<td><?php echo $datos['fono_apoderado'];?></td>
-					<td><?php echo $datos['rut_apoderado'];?></td>
+					<td><?php echo fpost_formatrut($datos['rut_apoderado']);?></td>
 					
 					<td><?php echo $datos['postulacion_year'];?></td>
 
@@ -167,7 +167,7 @@ function fpost_csv() {
 		$inscarr[] = $arrdata['nombre_apoderado'];
 		$inscarr[] = $arrdata['email_apoderado'];
 		$inscarr[] = $arrdata['fono_apoderado'];
-		$inscarr[] = $arrdata['rut_apoderado'];
+		$inscarr[] = fpost_formatrut($arrdata['rut_apoderado']);
 		$inscarr[] = $arrdata['nombre_alumno'] . ' ' . $arrdata['apellido_alumno'];
 		$inscarr[] = $arrdata['alumno_dia_nacimiento'] . ' / ' . $arrdata['alumno_mes_nacimiento'] . ' / ' . $arrdata['alumno_an_nacimiento'];
 		$inscarr[] = fpost_cursequi($arrdata['curso_postula']);
@@ -185,4 +185,8 @@ function fpost_csv() {
 
 function fpost_csv_consultas() {
 
+}
+
+function fpost_formatrut( $rut ) {
+    return number_format( substr ( $rut, 0 , -1 ) , 0, "", ".") . '-' . substr ( $rut, strlen($rut) -1 , 1 );
 }
