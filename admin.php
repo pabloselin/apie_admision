@@ -129,8 +129,8 @@ function fpost_doadminconsultas() {
 		</table>
 		<?php 
 		// Desactivado por mientras 
-		//$csv = fpost_csv();
-		//echo '<p><a class="button" href="'.$csv.'"> Descargar archivo CSV con inscripciones </a> </p>';
+		$csv = fpost_csv_consultas();
+		echo '<p><a class="button" href="'.$csv.'"> Descargar archivo CSV con consultas </a> </p>';
 		?>
 	</div>
 	<?php
@@ -188,6 +188,40 @@ function fpost_csv() {
 }
 
 function fpost_csv_consultas() {
+	//Genera un csv con todos los datos
+	global $wpdb;
+	global $tbname;
+	$consultas = fpost_getconsultas();
+
+	// output headers so that the file is downloaded rather than displayed
+		header('Content-Type: octet/stream');
+		header('Content-Disposition: attachment; filename=data.csv');
+		header('Content-Length: ' . filesize(FPOST_CSVPATH . $filename));
+
+	$filename = FPOST_PREFIX . '_consultas-'.date('d-m-y').'.csv';
+
+	$output = fopen(FPOST_CSVPATH . $filename, 'w');
+
+	fputcsv($output, array('ID', 'Fecha', 'Hora', 'Nombre', 'Telefono', 'Email', 'Consultas'), "\t");
+
+	foreach($consultas as $consulta) {
+		$data = $consulta->data;
+		$arrdata = unserialize($data);
+
+		$consarr = array();
+		$consarr[] = $consulta->id;
+		$consarr[] = mysql2date('j F', $consulta->time );
+		$consarr[] = mysql2date('H:i', $consulta->time );
+		$consarr[] = $arrdata['nombre_consultas'];
+		$consarr[] = '+56 9' . $arrdata['fono_consultas'];
+		$consarr[] = $arrdata['email_consultas'];
+		$consarr[] = $arrdata['mensaje_consultas'];
+	
+		fputcsv($output, $consarr, "\t");
+	}
+
+	$csvfile = FPOST_CSVURL . $filename;
+	return $csvfile;
 
 }
 
