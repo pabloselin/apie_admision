@@ -465,6 +465,7 @@ function fpost_mails($data) {
 	
 	$headers[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
 	$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <admision@ciademariaseminario.cl>';
+	$headers[] = 'Reply-To: "' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado']. ' <' . $data['email_apoderado'] . '>';
 	
 	add_filter('wp_mail_content_type', 'fpost_content_type_html');
 
