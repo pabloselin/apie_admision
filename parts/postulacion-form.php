@@ -200,11 +200,12 @@ if($_POST && $nonce){
 				<div class="">
 					<input type="text" name="apellido_apoderado" value="" placeholder="Apellidos apoderado/a" required class="form-control">
 				</div>
-
+				<br>
 				<label class="control-label" for="rut_apoderado">RUT</label>
 				<div class="">
 					<input type="text" name="rut_apoderado" value="" placeholder="RUT" required class="form-control">
 				</div>
+				<br>
 				<label class="control-label " for="fono_apoderado">Celular apoderado(a)</label>
 				<div class="">
 					<div class="input-group">
@@ -212,7 +213,15 @@ if($_POST && $nonce){
 						<input class="form-control" type="text" name="fono_apoderado" value="" placeholder="" required>
 					</div>
 				</div>
+				<label class="control-label " for="fono_apoderado">Teléfono fijo apoderado(a) (Opcional)</label>
+				<div class="">
+					<div class="input-group">
+						<span class="input-group-addon">+56 2</span>
+						<input class="form-control" type="text" name="fonofijo_apoderado" value="" placeholder="" required>
+					</div>
+				</div>
 			</div>
+			<br>
 			<!--formel-->
 			<div class="form-group">
 				<label class="control-label" for="email_apoderado">E-Mail apoderado(a)</label>

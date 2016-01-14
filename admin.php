@@ -26,6 +26,7 @@ function fpost_doadmin() {
 				<th>Nombre Apoderado</th>
 				<th>E-Mail</th>
 				<th>Teléfono</th>
+				<th>Teléfono Fijo</th>
 				<th>RUT Apoderado</th>
 
 				<th>Año de postulación</th>
@@ -54,6 +55,7 @@ function fpost_doadmin() {
 					<td><?php echo $datos['nombre_apoderado'];?></td>
 					<td><?php echo $datos['email_apoderado'];?></td>
 					<td><?php echo $datos['fono_apoderado'];?></td>
+					<td><?php echo $datos['fonofijo_apoderado'];?></td>
 					<td><?php echo fpost_formatrut($datos['rut_apoderado']);?> <!--Original: <?php echo $datos['rut_apoderado'];?>--></td>
 					
 					<td><?php echo $datos['postulacion_year'];?></td>
@@ -78,7 +80,7 @@ function fpost_doadmin() {
 		?>
 		</table>
 		<?php 
-		// Desactivado por mientras 
+		
 		$csv = fpost_csv();
 		echo '<p><a class="button" href="'.$csv.'"> Descargar archivo CSV con inscripciones </a> </p>';
 		?>
@@ -155,7 +157,7 @@ function fpost_csv() {
 
 	$output = fopen(FPOST_CSVPATH . $filename, 'w');
 
-	fputcsv($output, array('ID', 'Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)', 'RUT Apoderado', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'RUT Alumno(a)', 'Curso al que postula', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
+	fputcsv($output, array('ID', 'Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)','Fono fijo apoderado(a)', 'RUT Apoderado', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'RUT Alumno(a)', 'Curso al que postula', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
 
 	foreach($inscritos as $inscrito) {
 		
@@ -170,6 +172,7 @@ function fpost_csv() {
 		$inscarr[] = $arrdata['nombre_apoderado'];
 		$inscarr[] = $arrdata['email_apoderado'];
 		$inscarr[] = $arrdata['fono_apoderado'];
+		$inscarr[] = $arrdata['fonofijo_apoderado'];
 		$inscarr[] = fpost_formatrut($arrdata['rut_apoderado']);
 		$inscarr[] = $arrdata['nombre_alumno'] . ' ' . $arrdata['apellido_alumno'];
 		$inscarr[] = $arrdata['alumno_dia_nacimiento'] . ' / ' . $arrdata['alumno_mes_nacimiento'] . ' / ' . $arrdata['alumno_an_nacimiento'];

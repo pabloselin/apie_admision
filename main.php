@@ -291,6 +291,7 @@ function fpost_validate() {
 		$data['rut_apoderado'] = sanitize_text_field( $_POST['rut_apoderado'] );
 		$data['apellido_apoderado'] = sanitize_text_field( $_POST['apellido_apoderado'] );
 		$data['fono_apoderado'] = sanitize_text_field( $_POST['fono_apoderado'] );
+		$data['fonofijo_apoderado'] = sanitize_text_field( $_POST['fonofijo_apoderado'] );
 		$data['email_apoderado'] = sanitize_text_field( $_POST['email_apoderado'] );
 		$data['postulacion_mensaje'] = sanitize_text_field( $_POST['postulacion_mensaje'] );
 		$data['xtra_apoderado'] = sanitize_text_field( $_POST['xtra_apoderado'] );
@@ -391,8 +392,15 @@ function fpost_mails($data) {
 							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Datos del apoderado</h4>
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] .'</p>
 							<p><strong>RUT apoderado: </strong>' . $data['rut_apoderado'] .'</p>
-							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono_apoderado'] . '</p>
-							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
+							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono_apoderado'] . '</p>';
+
+						if($data['fonofijo_apoderado']):
+
+							$mensajeapoderado .= '<p><strong>Teléfono Fijo Apoderado(a): </strong>+56 2 ' . $data['fonofijo_apoderado'] . '</p>';
+
+						endif;
+
+							$mensajeapoderado .= '<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
 							<p>&nbsp;</p>
 
 							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Otros datos</h4>
@@ -431,8 +439,13 @@ function fpost_mails($data) {
 						<td>
 							<h4>Datos</h4>
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] . '</p>
-							<p><strong>Teléfono Apoderado(a): </strong>+56 9 ' . $data['fono_apoderado'] . '</p>
-							<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
+							<p><strong>Teléfono Apoderado(a): </strong>+56 9 ' . $data['fono_apoderado'] . '</p>';
+
+				if($data['fonofijo_apoderado']):
+						$mensajeadmin .= '<p><strong>Teléfono Fijo Apoderado(a): </strong>+56 2 ' . $data['fonofijo_apoderado'] . '</p>';
+					endif;
+
+$mensajeadmin .=	'<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
 							<p><strong>RUT apoderado: </strong>' . $data['rut_apoderado'] .'</p>
 
 							
