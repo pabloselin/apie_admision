@@ -18,7 +18,7 @@ TODO:
 */
 
 global $dbver;
-$dbver = '1.5';
+$dbver = '1.6';
 $tbname = $wpdb->prefix . 'postulaciones';
 
 
