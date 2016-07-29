@@ -497,18 +497,27 @@ $mensajeadmin .=	'<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apod
 //Scripts y estilos extras
 function fpost_styleandscripts() {
 	if(!is_admin()) {
-		wp_register_style( 'postulacion', plugins_url('/css/postulacion.css', __FILE__), 'screen' );
+		wp_register_style( 'postulacion', plugins_url('/css/postulacion.css', __FILE__), 'screen', array() );
+		
 		wp_register_script( 'modernizr', plugins_url('/lib/modernizr/modernizr.js', __FILE__ ), array(), '3.2.0', false);
-		wp_register_script( 'funciones-postulacion', plugins_url('/js/funciones-postulacion.js', __FILE__), array('jqvalidate'), '1.0', false);
+		wp_register_script( 'funciones-postulacion', plugins_url('/js/funciones-postulacion.js', __FILE__), array('jqvalidate', 'pickadate'), '1.0', false);
 		wp_register_script( 'jquery-rut', plugins_url('/js/jquery.rut.min.js', __FILE__ ), array(), '0.5', false);
 		wp_register_script( 'jqvalidate', plugins_url('/lib/jquery-validation/dist/jquery.validate.min.js', __FILE__), array('jquery-rut'), '1.14.0', false);
+
+		wp_register_script( 'pickadate', plugins_url('/lib/pickadate/lib/compressed/picker.js', __FILE__ ) , array(), '4.0.0', false );
+		wp_register_script( 'pickadate-date', plugins_url('/lib/pickadate/lib/compressed/picker.date.js', __FILE__ ) , array('pickadate'), '4.0.0', false );
+		wp_register_style( 'pickadate-classic', plugins_url( '/lib/pickadate/lib/compressed/themes/default.css', __FILE__ ));
+		wp_register_style( 'pickadate-classic-date', plugins_url( '/lib/pickadate/lib/compressed/themes/default.date.css', __FILE__ ));
 		
 		wp_enqueue_script( 'jquery-rut' );
 		wp_enqueue_script( 'modernizr' );
 		wp_enqueue_script( 'funciones-postulacion' );
 		wp_enqueue_script( 'jqvalidate' );
-
+		wp_enqueue_script( 'pickadate' );
+		wp_enqueue_script( 'pickadate-date' );
 		wp_enqueue_style( 'postulacion' );
+		wp_enqueue_style( 'pickadate-classic' );
+		wp_enqueue_style( 'pickadate-classic-date' );
 	};
 }
 

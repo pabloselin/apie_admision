@@ -78,6 +78,19 @@ $(document).ready(function() {
 	//para opción otro curso
 	otrocurso.hide();
 
+	//Datepicker
+	$('.input-group-date input').pickadate({
+		min: new Date(1998, 1, 1),
+		max: new Date(2017, 1, 1),
+		selectYears: 20,
+		selectMonths: true,
+		monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+		weekdaysShort: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
+		today: 'Hoy',
+		clear: 'Borrar',
+		close: 'Cerrar'
+	});
+
 	$('#formulario-postulacion').validate({
 		debug: false,
 		messages: {
