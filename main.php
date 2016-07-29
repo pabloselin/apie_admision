@@ -40,7 +40,7 @@ else:
 	define( 'FPOST_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
 endif;
 
-define( 'FPOST_LOGO', 'http://cms-dev.apie.cl/wp-content/themes/cms-admision/img/logo-cms-3.png');
+define( 'FPOST_LOGO', plugins_url( 'img/logo_cma.png', __FILE__ ) );
 
 if(!is_dir(FPOST_CSVPATH)){
 	mkdir(WP_CONTENT_DIR . '/postulaciones', 0755);
@@ -130,11 +130,11 @@ function fpost_putserialdata($data) {
 						);
 	$lastid = $wpdb->insert_id;
 	$okmess = '<div class="alert alert-success">
-						<p style="text-align:center;font-size:32px;"><span class="glyphicon glyphicon-ok-sign"></span></p>
+						<p style="text-align:center;font-size:32px;"><i class="fa fa-check fa-2x"></i></p>
 						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
 						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email_apoderado'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>
 						</div>';
-	$errmess = '<div class="alert alert-error"><p><span class="glyphicon glyphicon-remove-sign"></span></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en admision@ciademariaseminario.cl.</p></div>';
+	$errmess = '<div class="alert alert-error"><p><i class="fa fa-times"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en admision@ciademariaseminario.cl.</p></div>';
 	if($lastid) {
 		$message = $okmess;
 		$message .=  '<div class="modal fade" id="success" role="dialog" tabindex="-1" aria-labelledby="Inscripción Exitosa en '.FPOST_NCOLEGIO.'" aria-hidden="true">';
@@ -504,10 +504,10 @@ function fpost_styleandscripts() {
 		wp_register_script( 'jquery-rut', plugins_url('/js/jquery.rut.min.js', __FILE__ ), array(), '0.5', false);
 		wp_register_script( 'jqvalidate', plugins_url('/lib/jquery-validation/dist/jquery.validate.min.js', __FILE__), array('jquery-rut'), '1.14.0', false);
 
-		wp_register_script( 'pickadate', plugins_url('/lib/pickadate/lib/compressed/picker.js', __FILE__ ) , array(), '4.0.0', false );
-		wp_register_script( 'pickadate-date', plugins_url('/lib/pickadate/lib/compressed/picker.date.js', __FILE__ ) , array('pickadate'), '4.0.0', false );
-		wp_register_style( 'pickadate-classic', plugins_url( '/lib/pickadate/lib/compressed/themes/default.css', __FILE__ ));
-		wp_register_style( 'pickadate-classic-date', plugins_url( '/lib/pickadate/lib/compressed/themes/default.date.css', __FILE__ ));
+		wp_register_script( 'pickadate', plugins_url('/lib/pickadate/lib/picker.js', __FILE__ ) , array(), '4.0.0', false );
+		wp_register_script( 'pickadate-date', plugins_url('/lib/pickadate/lib/picker.date.js', __FILE__ ) , array('pickadate'), '4.0.0', false );
+		wp_register_style( 'pickadate-classic', plugins_url( '/lib/pickadate/lib/themes/default.css', __FILE__ ));
+		wp_register_style( 'pickadate-classic-date', plugins_url( '/lib/pickadate/lib/themes/default.date.css', __FILE__ ));
 		
 		wp_enqueue_script( 'jquery-rut' );
 		wp_enqueue_script( 'modernizr' );
