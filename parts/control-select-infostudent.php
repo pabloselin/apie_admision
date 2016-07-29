@@ -1,12 +1,18 @@
 <h2>Datos alumno/a postulante</h2>
 			<div class="form-group">
 			
-				<label class="control-label" for="nombre_alumno">Nombres</label>
+				<label class="control-label" for="nombre_alumno">Nombre</label>
 				<div class="">
-					<input type="text" name="nombre_alumno" value="" placeholder="Nombre(s) alumno/a" required class="form-control">
+					<input type="text" name="nombre_alumno" value="" placeholder="Apellido Paterno / Apellido Materno / Nombres" required class="form-control">
 				</div>
 
-				<label class="control-label" for="apellido_alumno">Apellidos</label>
+				<label class="control-label" for="rut_alumno">RUT</label>
+				<div class="">
+					<input type="text" name="rut_alumno" value="" placeholder="RUT" required class="form-control">
+				</div>
+				<br>
+
+				<!-- <label class="control-label" for="apellido_alumno">Apellidos</label>
 				<div class="">
 					<input type="text" name="apellido_alumno" value="" placeholder="Apellidos alumno/a" required class="form-control">
 				</div>
@@ -14,7 +20,7 @@
 				<label class="control-label" for="rut_alumno">RUT</label>
 				<div class="">
 					<input type="text" name="rut_alumno" value="" placeholder="RUT" required class="form-control">
-				</div>
+				</div> -->
 
 			<div class="errorPlacement"></div>
 

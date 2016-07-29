@@ -1,15 +1,15 @@
 <h2>Datos apoderado/a</h2>
 			<div class="form-group">
-			<label class="control-label" for="nombre_apoderado">Nombres</label>
+			<label class="control-label" for="nombre_apoderado">Nombre</label>
 				<div>
-					<input type="text" name="nombre_apoderado" value="" placeholder="Nombre(s) apoderado/a" required class="form-control">
+					<input type="text" name="nombre_apoderado" value="" placeholder="Apellido Paterno / Apellido Materno / Nombres" required class="form-control">
 				</div>
 
-				<label class="control-label" for="apellido_apoderado">Apellidos</label>
+				<!-- <label class="control-label" for="apellido_apoderado">Apellidos</label>
 				<div class="">
 					<input type="text" name="apellido_apoderado" value="" placeholder="Apellidos apoderado/a" required class="form-control">
 				</div>
-				<br>
+				<br> -->
 				<label class="control-label" for="rut_apoderado">RUT</label>
 				<div class="">
 					<input type="text" name="rut_apoderado" value="" placeholder="RUT" required class="form-control">
