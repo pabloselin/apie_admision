@@ -65,7 +65,7 @@ function fpost_doadmin() {
 
 						<p><strong>RUT: </strong><?php echo fpost_formatrut($datos['rut_alumno']);?></p>
 						
-						<p><strong>Nac.</strong> <?php echo $datos['alumno_dia_nacimiento'];?> de <?php echo $datos['alumno_mes_nacimiento'];?>, <?php echo $datos['alumno_an_nacimiento'];?></p>
+						<p><?php echo ( isset($datos['alumno_fecha_nacimiento']) ? $datos['alumno_fecha_nacimiento'] : '' );?></p>
 
 						<p><strong>Procedencia:</strong> <?php echo $datos['procedencia_alumno'];?></p>
 	
@@ -148,12 +148,14 @@ function fpost_csv() {
 	global $tbname;
 	$inscritos = fpost_getdata();
 
+	$filename = FPOST_PREFIX . 'admision_prepostulacion-'.date('d-m-y').'.csv';
+	
 	// output headers so that the file is downloaded rather than displayed
 		header('Content-Type: octet/stream');
 		header('Content-Disposition: attachment; filename=data.csv');
 		header('Content-Length: ' . filesize(FPOST_CSVPATH . $filename));
 
-	$filename = FPOST_PREFIX . 'admision_prepostulacion-'.date('d-m-y').'.csv';
+	
 
 	$output = fopen(FPOST_CSVPATH . $filename, 'w');
 

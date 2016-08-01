@@ -21,7 +21,7 @@
 				</div>
 				
 				<br>
-				
+
 				<label class="control-label" for="rut_alumno">RUT</label>
 				<div class="">
 					<input type="text" name="rut_alumno" value="" placeholder="RUT" required class="form-control">
@@ -37,13 +37,13 @@
 
 			<h4>Fecha de nacimiento</h4>
 						
-					<label class="control-label" for="fecha_nacimiento">Fecha de Nacimiento</label>
+					<label class="control-label" for="alumno_fecha_nacimiento">Fecha de Nacimiento</label>
 				
 					<div class="input-group-date input-group">
 						<span class="input-group-addon">
 							<i class="fa fa-calendar"></i>
 						</span>
-						<input type="text" name="fecha_nacimiento" required class="form-control" placeholder="Clic para escoger fecha...">
+						<input type="text" name="alumno_fecha_nacimiento" required class="form-control" placeholder="Clic para escoger fecha...">
 					</div>
 
 					<div class="errorPlacement"></div>

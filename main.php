@@ -279,9 +279,7 @@ function fpost_validate() {
 		$data['nombre_alumno'] = sanitize_text_field( $_POST['nombre_alumno'] );
 		$data['apellido_alumno'] = sanitize_text_field( $_POST['apellido_alumno'] );
 		$data['rut_alumno'] = sanitize_text_field( $_POST['rut_alumno'] );
-		$data['alumno_dia_nacimiento'] = sanitize_text_field( $_POST['alumno_dia_nacimiento'] );
-		$data['alumno_mes_nacimiento'] = sanitize_text_field( $_POST['alumno_mes_nacimiento'] );
-		$data['alumno_an_nacimiento'] = sanitize_text_field( $_POST['alumno_an_nacimiento'] );
+		$data['alumno_fecha_nacimiento'] = sanitize_text_field( $_POST['alumno_fecha_nacimiento'] );
 		$data['procedencia_alumno'] = sanitize_text_field( $_POST['procedencia_alumno'] );
 		$data['curso_postula'] = sanitize_text_field( $_POST['curso_postula'] );
 
@@ -384,7 +382,7 @@ function fpost_mails($data) {
 						<td style="border-width:1px 0 1px 0;border-style:dotted;border-color:#ccc;background-color:white;">
 							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Datos del alumno</h4>
 							<p><strong>Nombre Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . '</p>
-							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_dia_nacimiento'] . ' de ' . $data['alumno_mes_nacimiento'] . ' de ' . $data['alumno_an_nacimiento'] . '</p>
+							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>
 							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
 							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula'], $data['otrocurso']) .'</p>
 							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
@@ -458,7 +456,7 @@ $mensajeadmin .=	'<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apod
 							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula'], $data['otrocurso']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . ' </p>
 							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
-							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_dia_nacimiento'] . ' de ' . $data['alumno_mes_nacimiento'] . ' de ' . $data['alumno_an_nacimiento'] . '</p>
+							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>
 							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
 						</td>
 					</tr>	
