@@ -11,8 +11,6 @@ if($_POST && $nonce){
 
 
 <div class="postulacion_formwrapper">
-	
-	<h1>Formulario de postulación</h1>
 
 	<form class="form" id="formulario-postulacion" action="" method="POST" enctype="multipart/form-data" >
 				<!--nonce-->

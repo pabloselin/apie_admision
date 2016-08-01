@@ -1,10 +1,9 @@
 <?php 
 
-add_action('admin_menu', 'fpost_admin');
-
 function fpost_admin() {
 	add_options_page( __( 'Postulaciones', 'spm' ), __( 'Postulaciones enviadas', 'spm' ), 'manage_options', 'fpost_postulaciones', 'fpost_doadmin' );
 	add_options_page( __( 'Postulaciones', 'spm' ), __( 'Consultas enviadas', 'spm' ), 'manage_options', 'fpost_consultas', 'fpost_doadminconsultas' );
+	add_options_page( __( 'Postulaciones', 'spm' ), __( 'Configuración formularios', 'spm' ), 'manage_options', 'fpost_config', 'fpost_doadminconfig' );
 }
 
 function fpost_doadmin() {
@@ -149,7 +148,7 @@ function fpost_csv() {
 	$inscritos = fpost_getdata();
 
 	$filename = FPOST_PREFIX . 'admision_prepostulacion-'.date('d-m-y').'.csv';
-	
+
 	// output headers so that the file is downloaded rather than displayed
 		header('Content-Type: octet/stream');
 		header('Content-Disposition: attachment; filename=data.csv');
@@ -262,4 +261,39 @@ function fpost_formatrut($r = false){
     if($dv == $v)
         return number_format($r, 0, '', '.').'-'.$v; /* Formatea el RUT */
     return false;
+}
+
+function fpost_init_settings() {
+
+	register_setting( 'fpost_infoformularios', 'fpost_settings_info_formularios' );
+
+	add_settings_section(
+		'fpost_info_formularios', 
+		__( 'Datos de Contacto', 'fpost' ), 
+		'adm_settings_infocontacto_section_callback', 
+		'admision_infocontacto'
+	);
+
+	add_settings_field( 
+		'fpost_text_ncolegio', 
+		__( 'Nombre del colegio', 'fpost' ), 
+		'adm_text_encargada_render', 
+		'admision_infocontacto', 
+		'adm_admision_infocontacto_section' 
+	);
+}
+
+function fpost_doadminconfig() {
+	/**
+	 * Crea los campos de configuración para los formularios
+	 */
+	?>
+
+	<div class="wrap">
+		<h2>Configuración formularios de contacto</h2>
+	</div>
+
+
+
+	<?php
 }

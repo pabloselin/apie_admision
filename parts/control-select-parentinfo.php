@@ -18,23 +18,31 @@
 				</div>
 
 				<br>
-				<label class="control-label" for="rut_apoderado">RUT</label>
-				<div class="">
-					<input type="text" name="rut_apoderado" value="" placeholder="RUT" required class="form-control">
-				</div>
-				<br>
-				<label class="control-label " for="fono_apoderado">Celular apoderado(a)</label>
-				<div class="">
-					<div class="input-group">
-						<span class="input-group-addon">+56 9</span>
-						<input class="form-control" type="text" name="fono_apoderado" value="" placeholder="" required>
+				<div class="row">
+					<div class="col-md-5">
+						<label class="control-label" for="rut_apoderado">RUT</label>
+						<div class="">
+							<input type="text" name="rut_apoderado" value="" placeholder="RUT" required class="form-control">
+						</div>
 					</div>
 				</div>
-				<label class="control-label " for="fono_apoderado">Teléfono fijo apoderado(a) (Opcional)</label>
-				<div class="">
-					<div class="input-group">
-						<span class="input-group-addon">+56 2</span>
-						<input class="form-control" type="text" name="fonofijo_apoderado" value="" placeholder="" required>
+				<br>
+				
+				<div class="row">
+					<div class="col-md-5">
+						<label class="control-label " for="fono_apoderado">Celular apoderado(a)</label>
+						<div class="input-group">
+							<span class="input-group-addon">+56 9</span>
+							<input class="form-control" type="text" name="fono_apoderado" value="" placeholder="" required>
+						</div>
+					</div>
+					
+					<div class="col-md-5">
+						<label class="control-label " for="fono_apoderado">Teléfono fijo apoderado(a) (Opcional)</label>
+						<div class="input-group">
+							<span class="input-group-addon">+56 2</span>
+							<input class="form-control" type="text" name="fonofijo_apoderado" value="" placeholder="" required>
+						</div>
 					</div>
 				</div>
 			</div>

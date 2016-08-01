@@ -80,7 +80,7 @@ $(document).ready(function() {
 
 	//Datepicker
 	$('.input-group-date input').pickadate({
-		min: new Date(1998, 1, 1),
+		min: new Date(1996, 1, 1),
 		max: new Date(2017, 1, 1),
 		selectYears: 20,
 		selectMonths: true,

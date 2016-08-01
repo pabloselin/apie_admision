@@ -1,5 +1,5 @@
 <div class="form-group year-control">
-				<h2>Año al que postula</h2>
+				<h2 class="first">Año al que postula</h2>
 					<div class="help-block">
 						
 					</div>
