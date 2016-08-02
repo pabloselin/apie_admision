@@ -144,7 +144,7 @@ function fpost_putserialdata($data) {
 					<div class="modal-body">
 						'.$okmess.'
 						<div class="modal-footer">
-        				<button type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Cerrar</button>
+        				<button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
       				</div>
 					</div>
 					 
@@ -159,7 +159,7 @@ function fpost_putserialdata($data) {
 					'.$errmess.'
 				</div>
 				<div class="modal-footer">
-        				<button type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Cerrar</button>
+        				<button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
       				</div>
 			</div>
 			</div>
@@ -194,11 +194,11 @@ function fpost_putdata($data) {
 						);
 	$lastid = $wpdb->insert_id;
 	$okmess = '<div class="alert alert-success">
-						<p style="text-align:center;font-size:32px;"><span class="glyphicon glyphicon-ok-sign"></span></p>
+						<p style="text-align:center;font-size:32px;"><i class="fa fa-check fa-2x"></i></p>
 						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
 						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>
 						</div>';
-	$errmess = '<div class="alert alert-error"><p><span class="glyphicon glyphicon-remove-sign"></span></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en ' . FPOST_FROMMAIL .'.</p></div>';
+	$errmess = '<div class="alert alert-error"><p><i class="fa fa-times fa-2x"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en ' . FPOST_FROMMAIL .'.</p></div>';
 	if($lastid) {
 		$message = $okmess;
 		$message .=  '<div class="modal fade" id="success" role="dialog" tabindex="-1" aria-labelledby="Inscripción Exitosa en '.FPOST_NCOLEGIO.'" aria-hidden="true">';
@@ -432,7 +432,7 @@ function fpost_mails($data) {
 							<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br></p>
 
 							<h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;>'.FPOST_NCOLEGIO.'</h1>
-							
+
 							<h3 style="text-align:center;font-size:18px;font-weight:normal;">Se ha enviado una postulación a ' . FPOST_NCOLEGIO . ' para el año '. $data['postulacion_year'] .'</h3>
 						</td> 
 					</tr>
