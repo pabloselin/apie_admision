@@ -26,16 +26,17 @@ $tbname = $wpdb->prefix . 'postulaciones';
 define( 'FPOST_CSVPATH', WP_CONTENT_DIR . '/postulaciones/');
 define( 'FPOST_CSVURL', WP_CONTENT_URL . '/postulaciones/');
 //Variables de mails y nombres
-define( 'FPOST_NCOLEGIO', 'Compañía de María Seminario');
-define( 'FPOST_FROMMAIL', 'admision@ciademariaseminario.cl');
-define( 'FPOST_FONO', '+56 2 236 453 00');
+define( 'FPOST_NCOLEGIO', 'Colegio Compañía de María Apoquindo');
+define( 'FPOST_FROMMAIL', 'admision@ciademaria.cl');
+define( 'FPOST_FONO', '+562 236 359 00');
 //Prefijo para algunas cosas
-define( 'FPOST_PREFIX', 'cms_');
-
+define( 'FPOST_PREFIX', 'cma_');
+ 
 //Cambia los mails según.
-if(get_bloginfo('url') == 'http://admision.ciademariaseminario.cl'):
-	// Mails reales: pablo@apie.cl, jorgeloayza@gmail.com, admision@ciademariaseminario.cl, abalospia@gmail.com, pablobravo@apie.cl
-	define( 'FPOST_TOMAILS', 'pablo@apie.cl, jorgeloayza@gmail.com, admision@ciademariaseminario.cl, abalospia@gmail.com, pablobravo@apie.cl');
+if(get_bloginfo('url') == 'http://admision.ciademaria.cl'):
+
+	define( 'FPOST_TOMAILS', 'pablo@apie.cl, jorgeloayza@gmail.com, admision@ciademaria.cl, pablobravo@apie.cl');
+
 else:
 	define( 'FPOST_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
 endif;
@@ -134,7 +135,7 @@ function fpost_putserialdata($data) {
 						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
 						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email_apoderado'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>
 						</div>';
-	$errmess = '<div class="alert alert-error"><p><i class="fa fa-times"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en admision@ciademariaseminario.cl.</p></div>';
+	$errmess = '<div class="alert alert-error"><p><i class="fa fa-times"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en ' . FPOST_FROMMAIL . '.</p></div>';
 	if($lastid) {
 		$message = $okmess;
 		$message .=  '<div class="modal fade" id="success" role="dialog" tabindex="-1" aria-labelledby="Inscripción Exitosa en '.FPOST_NCOLEGIO.'" aria-hidden="true">';
@@ -197,7 +198,7 @@ function fpost_putdata($data) {
 						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
 						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>
 						</div>';
-	$errmess = '<div class="alert alert-error"><p><span class="glyphicon glyphicon-remove-sign"></span></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en admision@ciademariaseminario.cl.</p></div>';
+	$errmess = '<div class="alert alert-error"><p><span class="glyphicon glyphicon-remove-sign"></span></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en ' . FPOST_FROMMAIL .'.</p></div>';
 	if($lastid) {
 		$message = $okmess;
 		$message .=  '<div class="modal fade" id="success" role="dialog" tabindex="-1" aria-labelledby="Inscripción Exitosa en '.FPOST_NCOLEGIO.'" aria-hidden="true">';
@@ -206,7 +207,7 @@ function fpost_putdata($data) {
 					<div class="modal-body">
 						'.$okmess.'
 						<div class="modal-footer">
-        				<button type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Cerrar</button>
+        				<button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
       				</div>
 					</div>
 					 
@@ -221,7 +222,7 @@ function fpost_putdata($data) {
 					'.$errmess.'
 				</div>
 				<div class="modal-footer">
-        				<button type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-ok"></span> Cerrar</button>
+        				<button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
       				</div>
 			</div>
 			</div>
@@ -368,13 +369,13 @@ function fpost_mails($data) {
 		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;border:1px solid #ccc;">
 		<tr>
 			<td style="background-color:white;color:#333;">
-				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:serif;font-size:24px;font-weight:normal;text-align:center;">'.FPOST_NCOLEGIO.'</h1></p>
+				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.FPOST_NCOLEGIO.'</h1></p>
 				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de postulación para el año '.fpost_parseyear($data['postulacion_year']).'</h3>
 			</td> 
 		</tr>
 			<tr>
 				<td>
-					<p>Estimado/a <strong>'. $data['nombre'] .'</strong>, hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono o correo en <strong>2 días hábiles</strong> como máximo para continuar el proceso.</p>
+					<p>Estimado/a <strong>'. $data['nombre_apoderado'] .'</strong>, hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono o correo en <strong>2 días hábiles</strong> como máximo para continuar el proceso.</p>
 					<p>Estos son los datos que usted envió:</p>
 				</td>
 			</tr>
@@ -384,7 +385,7 @@ function fpost_mails($data) {
 							<p><strong>Nombre Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . '</p>
 							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>
 							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
-							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula'], $data['otrocurso']) .'</p>
+							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula']) .'</p>
 							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
 							<p>&nbsp;</p>
 							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Datos del apoderado</h4>
@@ -425,10 +426,13 @@ function fpost_mails($data) {
 							</tr>
 						</table>';
 	$mensajeadmin = '
-					<table width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:white;border:1px solid #ccc;">
+					<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:white;border:1px solid #ccc;">
 					<tr>
 						<td style="background-color:white;color:#333;">
-							<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:serif;font-size:24px;font-weight:normal;text-align:center;">'.FPOST_NCOLEGIO.'</h1></p>
+							<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br></p>
+
+							<h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;>'.FPOST_NCOLEGIO.'</h1>
+							
 							<h3 style="text-align:center;font-size:18px;font-weight:normal;">Se ha enviado una postulación a ' . FPOST_NCOLEGIO . ' para el año '. $data['postulacion_year'] .'</h3>
 						</td> 
 					</tr>
@@ -453,7 +457,7 @@ $mensajeadmin .=	'<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apod
 					<tr>
 						<td>
 						<h4>Datos del Alumno</h4>
-							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula'], $data['otrocurso']) .'</p>
+							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula']) .'</p>
 							<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . ' </p>
 							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
 							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>
@@ -475,7 +479,7 @@ $mensajeadmin .=	'<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apod
 	$admins = FPOST_TOMAILS;
 	
 	$headers[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
-	$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <admision@ciademariaseminario.cl>';
+	$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <'.FPOST_FROMMAIL.'>';
 	$headers[] = 'Reply-To: "' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado']. ' <' . $data['email_apoderado'] . '>';
 	
 	add_filter('wp_mail_content_type', 'fpost_content_type_html');
