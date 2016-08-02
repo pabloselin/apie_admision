@@ -6,6 +6,8 @@ function fpost_admin() {
 	add_options_page( __( 'Postulaciones', 'spm' ), __( 'Configuración formularios', 'spm' ), 'manage_options', 'fpost_config', 'fpost_doadminconfig' );
 }
 
+add_action('admin_menu', 'fpost_admin');
+
 function fpost_doadmin() {
 	if (!current_user_can('manage_options'))  {
 		wp_die( __('No tienes permisos suficientes para ver esta página.') );
