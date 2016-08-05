@@ -41,7 +41,7 @@
 						<label class="control-label " for="fono_apoderado">Teléfono fijo apoderado(a) (Opcional)</label>
 						<div class="input-group">
 							<span class="input-group-addon">+56 2</span>
-							<input class="form-control" type="number" name="fonofijo_apoderado" value="" placeholder="" required>
+							<input class="form-control" type="number" name="fonofijo_apoderado" value="" placeholder="">
 						</div>
 					</div>
 				</div>

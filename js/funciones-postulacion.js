@@ -136,6 +136,9 @@ $(document).ready(function() {
 				maxlength: 8,
 				digits: true
 			},
+			fonofijo_apoderado: {
+				required: false
+			},
 			curso: {
 				required: true
 			},
@@ -212,8 +215,11 @@ $(document).ready(function() {
 	$('select#curso_postula').on('change', function(event) {
 		if($('option:selected', this).attr('value') == 'pk' || $('option:selected', this).attr('value') == 'k') {
 			jornada.show().addClass('visible').removeClass('hidden');
+			otrocurso.hide().removeClass('visible').addClass('hidden');
+
 		} else if($('option:selected', this).attr('value') == 'otro') {
 			otrocurso.show().addClass('visible').removeClass('hidden');
+			jornada.hide().removeClass('visible').addClass('hidden');
 		} else {
 			if(jornada.hasClass('visible')) {
 				jornada.hide().removeClass('visible').addClass('hidden');
