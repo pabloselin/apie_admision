@@ -74,6 +74,12 @@ $(document).ready(function() {
 
 	var hasJs = $('html').hasClass('js');
 
+	//Desactivar scrollwheel para fonos
+	
+	$(':input[type=number]').on('mousewheel', function(e){
+    	e.preventDefault();
+	});
+
 	if(hasJs) {
 		$('#formulario-postulacion .submitplaceholder').empty().append('<p class="aligncenter"><input type="submit" name="Postular" value="Postular" class="btn btn-danger btn-lg"></p>');
 		$('#formulario_consultas .consultas-submitplaceholder').empty().append('<p class="aligncenter"><input type="submit" name="Enviar" value="Enviar" class="btn btn-danger btn-lg"></p>');
