@@ -181,7 +181,7 @@ function fpost_csv() {
 		$inscarr[] = $arrdata['alumno_fecha_nacimiento'];
 		$inscarr[] = fpost_formatrut($arrdata['rut_alumno']);
 		$inscarr[] = fpost_cursequi($arrdata['curso_postula']);
-		$inscarr[] = fpost_formatjornada($arrdata['jornada']);
+		$inscarr[] = ( isset($arrdata['jornada'])? fpost_formatjornada($arrdata['jornada']) : '' );
 		$inscarr[] = $arrdata['postulacion_year'];
 		$inscarr[] = $arrdata['procedencia_alumno'];
 		$inscarr[] = $arrdata['postulacion_mensaje'];
@@ -241,8 +241,8 @@ function fpost_formatjornada( $jornada ) {
 		return 'Mañana';
 	} elseif( $jornada == 'tarde') {
 		return 'Tarde';
-	} elseif( $jornada == 'ambas') {
-		return 'Ambas';
+	} elseif( $jornada == 'cualquiera') {
+		return 'Cualquiera';
 	} else {
 		return $jornada;
 	}

@@ -186,7 +186,7 @@ function fpost_putdata($data) {
 	global $wpdb;
 	
 	$tbname = $wpdb->prefix . FPOST_TABLENAME;
-	
+
 	$insert = $wpdb->insert(
 						$tbname,
 						array(
@@ -292,7 +292,13 @@ function fpost_validate() {
 		$data['alumno_fecha_nacimiento'] = sanitize_text_field( $_POST['alumno_fecha_nacimiento'] );
 		$data['procedencia_alumno'] = sanitize_text_field( $_POST['procedencia_alumno'] );
 		$data['curso_postula'] = sanitize_text_field( $_POST['curso_postula'] );
-		$data['jornada'] = sanitize_text_field( $_POST['jornada'] );
+		
+		if( isset($_POST['jornada'])) {
+
+			$data['jornada'] = sanitize_text_field( $_POST['jornada'] );
+
+		}
+		
 
 		//Sanitizar apoderado
 
@@ -398,8 +404,16 @@ function fpost_mails($data) {
 							<p><strong>Nombre Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . '</p>
 							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>
 							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
-							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula']) .'</p>
-							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
+							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula']) .'</p>';
+
+							if( isset($data['jornada']) ) :
+
+								$mensajeapoderado .= '<p><strong>Preferencia de jornada: </strong>' . fpost_formatjornada($data['jornada']) . '</p>';
+
+							endif;
+
+
+							$mensajeapoderado .= '<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
 							<p>&nbsp;</p>
 							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Datos del apoderado</h4>
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] .'</p>
@@ -470,8 +484,16 @@ $mensajeadmin .=	'<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apod
 					<tr>
 						<td>
 						<h4>Datos del Alumno</h4>
-							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula']) .'</p>
-							<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . ' </p>
+							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula']) .'</p>';
+
+			if( isset($data['jornada']) ):
+
+					$mensajeadmin .= '<p><strong>Preferencia de jornada: </strong>' . fpost_formatjornada($data['jornada']) . '</p>';
+
+			endif;
+
+
+			$mensajeadmin .= '<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . ' </p>
 							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
 							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>
 							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>

@@ -141,6 +141,9 @@ $(document).ready(function() {
 			},
 			year: {
 				required: true
+			},
+			jornada: {
+				required: true
 			}
 		},
 		errorPlacement: function(error, element) {

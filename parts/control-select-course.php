@@ -40,8 +40,8 @@
 		</div>
 		<div class="radio">
 			<label>
-			<input type="radio" name="jornada" value="ambos">
-				<span class="lname">Ambas</span>
+			<input type="radio" name="jornada" value="cualquiera">
+				<span class="lname">Cualquiera</span>
 			</label>
 		</div>
 	</div>
