@@ -144,6 +144,9 @@ $(document).ready(function() {
 			},
 			jornada: {
 				required: true
+			},
+			otrocurso: {
+				required: true
 			}
 		},
 		errorPlacement: function(error, element) {
@@ -209,9 +212,15 @@ $(document).ready(function() {
 	$('select#curso_postula').on('change', function(event) {
 		if($('option:selected', this).attr('value') == 'pk' || $('option:selected', this).attr('value') == 'k') {
 			jornada.show().addClass('visible').removeClass('hidden');
+		} else if($('option:selected', this).attr('value') == 'otro') {
+			otrocurso.show().addClass('visible').removeClass('hidden');
 		} else {
 			if(jornada.hasClass('visible')) {
 				jornada.hide().removeClass('visible').addClass('hidden');
+			}
+
+			if(otrocurso.hasClass('visible')) {
+				otrocurso.hide().removeClass('visible').addClass('hidden');
 			}
 		}
 	});

@@ -5,7 +5,9 @@ if($_POST && $_POST['postulacion_nonce']) {
 		$nonce = $_POST['postulacion_nonce'];
 	};
 if($_POST && $nonce){	
+	
 	echo fpost_validate();
+
 	} else { ?>
 
 

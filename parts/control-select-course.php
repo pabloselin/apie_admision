@@ -28,21 +28,31 @@
 	<div>
 		<div class="radio">
 			<label>
-			<input type="radio" name="jornada" value="manana">
+				<input type="radio" name="jornada" value="manana">
 				<span class="lname">Mañana</span>
 			</label>
 		</div>
 		<div class="radio">
 			<label>
-			<input type="radio" name="jornada" value="tarde">
+				<input type="radio" name="jornada" value="tarde">
 				<span class="lname">Tarde</span>
 			</label>
 		</div>
 		<div class="radio">
 			<label>
-			<input type="radio" name="jornada" value="cualquiera">
+				<input type="radio" name="jornada" value="cualquiera">
 				<span class="lname">Cualquiera</span>
 			</label>
 		</div>
+	</div>
+</div>
+
+<div class="control-group otrocurso-control">
+	<label class="control-label" for="otrocurso">¿Cuál?</label>
+	<div class="controls">
+		<input type="text" name="otrocurso" value="" placeholder="Curso" required>
+		<span class="help-block">
+			Indique a qué otro curso le interesa postular
+		</span>
 	</div>
 </div>

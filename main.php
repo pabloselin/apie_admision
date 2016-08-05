@@ -181,68 +181,6 @@ function fpost_putserialdata($data) {
 }
 
 
-//Insertar datos en tabla
-function fpost_putdata($data) {
-	global $wpdb;
-	
-	$tbname = $wpdb->prefix . FPOST_TABLENAME;
-
-	$insert = $wpdb->insert(
-						$tbname,
-						array(
-							'time'   => current_time('mysql'),
-							'apname' => $data['nombre'],
-							'alname' => $data['nalumno'],
-							'apfono' => $data['fono'],
-							'apmail' => $data['email'],
-							'apextr' => $data['mensaje'],
-							'cursoi' => $data['curso'],
-							'otrocurso' => $data['otrocurso'],
-							'year' => $data['year']
-							)
-						);
-	$lastid = $wpdb->insert_id;
-	$okmess = '<div class="alert alert-success">
-						<p style="text-align:center;font-size:32px;"><i class="fa fa-check fa-2x"></i></p>
-						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
-						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>
-						</div>';
-	$errmess = '<div class="alert alert-error"><p><i class="fa fa-times fa-2x"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en ' . FPOST_FROMMAIL .'.</p></div>';
-	if($lastid) {
-		$message = $okmess;
-		$message .=  '<div class="modal fade" id="success" role="dialog" tabindex="-1" aria-labelledby="Inscripción Exitosa en '.FPOST_NCOLEGIO.'" aria-hidden="true">';
-		$message .= '<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-body">
-						'.$okmess.'
-						<div class="modal-footer">
-        				<button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
-      				</div>
-					</div>
-					 
-				</div>
-			</div>';
-	} else {
-		$message = $errmess;
-		$message .= '<div class="modal fade" id="error" role="dialog" tabindex="-1" aria-labelledby="Error en la Inscripción">
-			<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-body">
-					'.$errmess.'
-				</div>
-				<div class="modal-footer">
-        				<button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
-      				</div>
-			</div>
-			</div>
-			</div>';
-	}
-	//Enviar mensaje y correr funciones
-	$message .= fpost_mails($data);
-
-	return $message;
-}
-
 //Shortcode para el formulario
 function fpost_formshortcode($atts) {
 	return fpost_form();
@@ -291,7 +229,16 @@ function fpost_validate() {
 		$data['rut_alumno'] = sanitize_text_field( $_POST['rut_alumno'] );
 		$data['alumno_fecha_nacimiento'] = sanitize_text_field( $_POST['alumno_fecha_nacimiento'] );
 		$data['procedencia_alumno'] = sanitize_text_field( $_POST['procedencia_alumno'] );
-		$data['curso_postula'] = sanitize_text_field( $_POST['curso_postula'] );
+		
+		if( isset($_POST['otrocurso']) ) {
+
+			$data['curso_postula'] = sanitize_text_field( $_POST['otrocurso'] );			
+
+		} else {
+
+			$data['curso_postula'] = sanitize_text_field( $_POST['curso_postula'] );
+
+		}
 		
 		if( isset($_POST['jornada'])) {
 
@@ -364,8 +311,6 @@ function fpost_cursequi($curso, $otro = NULL) {
 		case('jardin'):
 			$lcurso = 'Jardín';
 		break;
-		case('otro'):
-			$lcurso = $data['otrocurso'];
 		default:
 			$lcurso = $curso;
 		break;	
