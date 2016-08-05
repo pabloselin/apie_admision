@@ -66,7 +66,7 @@ function fpost_doadmin() {
 
 						<p><strong>RUT: </strong><?php echo fpost_formatrut($datos['rut_alumno']);?></p>
 						
-						<p><?php echo ( isset($datos['alumno_fecha_nacimiento']) ? $datos['alumno_fecha_nacimiento'] : '' );?></p>
+						<p><strong>Fecha de nacimiento: </strong><?php echo ( isset($datos['alumno_fecha_nacimiento']) ? $datos['alumno_fecha_nacimiento'] : '' );?></p>
 
 						<p><strong>Procedencia:</strong> <?php echo $datos['procedencia_alumno'];?></p>
 	
@@ -152,9 +152,9 @@ function fpost_csv() {
 	$filename = FPOST_PREFIX . 'admision_prepostulacion-'.date('d-m-y').'.csv';
 
 	// output headers so that the file is downloaded rather than displayed
-		header('Content-Type: octet/stream');
-		header('Content-Disposition: attachment; filename=data.csv');
-		header('Content-Length: ' . filesize(FPOST_CSVPATH . $filename));
+		// header('Content-Type: octet/stream');
+		// header('Content-Disposition: attachment; filename=data.csv');
+		// header('Content-Length: ' . filesize(FPOST_CSVPATH . $filename));
 
 	
 
@@ -178,7 +178,7 @@ function fpost_csv() {
 		$inscarr[] = $arrdata['fonofijo_apoderado'];
 		$inscarr[] = fpost_formatrut($arrdata['rut_apoderado']);
 		$inscarr[] = $arrdata['nombre_alumno'] . ' ' . $arrdata['apellido_alumno'];
-		$inscarr[] = $arrdata['alumno_dia_nacimiento'] . ' / ' . $arrdata['alumno_mes_nacimiento'] . ' / ' . $arrdata['alumno_an_nacimiento'];
+		$inscarr[] = $arrdata['alumno_fecha_nacimiento'];
 		$inscarr[] = fpost_formatrut($arrdata['rut_alumno']);
 		$inscarr[] = fpost_cursequi($arrdata['curso_postula']);
 		$inscarr[] = $arrdata['postulacion_year'];

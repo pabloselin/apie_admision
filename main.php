@@ -283,6 +283,7 @@ function fpost_validate() {
 		$data['alumno_fecha_nacimiento'] = sanitize_text_field( $_POST['alumno_fecha_nacimiento'] );
 		$data['procedencia_alumno'] = sanitize_text_field( $_POST['procedencia_alumno'] );
 		$data['curso_postula'] = sanitize_text_field( $_POST['curso_postula'] );
+		$data['jornada'] = sanitize_text_field( $_POST['jornada'] );
 
 		//Sanitizar apoderado
 
@@ -306,6 +307,9 @@ function fpost_validate() {
 function fpost_cursequi($curso, $otro = NULL) {
 	//transforma los valores de curso en valores legibles
 	switch($curso) {
+		case('pg'):
+			$lcurso = 'Playgroup';
+		break;
 		case('pk'):
 			$lcurso = 'Pre-Kinder';
 		break;

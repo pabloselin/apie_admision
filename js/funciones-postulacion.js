@@ -68,6 +68,10 @@ $.validator.addMethod('rut', function(value, element) {
 
 $(document).ready(function() {
 	var otrocurso = $('.otrocurso-control');
+	var jornada = $('div[data-toggle="jornada-control"]');
+
+	console.log(jornada);
+
 	var hasJs = $('html').hasClass('js');
 
 	if(hasJs) {
@@ -200,14 +204,15 @@ $(document).ready(function() {
 
 
 	$('select#curso_postula').on('change', function(event) {
-		if($('option:selected', this).attr('value') == 'otro') {
-			otrocurso.show().addClass('visible');
+		if($('option:selected', this).attr('value') == 'pk' || $('option:selected', this).attr('value') == 'k') {
+			jornada.show().addClass('visible').removeClass('hidden');
 		} else {
-			if(otrocurso.hasClass('visible')) {
-				otrocurso.hide().removeClass('visible');
+			if(jornada.hasClass('visible')) {
+				jornada.hide().removeClass('visible').addClass('hidden');
 			}
 		}
 	});
+
 
 	$('div#success, div#error').modal('show');
 	$('div#modal-alert').modal('show');	
