@@ -3,7 +3,7 @@
  * Plugin Name: Formulario de postulación para colegios
  * Plugin URI: http://apie.cl
  * Description: Generador de formulario y almacenamiento de datos para admisión
- * Version: 0.5
+ * Version: 1.63
  * Author: Pablo Selín Carrasco Armijo - A Pie
  * Author URI: http://www.apie.cl
  * License: A short license name. Example: GPL2
@@ -230,7 +230,7 @@ function fpost_validate() {
 		$data['alumno_fecha_nacimiento'] = sanitize_text_field( $_POST['alumno_fecha_nacimiento'] );
 		$data['procedencia_alumno'] = sanitize_text_field( $_POST['procedencia_alumno'] );
 		
-		if( isset($_POST['otrocurso']) ) {
+		if( isset($_POST['otrocurso']) && $_POST['curso_postula'] == 'otro' ) {
 
 			$data['curso_postula'] = sanitize_text_field( $_POST['otrocurso'] );			
 
@@ -479,8 +479,7 @@ $mensajeadmin .=	'<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apod
 //Scripts y estilos extras
 function fpost_styleandscripts() {
 	if(!is_admin()) {
-		wp_register_style( 'postulacion', plugins_url('/css/postulacion.css', __FILE__), 'screen', array() );
-		
+		wp_register_style( 'postulacion', plugins_url('/css/postulacion.css', __FILE__), array(), '1.63', 'screen' );
 		wp_register_script( 'modernizr', plugins_url('/lib/modernizr/modernizr.js', __FILE__ ), array(), '3.2.0', false);
 		wp_register_script( 'funciones-postulacion', plugins_url('/js/funciones-postulacion.js', __FILE__), array('jqvalidate', 'pickadate'), '1.0.1', false);
 		wp_register_script( 'jquery-rut', plugins_url('/js/jquery.rut.min.js', __FILE__ ), array(), '0.5', false);
