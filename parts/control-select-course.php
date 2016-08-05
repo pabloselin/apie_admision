@@ -3,8 +3,11 @@
 				<div>
 					<select name="curso_postula" id="curso_postula" class="form-control" required>
 						<option value="">Escoja un curso</option>
-						<option value="pk">PreKinder</option>
-						<option value="k">Kinder</option>
+						<option value="pg">Playgroup</option>
+						<option value="pkm">PreKinder (jornada mañana)</option>
+						<option value="pkt">PreKinder (jornada tarde)</option>
+						<option value="k">Kinder (jornada mañana)</option>
+						<option value="k">Kinder (jornada tarde)</option>
 						<option value="1">1º Básico</option>
 						<option value="2">2º Básico</option>
 						<option value="3">3º Básico</option>
