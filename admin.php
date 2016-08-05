@@ -1,6 +1,7 @@
 <?php 
 
 function fpost_admin() {
+
 	add_options_page( __( 'Postulaciones', 'spm' ), __( 'Postulaciones enviadas', 'spm' ), 'manage_options', 'fpost_postulaciones', 'fpost_doadmin' );
 	add_options_page( __( 'Postulaciones', 'spm' ), __( 'Consultas enviadas', 'spm' ), 'manage_options', 'fpost_consultas', 'fpost_doadminconsultas' );
 	add_options_page( __( 'Postulaciones', 'spm' ), __( 'Configuración formularios', 'spm' ), 'manage_options', 'fpost_config', 'fpost_doadminconfig' );
@@ -33,9 +34,7 @@ function fpost_doadmin() {
 				<th>Año de postulación</th>
 				<th>Datos Alumno</th>
 				<th>Curso al que postula</th>
-
-				
-				
+				<th>Preferencia de jornada</th>
 				<th>Mensaje adicional</th>
 				<th>Cómo conoció el colegio</th>
 			</thead>
@@ -73,7 +72,7 @@ function fpost_doadmin() {
 					</td>
 
 					<td><?php echo fpost_cursequi($datos['curso_postula']);?></td>
-					
+					<td><?php echo (isset($datos['jornada']) ? fpost_formatjornada($datos['jornada']) : '');?></td>
 					<td><?php echo $datos['postulacion_mensaje'];?></td>
 					<td><?php echo $datos['xtra_apoderado'];?></td>
 				</tr>
@@ -146,7 +145,8 @@ function fpost_parseyear($year) {
 function fpost_csv() {
 	//Genera un csv con todos los datos
 	global $wpdb;
-	global $tbname;
+	
+	$tbname = $wpdb->prefix . FPOST_TABLENAME;
 	$inscritos = fpost_getdata();
 
 	$filename = FPOST_PREFIX . 'admision_prepostulacion-'.date('d-m-y').'.csv';
@@ -160,7 +160,7 @@ function fpost_csv() {
 
 	$output = fopen(FPOST_CSVPATH . $filename, 'w');
 
-	fputcsv($output, array('ID', 'Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)','Fono fijo apoderado(a)', 'RUT Apoderado', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'RUT Alumno(a)', 'Curso al que postula', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
+	fputcsv($output, array('ID', 'Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)','Fono fijo apoderado(a)', 'RUT Apoderado', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'RUT Alumno(a)', 'Curso al que postula','Preferencia de jornada', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
 
 	foreach($inscritos as $inscrito) {
 		
@@ -181,6 +181,7 @@ function fpost_csv() {
 		$inscarr[] = $arrdata['alumno_fecha_nacimiento'];
 		$inscarr[] = fpost_formatrut($arrdata['rut_alumno']);
 		$inscarr[] = fpost_cursequi($arrdata['curso_postula']);
+		$inscarr[] = fpost_formatjornada($arrdata['jornada']);
 		$inscarr[] = $arrdata['postulacion_year'];
 		$inscarr[] = $arrdata['procedencia_alumno'];
 		$inscarr[] = $arrdata['postulacion_mensaje'];
@@ -196,13 +197,14 @@ function fpost_csv() {
 function fpost_csv_consultas() {
 	//Genera un csv con todos los datos
 	global $wpdb;
-	global $tbname;
+	
+	$tbname = $wpdb->prefix . FPOST_TABLENAME;
 	$consultas = fpost_getconsultas();
 
 	// output headers so that the file is downloaded rather than displayed
-		header('Content-Type: octet/stream');
-		header('Content-Disposition: attachment; filename=data.csv');
-		header('Content-Length: ' . filesize(FPOST_CSVPATH . $filename));
+		// header('Content-Type: octet/stream');
+		// header('Content-Disposition: attachment; filename=data.csv');
+		// header('Content-Length: ' . filesize(FPOST_CSVPATH . $filename));
 
 	$filename = FPOST_PREFIX . '_consultas-'.date('d-m-y').'.csv';
 
@@ -228,6 +230,22 @@ function fpost_csv_consultas() {
 
 	$csvfile = FPOST_CSVURL . $filename;
 	return $csvfile;
+
+}
+
+function fpost_formatjornada( $jornada ) {
+	/**
+	 * Devuelve la jornada con formato
+	 */
+	if( $jornada == 'manana' ) {
+		return 'Mañana';
+	} elseif( $jornada == 'tarde') {
+		return 'Tarde';
+	} elseif( $jornada == 'ambas') {
+		return 'Ambas';
+	} else {
+		return $jornada;
+	}
 
 }
 

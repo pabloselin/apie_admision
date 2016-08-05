@@ -28,19 +28,19 @@
 	<div>
 		<div class="radio">
 			<label>
-			<input type="radio" name="jornada" value="morning">
+			<input type="radio" name="jornada" value="manana">
 				<span class="lname">Mañana</span>
 			</label>
 		</div>
 		<div class="radio">
 			<label>
-			<input type="radio" name="jornada" value="morning">
+			<input type="radio" name="jornada" value="tarde">
 				<span class="lname">Tarde</span>
 			</label>
 		</div>
 		<div class="radio">
 			<label>
-			<input type="radio" name="jornada" value="morning">
+			<input type="radio" name="jornada" value="ambos">
 				<span class="lname">Ambas</span>
 			</label>
 		</div>

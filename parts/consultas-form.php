@@ -1,5 +1,5 @@
-<!--formulario-->
 <?php
+//Formulario
 if($_POST && $_POST['consultas_nonce']) {
 		$nonce = $_POST['consultas_nonce'];
 	};
@@ -51,4 +51,4 @@ if($_POST && $nonce) {
 					</div>
 				</form>
 
-<?php };?>
+<?php };

@@ -18,8 +18,8 @@ TODO:
 */
 
 global $dbver;
-$dbver = '1.61';
-$tbname = $wpdb->prefix . 'postulaciones';
+$dbver = '1.63';
+
 
 
 //Crear directorios
@@ -31,6 +31,7 @@ define( 'FPOST_FROMMAIL', 'admision@ciademaria.cl');
 define( 'FPOST_FONO', '+562 236 359 00');
 //Prefijo para algunas cosas
 define( 'FPOST_PREFIX', 'cma_');
+define( 'FPOST_TABLENAME', 'postulaciones');
  
 //Cambia los mails según.
 if(get_bloginfo('url') == 'http://admision.ciademaria.cl'):
@@ -58,18 +59,18 @@ include( plugin_dir_path( __FILE__ ) . 'consultas.php' );
 function fpost_table() {
 	global $wpdb;
 	global $dbver;
-	global $tbname;
+
+	$tbname = $wpdb->prefix . FPOST_TABLENAME;
+
 	$actver = get_option('fpost_dbver');
 	$charset_collate = $wpdb->get_charset_collate();
-	//Datos a recopilar
-	//Nombre apoderado
-	//Teléfono
-	//Email
-	//Nombre alumno
-	//Curso postula
-	//Fecha de inscripción
+	
+	//id: ID
+	//time: fecha de inscripción
+	//type: tipo de envío (consulta o postulación)
+	//data: los datos enviados
 	$sql = "CREATE TABLE $tbname (
-			id mediumint(9) NOT NULL AUTO_INCREMENT = 201,
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
 			time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 			type text NOT NULL,
 			data text NOT NULL,
@@ -95,7 +96,9 @@ register_activation_hook( __FILE__, 'fpost_table' );
 //Llamar inscritos y devolver un array
 function fpost_getdata() {
 	global $wpdb;
-	global $tbname;
+	
+	$tbname = $wpdb->prefix . FPOST_TABLENAME;
+
 	$inscritos = $wpdb->get_results("SELECT * FROM $tbname WHERE type LIKE 'postulacion'");
 	return $inscritos;
 } 
@@ -103,7 +106,9 @@ function fpost_getdata() {
 //Llamar inscritos y devolver un array
 function fpost_getconsultas() {
 	global $wpdb;
-	global $tbname;
+	
+	$tbname = $wpdb->prefix . FPOST_TABLENAME;
+
 	$consultas = $wpdb->get_results("SELECT * FROM $tbname WHERE type LIKE 'consulta'");
 	return $consultas;
 } 
@@ -119,7 +124,9 @@ function fpost_form() {
 //Insertar datos en tabla
 function fpost_putserialdata($data) {
 	global $wpdb;
-	global $tbname;
+	
+	$tbname = $wpdb->prefix . FPOST_TABLENAME;
+
 	$timestamp = current_time('mysql');
 	$insert = $wpdb->insert(
 						$tbname,
@@ -177,7 +184,9 @@ function fpost_putserialdata($data) {
 //Insertar datos en tabla
 function fpost_putdata($data) {
 	global $wpdb;
-	global $tbname;
+	
+	$tbname = $wpdb->prefix . FPOST_TABLENAME;
+	
 	$insert = $wpdb->insert(
 						$tbname,
 						array(

@@ -48,4 +48,3 @@ if($_POST && $nonce){
 <?php	
 //end conditional output	
 		}
-?>
