@@ -506,7 +506,7 @@ function fpost_styleandscripts() {
 		wp_register_style( 'postulacion', plugins_url('/css/postulacion.css', __FILE__), 'screen', array() );
 		
 		wp_register_script( 'modernizr', plugins_url('/lib/modernizr/modernizr.js', __FILE__ ), array(), '3.2.0', false);
-		wp_register_script( 'funciones-postulacion', plugins_url('/js/funciones-postulacion.js', __FILE__), array('jqvalidate', 'pickadate'), '1.0', false);
+		wp_register_script( 'funciones-postulacion', plugins_url('/js/funciones-postulacion.js', __FILE__), array('jqvalidate', 'pickadate'), '1.0.1', false);
 		wp_register_script( 'jquery-rut', plugins_url('/js/jquery.rut.min.js', __FILE__ ), array(), '0.5', false);
 		wp_register_script( 'jqvalidate', plugins_url('/lib/jquery-validation/dist/jquery.validate.min.js', __FILE__), array('jquery-rut'), '1.14.0', false);
 
