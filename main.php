@@ -18,7 +18,7 @@ TODO:
 */
 
 global $dbver;
-$dbver = '1.6';
+$dbver = '1.61';
 $tbname = $wpdb->prefix . 'postulaciones';
 
 
@@ -69,7 +69,7 @@ function fpost_table() {
 	//Curso postula
 	//Fecha de inscripción
 	$sql = "CREATE TABLE $tbname (
-			id mediumint(9) NOT NULL AUTO_INCREMENT,
+			id mediumint(9) NOT NULL AUTO_INCREMENT = 201,
 			time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 			type text NOT NULL,
 			data text NOT NULL,
