@@ -34,7 +34,9 @@ function fpost_consultasvalidate() {
 }
 
 function fpost_putserialdata_consultas($data) {
-	global $wpdb, $tbname;
+	global $wpdb;
+
+	$tbname = $wpdb->prefix . FPOST_TABLENAME;
 	$s_data = serialize($data);
 	$insert = $wpdb->insert(
 		$tbname,
