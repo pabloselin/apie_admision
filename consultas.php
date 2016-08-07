@@ -72,25 +72,57 @@ function fpost_consultas_mails($data) {
 	$mailapoderado = $data['email_consultas'];
 	$mailadmins = FPOST_TOMAILS;
 
-	$mensajeapoderado = '
-	<p style="text-align:center;"><img src="' . FPOST_LOGO. '" alt="' . FPOST_NCOLEGIO .'"></p>
-	<p>Estimado/a ' . $data['nombre_consultas'] .'</p>
-	<p>Gracias por enviarnos tu consulta a ' . FPOST_NCOLEGIO . '. Te contactaremos a la brevedad.</p>
-	<p>&nbsp;</p>
-	<p>Muchas gracias por su interés.<br>
-	Afectuosamente<br>
-	<strong>'.FPOST_NCOLEGIO.'</strong></p>
-	<p><strong>Correo: </strong> '.FPOST_FROMMAIL.' <br>
-	<strong>Teléfono: </strong> <a href="tel:'.FPOST_FONO.'">'.FPOST_FONO.'</a>  <br>
-	<strong>Web: </strong><a href="'.get_bloginfo('url').'">'.get_bloginfo('url').'</a></p>
-	';
-	$mensajeadmin = '
-		<p>Alguien envió un mail de consulta en ' . FPOST_NCOLEGIO . '</p>
-		<p><strong>Nombre:</strong>' . $data['nombre_consultas']. '</p>
-		<p><strong>Mensaje:</strong></p>
-		<p>' . $data['mensaje_consultas'] . '</p>
-		<p><strong>Teléfono:</strong> +56 9 ' . $data['fono_consultas']. '</p>
-		<p><strong>Email:</strong>' . $data['email_consultas']. '</p>';
+	$mensajeapoderado = '<style>table p {line-height:1,4em;}</style>
+		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;border:1px solid #ccc;">
+		<tr>
+			<td style="background-color:white;color:#333;">
+				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.FPOST_NCOLEGIO.'</h1></p>
+				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Consulta enviada en ' . FPOST_NCOLEGIO . '</h3>
+			</td> 
+		</tr>
+			<tr>
+				<td>
+					<p>Estimado/a, hemos recibido exitosamente su consulta. Nos pondremos en contacto con usted vía teléfono o correo.</p>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<p>Muchas gracias por su interés.<br>
+				Afectuosamente<br>
+				<strong>'.FPOST_NCOLEGIO.'</strong></p>
+				<p><strong>Correo: </strong> '.FPOST_FROMMAIL.' <br>
+				<strong>Teléfono: </strong> <a href="tel:'.FPOST_FONO.'">'.FPOST_FONO.'</a>  <br>
+				<strong>Web: </strong><a href="'.get_bloginfo('url').'">'.get_bloginfo('url').'</a></p>
+				</td>
+				</tr>
+			</table>';
+
+
+		$mensajeadmin = '<style>table p {line-height:1,4em;}</style>
+		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;border:1px solid #ccc;">
+		<tr>
+			<td style="background-color:white;color:#333;">
+				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.FPOST_NCOLEGIO.'</h1></p>
+				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Consulta enviada en ' . FPOST_NCOLEGIO . '</h3>
+			</td> 
+		</tr>
+			<tr>
+				<td>
+					<p>Alguien envío un correo de consultas a través del formulario del sitio de admisión en ' . FPOST_NCOLEGIO .'.</p>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<p><strong>Nombre:</strong>' . $data['nombre_consultas']. '</p>
+				<p><strong>Mensaje:</strong></p>
+				<p>' . $data['mensaje_consultas'] . '</p>
+				<p><strong>Teléfono:</strong> +56 9 ' . $data['fono_consultas']. '</p>
+				<p><strong>Email:</strong>' . $data['email_consultas']. '</p>
+				</td>
+				</tr>
+			</table>';
 
 	add_filter('wp_mail_content_type', 'fpost_content_type_html');
 
