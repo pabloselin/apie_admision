@@ -336,8 +336,12 @@ function fpost_content_type_plain() {
 //Envío de correos
 function fpost_mails($data) {
 	
+	add_filter('wp_mail_content_type', 'fpost_content_type_html');
+
 	$mailapoderado = fpost_mailapoderado( $data );
 	$mailadmin = fpost_mailadmin( $data );
+
+	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
 
 	if($mailapoderado == true && $mailadmin == true) {
 
@@ -421,15 +425,12 @@ function fpost_mailadmin($data) {
 		$headers[] = 'Bcc: "' . $extramail . '"';
 
 	endforeach;
-	
+
 	$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <'.FPOST_FROMMAIL.'>';
 	$headers[] = 'Reply-To: "' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado']. ' <' . $data['email_apoderado'] . '>';
 	
-	add_filter('wp_mail_content_type', 'fpost_content_type_html');
 
 	$mailadmin = wp_mail( $admins, 'Postulación '. FPOST_NCOLEGIO , $mensajeadmin, $headers);
-
-	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
 
 	return $mailadmin;
 
@@ -510,11 +511,9 @@ function fpost_mailapoderado( $data ) {
 	$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <'.FPOST_FROMMAIL.'>';
 	$headers[] = 'Reply-To: "' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado']. ' <' . $data['email_apoderado'] . '>';
 
-	add_filter('wp_mail_content_type', 'fpost_content_type_html');
+	
 
 	$mailapoderado = wp_mail( $data['email_apoderado'], 'Postulación ' . FPOST_NCOLEGIO, $mensajeapoderado, $headers);
-
-	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
 
 	return $mailapoderado;
 }
