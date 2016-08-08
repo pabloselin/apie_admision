@@ -38,13 +38,13 @@ if(get_bloginfo('url') == 'http://admision.ciademaria.cl'):
 
 	define( 'FPOST_TOMAILS', 'admision@ciademaria.cl');
 	
-	define( 'FPOST_EXTRAMAILS', 'luis.rivera@ciademaria.cl, pablo@apie.cl, jorgeloayza@gmail.com, pablobravo@apie.cl');
+	define( 'FPOST_EXTRAMAILS', 'luis.rivera@ciademaria.cl,pablo@apie.cl,jorgeloayza@gmail.com,pablobravo@apie.cl');
 
 else:
 	
 	define( 'FPOST_TOMAILS', 'contacto@apie.cl');
 
-	define( 'FPOST_EXTRAMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com, pablobravo@apie.cl');
+	define( 'FPOST_EXTRAMAILS', 'pabloselin@gmail.com,jorgeloayza@gmail.com,jorge.loayza@yahoo.cl');
 
 endif;
 
@@ -416,7 +416,7 @@ function fpost_mailadmin($data) {
 					';
 	$admins = FPOST_TOMAILS;
 
-	$extramails = explode( ', ', FPOST_EXTRAMAILS );
+	$extramails = explode( ',', FPOST_EXTRAMAILS );
 
 	$headers[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';	
 	
