@@ -418,16 +418,16 @@ function fpost_mailadmin($data) {
 
 	$extramails = explode( ',', FPOST_EXTRAMAILS );
 
-	$headers[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';	
+	$headers['From'] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';	
 	
 	foreach($extramails as $extramail):
 
-		$headers[] = 'Bcc: "' . $extramail . '"';
+		$headers[] = 'Bcc: ' . $extramail;
 
 	endforeach;
 
-	$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <'.FPOST_FROMMAIL.'>';
-	$headers[] = 'Reply-To: "' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado']. ' <' . $data['email_apoderado'] . '>';
+	$headers['Sender'] = 'Sender: "' . FPOST_NCOLEGIO . ' <'.FPOST_FROMMAIL.'>';
+	$headers['Reply-To'] = 'Reply-To: "' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado']. ' <' . $data['email_apoderado'] . '>';
 	
 
 	$mailadmin = wp_mail( $admins, 'Postulación '. FPOST_NCOLEGIO , $mensajeadmin, $headers);
