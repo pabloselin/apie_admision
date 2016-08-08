@@ -36,11 +36,16 @@ define( 'FPOST_TABLENAME', 'postulaciones');
 //Cambia los mails según.
 if(get_bloginfo('url') == 'http://admision.ciademaria.cl'):
 
-	define( 'FPOST_TOMAILS', 'admision@ciademaria.cl, luis.rivera@ciademaria.cl, pablo@apie.cl, jorgeloayza@gmail.com, pablobravo@apie.cl');
+	define( 'FPOST_TOMAILS', 'admision@ciademaria.cl');
+	
+	define( 'FPOST_EXTRAMAILS', 'luis.rivera@ciademaria.cl, pablo@apie.cl, jorgeloayza@gmail.com, pablobravo@apie.cl');
 
 else:
 	
-	define( 'FPOST_TOMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com');
+	define( 'FPOST_TOMAILS', 'contacto@apie.cl');
+
+	define( 'FPOST_EXTRAMAILS', 'pabloselin@gmail.com, jorgeloayza@gmail.com, pablobravo@apie.cl');
+
 endif;
 
 define( 'FPOST_LOGO', plugins_url( 'img/logo_cma.png', __FILE__ ) );
@@ -330,6 +335,108 @@ function fpost_content_type_plain() {
 
 //Envío de correos
 function fpost_mails($data) {
+	
+	$mailapoderado = fpost_mailapoderado( $data );
+	$mailadmin = fpost_mailadmin( $data );
+
+	if($mailapoderado == true && $mailadmin == true) {
+
+		return '<div class="alert alert-success"><i class="fa fa-check"></i> <i class="fa fa-envelope"></i></div>';
+
+	} else {
+
+		return '<div class="alert alert-error"><i class="fa fa-times"></i> <i class="fa fa-envelope"></i></div>';
+
+	}
+}
+
+function fpost_mailadmin($data) {
+		$mensajeadmin = '';
+		$mensajeadmin .= '<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:white;border:1px solid #ccc;">
+					<tr>
+						<td style="background-color:white;color:#333;">
+							<p style="text-align:center;"><img src="'. FPOST_LOGO .'" alt="'.FPOST_NCOLEGIO.'"><br></p>
+
+							<h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.FPOST_NCOLEGIO.'</h1>
+
+							<h3 style="text-align:center;font-size:18px;font-weight:normal;">Se ha enviado una postulación a ' . FPOST_NCOLEGIO . ' para el año '. $data['postulacion_year'] .'</h3>
+						</td> 
+					</tr>
+					
+					<tr>
+						<td>
+							<h4>Datos</h4>
+							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] . '</p>
+							<p><strong>Teléfono Apoderado(a): </strong>+56 9 ' . $data['fono_apoderado'] . '</p>';
+
+				if($data['fonofijo_apoderado']):
+						$mensajeadmin .= '<p><strong>Teléfono Fijo Apoderado(a): </strong>+56 2 ' . $data['fonofijo_apoderado'] . '</p>';
+				endif;
+
+			$mensajeadmin .=	'<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
+							<p><strong>RUT apoderado: </strong>' . $data['rut_apoderado'] .'</p>
+
+							
+						</td>
+
+					</tr>
+					<tr>
+						<td>
+						<h4>Datos del Alumno</h4>
+							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula']) .'</p>';
+
+			if( isset($data['jornada']) ):
+
+					$mensajeadmin .= '<p><strong>Preferencia de jornada: </strong>' . fpost_formatjornada($data['jornada']) . '</p>';
+
+			endif;
+
+
+			$mensajeadmin .= '<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . ' </p>
+							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
+							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>
+							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
+						</td>
+					</tr>	
+					<tr>
+						<td>
+						<h4>Datos adicionales</h4>
+
+							<p><strong>Consulta adicional: </strong>' .$data['postulacion_mensaje'].'</p>
+							<p><strong>Como se enteró del colegio: </strong>' .$data['xtra_apoderado'].'</p>
+							<p><strong>Fecha y hora de envío: </strong>' . mysql2date( 'j F, G:i', $data['timestamp'] ) .'</p>
+							<p><strong>Número identificador (ID): </strong>' .$data['ID'].'</p>
+						</td>
+					</tr>	
+					</table>
+					';
+	$admins = FPOST_TOMAILS;
+
+	$extramails = explode( ', ', FPOST_EXTRAMAILS );
+
+	$headers[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';	
+	
+	foreach($extramails as $extramail):
+
+		$headers[] = 'Bcc: "' . $extramail . '"';
+
+	endforeach;
+	
+	$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <'.FPOST_FROMMAIL.'>';
+	$headers[] = 'Reply-To: "' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado']. ' <' . $data['email_apoderado'] . '>';
+	
+	add_filter('wp_mail_content_type', 'fpost_content_type_html');
+
+	$mailadmin = wp_mail( $admins, 'Postulación '. FPOST_NCOLEGIO , $mensajeadmin, $headers);
+
+	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
+
+	return $mailadmin;
+
+}
+
+function fpost_mailapoderado( $data ) {
+
 	$mensajeapoderado = '<style>table p {line-height:1,4em;}</style>
 		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;border:1px solid #ccc;">
 		<tr>
@@ -398,83 +505,18 @@ function fpost_mails($data) {
 	$mensajeapoderado .=	'</td>
 							</tr>
 						</table>';
-	$mensajeadmin = '
-					<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:white;border:1px solid #ccc;">
-					<tr>
-						<td style="background-color:white;color:#333;">
-							<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br></p>
 
-							<h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.FPOST_NCOLEGIO.'</h1>
-
-							<h3 style="text-align:center;font-size:18px;font-weight:normal;">Se ha enviado una postulación a ' . FPOST_NCOLEGIO . ' para el año '. $data['postulacion_year'] .'</h3>
-						</td> 
-					</tr>
-					
-					<tr>
-						<td>
-							<h4>Datos</h4>
-							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] . '</p>
-							<p><strong>Teléfono Apoderado(a): </strong>+56 9 ' . $data['fono_apoderado'] . '</p>';
-
-				if($data['fonofijo_apoderado']):
-						$mensajeadmin .= '<p><strong>Teléfono Fijo Apoderado(a): </strong>+56 2 ' . $data['fonofijo_apoderado'] . '</p>';
-					endif;
-
-$mensajeadmin .=	'<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
-							<p><strong>RUT apoderado: </strong>' . $data['rut_apoderado'] .'</p>
-
-							
-						</td>
-
-					</tr>
-					<tr>
-						<td>
-						<h4>Datos del Alumno</h4>
-							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula']) .'</p>';
-
-			if( isset($data['jornada']) ):
-
-					$mensajeadmin .= '<p><strong>Preferencia de jornada: </strong>' . fpost_formatjornada($data['jornada']) . '</p>';
-
-			endif;
-
-
-			$mensajeadmin .= '<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . ' </p>
-							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
-							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>
-							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
-						</td>
-					</tr>	
-					<tr>
-						<td>
-						<h4>Datos adicionales</h4>
-
-							<p><strong>Consulta adicional: </strong>' .$data['postulacion_mensaje'].'</p>
-							<p><strong>Como se enteró del colegio: </strong>' .$data['xtra_apoderado'].'</p>
-							<p><strong>Fecha y hora de envío: </strong>' . mysql2date( 'j F, G:i', $data['timestamp'] ) .'</p>
-							<p><strong>Número identificador (ID): </strong>' .$data['ID'].'</p>
-						</td>
-					</tr>	
-					</table>
-					';
-	$admins = FPOST_TOMAILS;
-	
 	$headers[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
 	$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <'.FPOST_FROMMAIL.'>';
 	$headers[] = 'Reply-To: "' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado']. ' <' . $data['email_apoderado'] . '>';
-	
+
 	add_filter('wp_mail_content_type', 'fpost_content_type_html');
 
 	$mailapoderado = wp_mail( $data['email_apoderado'], 'Postulación ' . FPOST_NCOLEGIO, $mensajeapoderado, $headers);
-	$mailadmin = wp_mail( $admins, 'Postulación '. FPOST_NCOLEGIO , $mensajeadmin, $headers);
 
 	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
 
-	if($mailapoderado && $mailadmin) {
-		return '<div class="alert alert-success"><i class="fa fa-check"></i> <i class="fa fa-envelope"></i></div>';
-	} else {
-		return '<div class="alert alert-error"><i class="fa fa-times"></i> <i class="fa fa-envelope"></i></div>';
-	}
+	return $mailapoderado;
 }
 
 //Scripts y estilos extras
