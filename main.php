@@ -430,7 +430,7 @@ function fpost_mailadmin($data) {
 	$headers['Reply-To'] = 'Reply-To: "' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado']. ' <' . $data['email_apoderado'] . '>';
 	
 
-	$mailadmin = wp_mail( $admins, 'Postulación '. FPOST_NCOLEGIO . ' - ID: ' . $data['ID'], $mensajeadmin, $headers);
+	$mailadmin = wp_mail( $admins, 'ID: ' . $data['ID'] . ' - Postulación '. FPOST_NCOLEGIO, $mensajeadmin, $headers);
 
 	return $mailadmin;
 
