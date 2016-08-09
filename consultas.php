@@ -49,8 +49,10 @@ function fpost_putserialdata_consultas($data) {
 	$lastid = $wpdb->insert_id;
 
 	//Mando el mail de consultas
-	
-	
+	//Agrego el ID a los datos
+	$data['ID'] = $lastid;	
+	xdebug_break();
+
 	if($lastid) {
 		$output = fpost_consultas_mails($data);
 	} else {
@@ -63,7 +65,7 @@ function fpost_putserialdata_consultas($data) {
 
 function fpost_consultas_mails($data) {
 
-	$headers[] = 'From:'.FPOST_NCOLEGIO.'<'.FPOST_FROMMAIL.'>';
+	$headers[] = 'From: "' . FPOST_NCOLEGIO . '"<'.FPOST_FROMMAIL.'>';
 	//$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <wordpress@admision.ciademariaseminario.cl>';
 	$headers[] = 'Reply-To:' . $data['email_consultas'];
 
@@ -128,7 +130,7 @@ function fpost_consultas_mails($data) {
 
 	$enviadorapoderado = wp_mail( $mailapoderado, 'Consulta en ' . FPOST_NCOLEGIO, $mensajeapoderado, $headersapoderado);
 
-	$enviadoradmins = wp_mail( $mailadmins, 'Consulta en '. FPOST_NCOLEGIO , $mensajeadmin, $headers);
+	$enviadoradmins = wp_mail( $mailadmins, 'Consulta en '. FPOST_NCOLEGIO . ' - ID: ' . $data['ID'], $mensajeadmin, $headers);
 
 	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
 
