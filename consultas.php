@@ -38,10 +38,11 @@ function fpost_putserialdata_consultas($data) {
 
 	$tbname = $wpdb->prefix . FPOST_TABLENAME;
 	$s_data = serialize($data);
+	$timestamp = current_time('mysql');
 	$insert = $wpdb->insert(
 		$tbname,
 		array(
-			'time' => current_time('mysql'),
+			'time' => $timestamp,
 			'type' => 'consulta',
 			'data' => $s_data
 			)
@@ -50,7 +51,10 @@ function fpost_putserialdata_consultas($data) {
 
 	//Mando el mail de consultas
 	//Agrego el ID a los datos
-	$data['ID'] = $lastid;	
+	$data['ID'] = $lastid;
+
+	//Agrego la fecha y hora a los datos
+	$data['timestamp'] = $timestamp;
 
 	if($lastid) {
 		$output = fpost_consultas_mails($data);
@@ -128,8 +132,10 @@ function fpost_consultas_mails($data) {
 				<p><strong>Nombre:</strong>' . $data['nombre_consultas']. '</p>
 				<p><strong>Mensaje:</strong></p>
 				<p>' . $data['mensaje_consultas'] . '</p>
-				<p><strong>Teléfono:</strong> +56 9 ' . $data['fono_consultas']. '</p>
+				<p><strong>Teléfono:</strong> <a href="+56 9 ' . $data['fono_consultas'] . '">+56 9 ' . $data['fono_consultas']. '</a></p>
 				<p><strong>Email:</strong>' . $data['email_consultas']. '</p>
+				<p><strong>ID Consulta:</strong> ' . $data['ID']. '</p>
+				<p><strong>Fecha y hora de envío: </strong>' . mysql2date( 'j F, G:i', $data['timestamp'] ) .'</p>
 				</td>
 				</tr>
 			</table>';

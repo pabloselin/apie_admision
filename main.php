@@ -355,6 +355,15 @@ function fpost_mails($data) {
 }
 
 function fpost_mailadmin($data) {
+
+		$f_fono_apoderado = '+56 9 ' . $data['fono_apoderado'];
+
+		if( isset($data['fonofijo_apoderado']) ):
+
+			$f_fonofijo_apoderado = '+56 2 ' . $data['fonofijo_apoderado'];
+
+		endif;
+
 		$mensajeadmin = '';
 		$mensajeadmin .= '<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:white;border:1px solid #ccc;">
 					<tr>
@@ -371,10 +380,12 @@ function fpost_mailadmin($data) {
 						<td>
 							<h4>Datos</h4>
 							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] . '</p>
-							<p><strong>Teléfono Apoderado(a): </strong>+56 9 ' . $data['fono_apoderado'] . '</p>';
+							<p><strong>Teléfono Apoderado(a): </strong> <a href="tel:' . $f_fono_apoderado . '">' . $f_fono_apoderado . '</a> </p>';
 
 				if($data['fonofijo_apoderado']):
-						$mensajeadmin .= '<p><strong>Teléfono Fijo Apoderado(a): </strong>+56 2 ' . $data['fonofijo_apoderado'] . '</p>';
+					
+						$mensajeadmin .= '<p><strong>Teléfono Fijo Apoderado(a): </strong> <a href="tel:' . $f_fonofijo_apoderado . '">' . $f_fonofijo_apoderado . '</a></p>';
+
 				endif;
 
 			$mensajeadmin .=	'<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
@@ -399,8 +410,15 @@ function fpost_mailadmin($data) {
 			$mensajeadmin .= '<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . ' </p>
 							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
 							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>
-							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
-						</td>
+							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>';
+
+			if( isset($data['procedencia_alumno']) ) {
+
+				$mensajeadmin .= '<p><strong>Jardín o colegio del cual proviene:</strong>: ' . $data['procedencia_alumno'].'</p>';
+
+			}
+
+			$mensajeadmin .= '</td>
 					</tr>	
 					<tr>
 						<td>
