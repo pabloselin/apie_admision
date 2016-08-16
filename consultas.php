@@ -64,11 +64,20 @@ function fpost_putserialdata_consultas($data) {
 
 function fpost_consultas_mails($data) {
 
-	$headers[] = 'From: "' . FPOST_NCOLEGIO . '"<'.FPOST_FROMMAIL.'>';
-	//$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <wordpress@admision.ciademariaseminario.cl>';
-	$headers[] = 'Reply-To:' . $data['email_consultas'];
+	$headers['From'] = 'From: "' . FPOST_NCOLEGIO . '"<'.FPOST_FROMMAIL.'>';
+	$headers['Sender'] = 'Sender: "' . FPOST_NCOLEGIO . ' <'.FPOST_FROMMAIL.'>';
+	$headers['Reply-To'] = 'Reply-To:' . $data['email_consultas'];
 
-	$headersapoderado[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
+	$extramails = explode( ',', FPOST_EXTRAMAILS );
+
+	foreach($extramails as $extramail):
+
+		$headers[] = 'Bcc: ' . $extramail;
+
+	endforeach;
+
+
+	$headersapoderado['From'] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
 
 	$mailapoderado = $data['email_consultas'];
 	$mailadmins = FPOST_TOMAILS;
@@ -130,6 +139,8 @@ function fpost_consultas_mails($data) {
 	$enviadorapoderado = wp_mail( $mailapoderado, 'Consulta en ' . FPOST_NCOLEGIO, $mensajeapoderado, $headersapoderado);
 
 	$enviadoradmins = wp_mail( $mailadmins, 'ID: ' . $data['ID'] . ' - Consulta en '. FPOST_NCOLEGIO, $mensajeadmin, $headers);
+
+	
 
 	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
 

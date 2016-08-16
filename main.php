@@ -38,7 +38,7 @@ if(get_bloginfo('url') == 'http://admision.ciademaria.cl'):
 
 	define( 'FPOST_TOMAILS', 'admision@ciademaria.cl');
 	
-	define( 'FPOST_EXTRAMAILS', 'luis.rivera@ciademaria.cl,pablo@apie.cl,jorgeloayza@gmail.com,pablobravo@apie.cl');
+	define( 'FPOST_EXTRAMAILS', 'luis.rivera@ciademaria.cl, director@ciademaria.cl, pablo@apie.cl,jorgeloayza@gmail.com,pablobravo@apie.cl');
 
 else:
 	
