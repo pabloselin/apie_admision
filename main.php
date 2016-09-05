@@ -232,7 +232,17 @@ function fpost_validate() {
 		$data['postulacion_year'] = sanitize_text_field( $_POST['postulacion_year'] );
 		$data['nombre_alumno'] = sanitize_text_field( $_POST['nombre_alumno'] );
 		$data['apellido_alumno'] = sanitize_text_field( $_POST['apellido_alumno'] );
-		$data['rut_alumno'] = sanitize_text_field( $_POST['rut_alumno'] );
+
+		if($_POST['tipo_documento_alumno'] == 'rut') {
+
+			$data['rut_alumno'] = sanitize_text_field( $_POST['rut_alumno'] );	
+
+		} else {
+
+			$data['otrodoc_alumno'] = sanitize_text_field( $_POST['otrodoc_alumno'] );
+
+		}
+		
 		$data['alumno_fecha_nacimiento'] = sanitize_text_field( $_POST['alumno_fecha_nacimiento'] );
 		$data['procedencia_alumno'] = sanitize_text_field( $_POST['procedencia_alumno'] );
 		
@@ -256,7 +266,17 @@ function fpost_validate() {
 		//Sanitizar apoderado
 
 		$data['nombre_apoderado'] = sanitize_text_field( $_POST['nombre_apoderado'] );
-		$data['rut_apoderado'] = sanitize_text_field( $_POST['rut_apoderado'] );
+
+		if( $_POST['tipo_documento_apoderado'] == 'rut' ) {
+
+			$data['rut_apoderado'] = sanitize_text_field( $_POST['rut_apoderado'] );	
+
+		} else {
+
+			$data['otrodoc_apoderado'] = sanitize_text_field( $_POST['otrodoc_apoderado'] );
+
+		}
+		
 		$data['apellido_apoderado'] = sanitize_text_field( $_POST['apellido_apoderado'] );
 		$data['fono_apoderado'] = sanitize_text_field( $_POST['fono_apoderado'] );
 		$data['fonofijo_apoderado'] = sanitize_text_field( $_POST['fonofijo_apoderado'] );
@@ -388,11 +408,21 @@ function fpost_mailadmin($data) {
 
 				endif;
 
-			$mensajeadmin .=	'<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
-							<p><strong>RUT apoderado: </strong>' . $data['rut_apoderado'] .'</p>
+			$mensajeadmin .=	'<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>';
+
+			if( isset($data['rut_apoderado']) ) {
+
+				$mensajeadmin .= '<p><strong>RUT apoderado: </strong>' . $data['rut_apoderado'] .'</p>';
+
+			} else {
+
+				$mensajeadmin .= '<p><strong>Doc. Identificación Apoderado: </strong>' . $data['otrodoc_apoderado'] .'</p>';
+
+			}
+			
 
 							
-						</td>
+			$mensajeadmin .= '</td>
 
 					</tr>
 					<tr>
@@ -407,9 +437,22 @@ function fpost_mailadmin($data) {
 			endif;
 
 
-			$mensajeadmin .= '<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . ' </p>
-							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
-							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>
+			$mensajeadmin .= '<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . ' </p>';
+
+
+			if( isset($data['rut_alumno']) ) {
+
+				$mensajeadmin .= '<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>';
+
+			} else {
+
+				$mensajeadmin .= '<p><strong>Doc. Identificación Alumno: </strong>' . $data['otrodoc_alumno'] .'</p>';
+			}
+
+			
+
+
+			$mensajeadmin .= '<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>
 							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>';
 
 			if( isset($data['procedencia_alumno']) ) {
@@ -474,9 +517,19 @@ function fpost_mailapoderado( $data ) {
 						<td style="border-width:1px 0 1px 0;border-style:dotted;border-color:#ccc;background-color:white;">
 							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Datos del alumno</h4>
 							<p><strong>Nombre Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . '</p>
-							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>
-							<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>
-							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula']) .'</p>';
+							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>';
+
+							if( isset($data['rut_apoderado']) ){
+
+								$mensajeapoderado .= '<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>';
+
+							} else {
+
+								$mensajeapoderado .= '<p><strong>Doc. Identificación Alumno: </strong>' . $data['otrodoc_alumno'] .'</p>';
+							}
+							
+
+							$mensajeapoderado .= '<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula']) .'</p>';
 
 							if( isset($data['jornada']) ) :
 
@@ -488,9 +541,20 @@ function fpost_mailapoderado( $data ) {
 							$mensajeapoderado .= '<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
 							<p>&nbsp;</p>
 							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Datos del apoderado</h4>
-							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] .'</p>
-							<p><strong>RUT apoderado: </strong>' . $data['rut_apoderado'] .'</p>
-							<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono_apoderado'] . '</p>';
+							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] .'</p>';
+
+							if( isset($data['rut_apoderado'])) {
+
+								$mensajeapoderado .= '<p><strong>RUT apoderado: </strong>' . $data['rut_apoderado'] .'</p>';
+
+							} else {
+
+								$mensajeapoderado .= '<p><strong>Doc. Identificación apoderado: </strong>' . $data['otrodoc_apoderado'] .'</p>';
+							}
+
+							
+
+							$mensajeapoderado .= '<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono_apoderado'] . '</p>';
 
 						if($data['fonofijo_apoderado']):
 

@@ -29,7 +29,7 @@ function fpost_doadmin() {
 				<th>E-Mail</th>
 				<th>Teléfono</th>
 				<th>Teléfono Fijo</th>
-				<th>RUT Apoderado</th>
+				<th>RUT / Doc. Id. Apoderado</th>
 
 				<th>Año de postulación</th>
 				<th>Datos Alumno</th>
@@ -56,14 +56,31 @@ function fpost_doadmin() {
 					<td><?php echo $datos['email_apoderado'];?></td>
 					<td><?php echo $datos['fono_apoderado'];?></td>
 					<td><?php echo $datos['fonofijo_apoderado'];?></td>
+
+				<?php if( isset($datos['rut_apoderado'])):?>	
+					
 					<td><?php echo fpost_formatrut($datos['rut_apoderado']);?> <!--Original: <?php echo $datos['rut_apoderado'];?>--></td>
+
+				<?php else:?>
+
+					<td> <?php echo 'Doc.Id.:' . $datos['otrodoc_apoderado'];?> </td>
+
+				<?php endif;?>
 					
 					<td><?php echo $datos['postulacion_year'];?></td>
 
 					<td>
 						<p><strong><?php echo $datos['nombre_alumno'];?> <?php echo $datos['apellido_alumno'];?></strong></p>
 
-						<p><strong>RUT: </strong><?php echo fpost_formatrut($datos['rut_alumno']);?></p>
+						<?php if( isset($datos['rut_alumno'])):?>
+
+							<p><strong>RUT: </strong><?php echo fpost_formatrut($datos['rut_alumno']);?></p>
+
+						<?php else:?>
+
+							<p><strong>Doc. Identificación: </strong><?php echo $datos['otrodoc_alumno'];?></p>
+
+						<?php endif;?>
 						
 						<p><strong>Fecha de nacimiento: </strong><?php echo ( isset($datos['alumno_fecha_nacimiento']) ? $datos['alumno_fecha_nacimiento'] : '' );?></p>
 
@@ -160,7 +177,7 @@ function fpost_csv() {
 
 	$output = fopen(FPOST_CSVPATH . $filename, 'w');
 
-	fputcsv($output, array('ID', 'Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)','Fono fijo apoderado(a)', 'RUT Apoderado', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'RUT Alumno(a)', 'Curso al que postula','Preferencia de jornada', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
+	fputcsv($output, array('ID', 'Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)','Fono fijo apoderado(a)', 'RUT /Doc. ID Apoderado', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'RUT Alumno(a)', 'Curso al que postula','Preferencia de jornada', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
 
 	foreach($inscritos as $inscrito) {
 		
@@ -176,10 +193,10 @@ function fpost_csv() {
 		$inscarr[] = $arrdata['email_apoderado'];
 		$inscarr[] = $arrdata['fono_apoderado'];
 		$inscarr[] = $arrdata['fonofijo_apoderado'];
-		$inscarr[] = fpost_formatrut($arrdata['rut_apoderado']);
+		$inscarr[] = (isset($arrdata['rut_apoderado']) ? fpost_formatrut($arrdata['rut_apoderado']) : $arrdata['otrodoc_apoderado']);
 		$inscarr[] = $arrdata['nombre_alumno'] . ' ' . $arrdata['apellido_alumno'];
 		$inscarr[] = $arrdata['alumno_fecha_nacimiento'];
-		$inscarr[] = fpost_formatrut($arrdata['rut_alumno']);
+		$inscarr[] = (isset($arrdata['rut_alumno']) ? fpost_formatrut($arrdata['rut_alumno']) : $arrdata['otrodoc_alumno']);
 		$inscarr[] = fpost_cursequi($arrdata['curso_postula']);
 		$inscarr[] = ( isset($arrdata['jornada'])? fpost_formatjornada($arrdata['jornada']) : '' );
 		$inscarr[] = $arrdata['postulacion_year'];

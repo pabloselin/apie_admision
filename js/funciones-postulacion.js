@@ -156,7 +156,20 @@ $(document).ready(function() {
 			},
 			otrocurso: {
 				required: true
+			},
+			tipo_documento_apoderado: {
+				required: true
+			},
+			tipo_documento_alumno: {
+				required: true
+			},
+			otrodoc_apoderado: {
+				required: true
+			},
+			otrodoc_alumno: {
+				required: true
 			}
+
 		},
 		errorPlacement: function(error, element) {
 			if(element.attr('name') == 'year') {
@@ -235,6 +248,20 @@ $(document).ready(function() {
 				otrocurso.hide().removeClass('visible').addClass('hidden');
 			}
 		}
+	});
+
+	//Cambiador para doc extranjero
+	
+	$('.tipodocal-post input[name="tipo_documento_alumno"]').on('change', function(event) {
+		var selected = $(this).attr('data-toggle');
+		$('.docfieldal').hide().removeClass('visible');
+		$( '#' + selected ).show().addClass('visible').removeClass('hidden');
+	});
+
+	$('.tipodocparent-post input[name="tipo_documento_apoderado"]').on('change', function(event) {
+		var selected = $(this).attr('data-toggle');
+		$('.docfieldpar').hide().removeClass('visible');
+		$( '#' + selected ).show().addClass('visible').removeClass('hidden');
 	});
 
 
