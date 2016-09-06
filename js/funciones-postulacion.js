@@ -251,6 +251,19 @@ $(document).ready(function() {
 	});
 
 	//Cambiador para doc extranjero
+		
+	//inicializar
+	var valapselect = $('input[name="tipo_documento_apoderado"]:checked').attr('data-toggle');
+
+	$('.docfieldpar').hide().removeClass('visible');
+	$( '#' + valapselect ).show().addClass('visible').removeClass('hidden');
+
+	var valalselect = $('input[name="tipo_documento_alumno"]:checked').attr('data-toggle');
+
+	$('.docfieldal').hide().removeClass('visible');
+	$( '#' + valalselect ).show().addClass('visible').removeClass('hidden');
+
+
 	
 	$('.tipodocal-post input[name="tipo_documento_alumno"]').on('change', function(event) {
 		var selected = $(this).attr('data-toggle');
