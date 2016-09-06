@@ -23,10 +23,10 @@
 				<br>
 
 
-				<div class="row">
+				<div class="row form-group-delimiter">
 
 				<div class="col-md-10">
-					<h2 class="first">Tipo de documento</h2>
+					<h2 class="subsectionh2">Tipo de documento</h2>
 				</div>
 
 				<div class="form-group tipodocal-control col-md-5">
