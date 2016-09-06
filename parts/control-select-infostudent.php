@@ -44,7 +44,7 @@
 							<div class="radio">
 								<label>
 									<input type="radio" name="tipo_documento_alumno" value="otro" data-toggle="otrodoc_alumno_field">
-									<span class="lname">Otro</span>
+									<span class="lname">Otro (solo extranjeros)</span>
 								</label>
 							</div>
 						</div>

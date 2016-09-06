@@ -39,7 +39,7 @@
 							<div class="radio">
 								<label>
 									<input type="radio" name="tipo_documento_apoderado" value="otro" data-toggle="otrodoc_apoderado_field">
-									<span class="lname">Otro</span>
+									<span class="lname">Otro (solo extranjeros)</span>
 								</label>
 							</div>
 						</div>
