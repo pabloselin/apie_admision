@@ -17,9 +17,9 @@ if( isset($_GET['fpostid'])) {?>
 			<?php echo fpost_fichapostulacion( $_GET['fpostid'] );?>
 
 		</div>
-		<div class="col-md-5">
+		<div class="col-md-5 admin-postulante">
 			
-			<h2>Contactar a este apoderado para comenzar segunda etapa</h2>
+			<h2>Gestión de postulante</h2>
 
 			<?php echo fpost_contact( $_GET['fpostid'] );?>
 			
@@ -35,7 +35,7 @@ if( isset($_GET['fpostid'])) {?>
 		<div class="col-md-10">
 			
 			<?php echo fpost_smalltable();?>
-			
+
 		</div>
 	</div>
 </div>

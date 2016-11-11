@@ -32,7 +32,9 @@ if($_POST && $nonce){
 
 					echo fpost_fichapostulacion( sanitize_text_field( $_GET['fpostid'] ));
 
-					
+					include( plugin_dir_path( __FILE__ ) . 'control-select-domicilio.php' );
+
+					include( plugin_dir_path( __FILE__ ) . 'control-select-conquienvive.php' );
 
 
 				} else {

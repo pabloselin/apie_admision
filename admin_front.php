@@ -135,24 +135,81 @@ function fpost_contact( $postulacion_id ) {
 	 * Abre un formulario para enviar un mensaje con el link
 	 */
 	
-	$output = '<form class="form-mensaje" action="">';
-	
-	$output .= '<div class="form-group">
-				<label for="mensaje_contacto_segunda_etapa">Mensaje de contacto</label>
-				<textarea class="form-control" name="mensaje_contacto_segunda_etapa">Contenido de pruebas</textarea>
-				</div>';
+	$output = ' <button class="btn btn-success prevmessage" data-toggle="modal" data-target="#prevmessage">Previsualizar mensaje</button>';
 
-	$output .= '<div class="bg-info"><p>Se enviará este mensaje al apoderado junto con un enlace al formulario para completar datos de segunda etapa</p></div>';
-
-	$output .= ' <a href="#" class="btn btn-success">Previsualizar mensaje</a>';
 
 	$output .= ' <a href="' . fpost_secondformlink( $postulacion_id ) . '" class="btn btn-info">Previsualizar formulario</a>';
 
-	$output .= ' <input class="btn btn-danger" type="submit" name="Enviar mensaje" value="Enviar Mensaje"/>';
+	$output .= '<p></p>';
+
+	$output .= '<form class="form-mensaje" action="">';
+	
+	$output .= '<div class="form-group">
+				<label for="mensaje_contacto_segunda_etapa">Mensaje</label>';
+
+	$output .= '<div class="bg-info"><p>Se enviará este mensaje al apoderado junto con un enlace al formulario para completar datos de segunda etapa</p></div>';
+
+	$output .= '<textarea class="form-control" name="mensaje_contacto_segunda_etapa" placeholder="Escribir un mensaje aquí"></textarea>
+				</div>';
+
+	$output .= ' <p></p><p><input class="btn btn-danger btn-lg" type="submit" name="Enviar mensaje" value="Enviar Mensaje"/></p>';
 
 	$output .= '</form>';
 
+	$output .= '<div class="modal fade" id="prevmessage" tabindex="-1" role="dialog" aria-labelledby="modalmensaje">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button class="close" type="button" data-dismiss="modal" aria-label="Cerrar"></button> 
+							<h4 class="modal-title">Previsualizar mensaje </h4>
+						</div>
+						<div class="modal-body">
+							' . fpost_secondmail( $postulacion_id, '<pre class="fill-textarea-repeat"></pre>') . '
+						</div>
+						
+						<div class="modal-footer">
+
+						</div>
+					</div>
+				</div>
+				</div>';
+
 	return $output;
+}
+
+function fpost_secondmail( $postulacion_id, $message ) {
+
+
+	$mensajeapoderado = '<style>table p {line-height:1,4em;}</style>
+		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;">
+		<tr>
+			<td style="background-color:white;color:#333;">
+				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.FPOST_NCOLEGIO.'</h1></p>
+				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Solicitud de datos para continuación de postulación</h3>
+			</td> 
+		</tr>
+			<tr>
+				<td><table style="padding:20px;"><tr><td>';
+
+	$mensajeapoderado .= $message;
+					
+	$mensajeapoderado .= '<p></p><p></p></td></tr></table></td></tr>';
+
+	$mensajeapoderado .= '<tr>
+				<td>
+				<p>Muchas gracias por su interés.<br>
+				Afectuosamente<br>
+				<strong>'.FPOST_NCOLEGIO.'</strong></p>
+				<p><strong>Correo: </strong> '.FPOST_FROMMAIL.' <br>
+				<strong>Teléfono: </strong> <a href="tel:'.FPOST_FONO.'">'.FPOST_FONO.'</a>  <br>
+				<strong>Web: </strong><a href="'.get_bloginfo('url').'">'.get_bloginfo('url').'</a></p>
+				';
+
+	$mensajeapoderado .=	'</td>
+							</tr>
+						</table>';
+
+	return $mensajeapoderado;
 }
 
 function fpost_secondform( $postulacion_id ) {

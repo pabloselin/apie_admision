@@ -9,4 +9,12 @@ $(document).ready(function() {
 		}
 	});
 
+	$('button.prevmessage').on('click', function() {
+
+		var contentmsg = $('textarea[name="mensaje_contacto_segunda_etapa"]').val();
+
+		$('pre.fill-textarea-repeat').empty().html(contentmsg);
+
+	});
+
 });
