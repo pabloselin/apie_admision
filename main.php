@@ -61,6 +61,9 @@ include( plugin_dir_path( __FILE__ ) . 'admin.php' );
 //la parte de las consultas
 include( plugin_dir_path( __FILE__ ) . 'consultas.php' );
 
+//la parte del admin via frontend
+include( plugin_dir_path( __FILE__ ) . 'admin_front.php' );
+
 //Tablas de datos
 function fpost_table() {
 	global $wpdb;
@@ -107,7 +110,22 @@ function fpost_getdata() {
 
 	$inscritos = $wpdb->get_results("SELECT * FROM $tbname WHERE type LIKE 'postulacion'");
 	return $inscritos;
-} 
+}
+
+function fpost_getpostulacion( $postulacion_id ) {
+	/**
+	 * Devuelve una postulación a partir del id
+	 */
+	
+	global $wpdb;
+
+	$tbname = $wpdb->prefix . FPOST_TABLENAME;
+
+	$inscrito = $wpdb->get_row("SELECT * FROM $tbname WHERE type LIKE 'postulacion' AND id LIKE $postulacion_id");
+
+	return $inscrito;
+
+}
 
 //Llamar inscritos y devolver un array
 function fpost_getconsultas() {
@@ -143,47 +161,93 @@ function fpost_putserialdata($data) {
 							)
 						);
 	$lastid = $wpdb->insert_id;
-	$okmess = '<div class="alert alert-success">
-						<p style="text-align:center;font-size:32px;"><i class="fa fa-check fa-2x"></i></p>
-						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
-						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a <strong>'.$data['email_apoderado'].'</strong> (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>
-						</div>';
-	$errmess = '<div class="alert alert-error"><p><i class="fa fa-times"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en ' . FPOST_FROMMAIL . '.</p></div>';
-	if($lastid) {
-		$message = $okmess;
-		$message .=  '<div class="modal fade" id="success" role="dialog" tabindex="-1" aria-labelledby="Inscripción Exitosa en '.FPOST_NCOLEGIO.'" aria-hidden="true">';
-		$message .= '<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-body">
-						'.$okmess.'
-						<div class="modal-footer">
-        				<button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
-      				</div>
-					</div>
-					 
-				</div>
-			</div>';
-	} else {
-		$message = $errmess;
-		$message .= '<div class="modal fade" id="error" role="dialog" tabindex="-1" aria-labelledby="Error en la Inscripción">
-			<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-body">
-					'.$errmess.'
-				</div>
-				<div class="modal-footer">
-        				<button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
-      				</div>
-			</div>
-			</div>
-			</div>';
-	}
+
 	//Enviar mensaje y correr funciones
 	$data['ID'] = $lastid;
 	$data['timestamp'] = $timestamp;
-	$message .= fpost_mails($data);
+	$message = fpost_mails($data);
+
+	if( $message == true && $lastid ) {
+
+		$excode = 1;
+
+	} elseif( $message != true && $lastid) {
+
+		$excode = 2;
+
+	} elseif ( $message == true && !$lastid ) {
+
+		$excode = 3;
+
+	} else {
+
+		$excode = 4;
+
+	}
+
+	$urlargs = array(
+		'excode' => $excode,
+		'idinsc' => $lastid
+		);
+
+	$exiturl = add_query_arg( $urlargs, get_permalink() );
+
+	return $exiturl;
+}
+
+function fpost_exitmessages( $exitcode ) {
+	/**
+	 * Devuelve mensajes según tipo de código de formulario
+	 *
+	 * 1: Todo OK - Mail e Inscripción
+	 * 2: Sólo mail
+	 * 3: Sólo inscripción
+	 * 4: Nada - Error total
+	 */
+	
+	$idinsc = $_GET['idinsc'];
+
+	switch($exitcode):
+
+		case(1):
+			
+			$message = '<div class="alert alert-success">
+						<p style="text-align:center;font-size:32px;"><i class="fa fa-check fa-2x"></i></p>
+						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
+						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a tu correo (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>';
+
+		break;
+
+		case(2):
+
+			$message = '<div class="alert alert-success">
+						<p style="text-align:center;font-size:32px;"><i class="fa fa-check fa-2x"></i></p>
+						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
+						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . '</p>
+
+						<p>Tu postulación quedó grabada, pero no se pudo enviar un correo de confirmación, te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p>
+						<p>Para mayor información por favor contacte al colegio directamente en ' . FPOST_FROMMAIL . '</p>
+						</div>';
+
+		break;
+
+		case(3):
+
+			$message = '<div class="alert alert-error"><p><i class="fa fa-times"></i></p><p>Hubo un error en la inscripción, aunque puede haber recibido un mail, su inscripción no quedó grabada, por favor contacte al colegio directamente en ' . FPOST_FROMMAIL . '.</p></div>';
+
+		break;
+		case(4):
+
+		default:
+
+		$message = '<div class="alert alert-error"><p><i class="fa fa-times"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en ' . FPOST_FROMMAIL . '.</p></div>';
+
+		break;
+
+	endswitch;
 
 	return $message;
+
 }
 
 
@@ -284,9 +348,9 @@ function fpost_validate() {
 		$data['postulacion_mensaje'] = sanitize_text_field( $_POST['postulacion_mensaje'] );
 		$data['xtra_apoderado'] = sanitize_text_field( $_POST['xtra_apoderado'] );
 
-		//Meter en la base de datos
-		$output = fpost_putserialdata($data);
-		return $output;
+		//Meter en la base de datos y redirigir
+		$redirect = fpost_putserialdata($data);
+		wp_redirect( $redirect, 303 );
 	}
 }
 
@@ -365,11 +429,11 @@ function fpost_mails($data) {
 
 	if($mailapoderado == true && $mailadmin == true) {
 
-		return '<div class="alert alert-success"><i class="fa fa-check"></i> <i class="fa fa-envelope"></i></div>';
+		return true;
 
 	} else {
 
-		return '<div class="alert alert-error"><i class="fa fa-times"></i> <i class="fa fa-envelope"></i></div>';
+		return false;
 
 	}
 }
@@ -606,20 +670,30 @@ function fpost_styleandscripts() {
 		wp_register_style( 'postulacion', plugins_url('/css/postulacion.css', __FILE__), array(), '1.63', 'screen' );
 		wp_register_script( 'modernizr', plugins_url('/lib/modernizr/modernizr.js', __FILE__ ), array(), '3.2.0', false);
 		wp_register_script( 'funciones-postulacion', plugins_url('/js/funciones-postulacion.js', __FILE__), array('jqvalidate', 'pickadate'), '1.0.1', false);
+
+		wp_register_script( 'funciones-frontadmin-postulacion', plugins_url('/js/funciones-frontadmin-postulacion.js', __FILE__), array('dynatable'), '1.0.1', false);
+
 		wp_register_script( 'jquery-rut', plugins_url('/js/jquery.rut.min.js', __FILE__ ), array(), '0.5', false);
 		wp_register_script( 'jqvalidate', plugins_url('/lib/jquery-validation/dist/jquery.validate.min.js', __FILE__), array('jquery-rut'), '1.14.0', false);
+
+		wp_register_script( 'dynatable', plugins_url( '/lib/dynatable/jquery.dynatable.js', __FILE__, array(), '0.3.1', false ));
+		wp_register_style( 'dynatable', plugins_url( '/lib/dynatable/jquery.dynatable.css', __FILE__));
 
 		wp_register_script( 'pickadate', plugins_url('/lib/pickadate/lib/picker.js', __FILE__ ) , array(), '4.0.0', false );
 		wp_register_script( 'pickadate-date', plugins_url('/lib/pickadate/lib/picker.date.js', __FILE__ ) , array('pickadate'), '4.0.0', false );
 		wp_register_style( 'pickadate-classic', plugins_url( '/lib/pickadate/lib/themes/default.css', __FILE__ ));
 		wp_register_style( 'pickadate-classic-date', plugins_url( '/lib/pickadate/lib/themes/default.date.css', __FILE__ ));
 		
+		
 		wp_enqueue_script( 'jquery-rut' );
 		wp_enqueue_script( 'modernizr' );
 		wp_enqueue_script( 'funciones-postulacion' );
+		wp_enqueue_script( 'funciones-frontadmin-postulacion' );
 		wp_enqueue_script( 'jqvalidate' );
 		wp_enqueue_script( 'pickadate' );
 		wp_enqueue_script( 'pickadate-date' );
+		wp_enqueue_script( 'dynatable' );
+		wp_enqueue_style( 'dynatable' );
 		wp_enqueue_style( 'postulacion' );
 		wp_enqueue_style( 'pickadate-classic' );
 		wp_enqueue_style( 'pickadate-classic-date' );

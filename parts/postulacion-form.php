@@ -1,7 +1,13 @@
 <?php 
 //Si es que se ha enviado el formulario ejecuto otras cosas
 
-if($_POST && $_POST['postulacion_nonce']) {
+if( isset($_GET['exitcode']) ) {
+
+	fpost_exitmessages( $_GET['exitcode'] );
+
+} else {
+
+	if($_POST && $_POST['postulacion_nonce']) {
 		$nonce = $_POST['postulacion_nonce'];
 	};
 if($_POST && $nonce){	
@@ -22,18 +28,31 @@ if($_POST && $nonce){
 				
 				<?php 
 	
-				include( plugin_dir_path( __FILE__ ) . 'control-select-year.php' );
+				if( isset($_GET['datos_adicionales']) && isset($_GET['fpostid']) ) {
+
+					echo fpost_fichapostulacion( sanitize_text_field( $_GET['fpostid'] ));
+
+					
+
+
+				} else {
+
+					include( plugin_dir_path( __FILE__ ) . 'control-select-year.php' );
 	
-				include( plugin_dir_path(__FILE__) . 'control-select-course.php' );
-	
-				include( plugin_dir_path( __FILE__ ) . 'control-select-infostudent.php' );
-	
-				include( plugin_dir_path( __FILE__ ) . 'control-select-where.php' );			
-	
-				include( plugin_dir_path( __FILE__ ) . 'control-select-parentinfo.php' );
-	
-	
-				include( plugin_dir_path( __FILE__ ) . 'control-select-extrainfo.php' );
+					include( plugin_dir_path(__FILE__) . 'control-select-course.php' );
+		
+					include( plugin_dir_path( __FILE__ ) . 'control-select-infostudent.php' );
+		
+					include( plugin_dir_path( __FILE__ ) . 'control-select-where.php' );			
+		
+					include( plugin_dir_path( __FILE__ ) . 'control-select-parentinfo.php' );
+		
+		
+					include( plugin_dir_path( __FILE__ ) . 'control-select-extrainfo.php' );
+
+				}
+
+				
 				?>
 	
 				<!--submit-->
@@ -50,3 +69,5 @@ if($_POST && $nonce){
 <?php	
 //end conditional output	
 		}
+
+} //end exitcode
