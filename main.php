@@ -1,26 +1,36 @@
 <?php
 /**
- * Plugin Name: Formulario de postulación para colegios
+ * Plugin Name: Admisión
  * Plugin URI: http://apie.cl
- * Description: Generador de formulario y almacenamiento de datos para admisión
- * Version: 1.63
- * Author: Pablo Selín Carrasco Armijo - A Pie
+ * Description: Sistema de manejo de proceso de postulación y admisión para colegios.
+ * Version: 0.8
+ * Author: A Pie
  * Author URI: http://www.apie.cl
- * License: A short license name. Example: GPL2
+ * License: MIT
  */
 
 
 /*
+
 TODO:
-- Poblar base de datos vía ajax
-- Crear vista de datos en admin
-- Crear correo de aviso para apoderado y admin
+
+- Crear lista de opciones para datos generales
+	- Nombre de colegio
+	- Correo de quien envía
+	- Teléfono de contacto
+	- Prefijo para metaboxes
+	- Correos de envío
+	- Logotipo para correo
+
+- Mejorar prefijo
+- Modificar lógica y orden de programación para dividir las funcionalidades
+
 */
 
 global $dbver;
 $dbver = '1.63';
 
-
+define( 'FPOST_VERSION', '0.65');
 
 //Crear directorios
 define( 'FPOST_CSVPATH', WP_CONTENT_DIR . '/postulaciones/');
@@ -31,7 +41,7 @@ define( 'FPOST_FROMMAIL', 'admision@ciademaria.cl');
 define( 'FPOST_FONO', '+562 236 359 00');
 //Prefijo para algunas cosas
 define( 'FPOST_PREFIX', 'cma_');
-define( 'FPOST_TABLENAME', 'postulaciones');
+define( 'FPOST_TABLENAME', 'apie_adm');
  
 //Cambia los mails según.
 if(get_bloginfo('url') == 'http://admision.ciademaria.cl'):
@@ -64,79 +74,20 @@ include( plugin_dir_path( __FILE__ ) . 'consultas.php' );
 //la parte del admin via frontend
 include( plugin_dir_path( __FILE__ ) . 'admin_front.php' );
 
-//Tablas de datos
-function fpost_table() {
-	global $wpdb;
-	global $dbver;
+//la parte de manejo de bases de datos
+include( plugin_dir_path( __FILE__) . 'inc/db-functions.php');
 
-	$tbname = $wpdb->prefix . FPOST_TABLENAME;
+//los shortcodes
+include( plugin_dir_path( __FILE__) . 'inc/shortcodes.php');
 
-	$actver = get_option('fpost_dbver');
-	$charset_collate = $wpdb->get_charset_collate();
-	
-	//id: ID
-	//time: fecha de inscripción
-	//type: tipo de envío (consulta o postulación)
-	//data: los datos enviados
-	$sql = "CREATE TABLE $tbname (
-			id mediumint(9) NOT NULL AUTO_INCREMENT,
-			time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-			type text NOT NULL,
-			data text NOT NULL,
-			UNIQUE KEY id (id)
-		) $charset_collate;";
-		
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		dbDelta($sql);
-		
-		add_option('fpost_dbver', $dbver);
-}
+//Mail functions
+include( plugin_dir_path( __FILE__) . 'inc/mailing-functions.php');
 
-function fpost_checkupdate() {
-	global $dbver;
-	if(!get_site_option('fpost_dbver') || $dbver != get_site_option('fpost_dbver')) {
-		fpost_table();
-	}
-}
+//Utilidades y convertidores de strings
+include( plugin_dir_path( __FILE__) . 'inc/utils.php');
 
-add_action('plugins_loaded', 'fpost_checkupdate');
-register_activation_hook( __FILE__, 'fpost_table' );
-
-//Llamar inscritos y devolver un array
-function fpost_getdata() {
-	global $wpdb;
-	
-	$tbname = $wpdb->prefix . FPOST_TABLENAME;
-
-	$inscritos = $wpdb->get_results("SELECT * FROM $tbname WHERE type LIKE 'postulacion'");
-	return $inscritos;
-}
-
-function fpost_getpostulacion( $postulacion_id ) {
-	/**
-	 * Devuelve una postulación a partir del id
-	 */
-	
-	global $wpdb;
-
-	$tbname = $wpdb->prefix . FPOST_TABLENAME;
-
-	$inscrito = $wpdb->get_row("SELECT * FROM $tbname WHERE type LIKE 'postulacion' AND id LIKE $postulacion_id");
-
-	return $inscrito;
-
-}
-
-//Llamar inscritos y devolver un array
-function fpost_getconsultas() {
-	global $wpdb;
-	
-	$tbname = $wpdb->prefix . FPOST_TABLENAME;
-
-	$consultas = $wpdb->get_results("SELECT * FROM $tbname WHERE type LIKE 'consulta'");
-	return $consultas;
-} 
-
+//Funciones para los formularios
+include( plugin_dir_path( __FILE__) . 'inc/form-functions.php');
 
 //Html del formulario
 function fpost_form() {
@@ -145,558 +96,17 @@ function fpost_form() {
 	return ob_get_clean();
 }
 
-//Insertar datos en tabla
-function fpost_putserialdata($data) {
-	global $wpdb;
-	
-	$tbname = $wpdb->prefix . FPOST_TABLENAME;
-
-	$timestamp = current_time('mysql');
-	$insert = $wpdb->insert(
-						$tbname,
-						array(
-							'time'   => $timestamp,
-							'type' => 'postulacion',
-							'data' => serialize($data)
-							)
-						);
-	$lastid = $wpdb->insert_id;
-
-	//Enviar mensaje y correr funciones
-	$data['ID'] = $lastid;
-	$data['timestamp'] = $timestamp;
-	$message = fpost_mails($data);
-
-	if( $message == true && $lastid ) {
-
-		$excode = 1;
-
-	} elseif( $message != true && $lastid) {
-
-		$excode = 2;
-
-	} elseif ( $message == true && !$lastid ) {
-
-		$excode = 3;
-
-	} else {
-
-		$excode = 4;
-
-	}
-
-	$urlargs = array(
-		'excode' => $excode,
-		'idinsc' => $lastid
-		);
-
-	$exiturl = add_query_arg( $urlargs, get_permalink() );
-
-	return $exiturl;
-}
-
-function fpost_exitmessages( $exitcode ) {
-	/**
-	 * Devuelve mensajes según tipo de código de formulario
-	 *
-	 * 1: Todo OK - Mail e Inscripción
-	 * 2: Sólo mail
-	 * 3: Sólo inscripción
-	 * 4: Nada - Error total
-	 */
-	
-	$idinsc = $_GET['idinsc'];
-
-	switch($exitcode):
-
-		case(1):
-			
-			$message = '<div class="alert alert-success">
-						<p style="text-align:center;font-size:32px;"><i class="fa fa-check fa-2x"></i></p>
-						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
-						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a tu correo (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>';
-
-		break;
-
-		case(2):
-
-			$message = '<div class="alert alert-success">
-						<p style="text-align:center;font-size:32px;"><i class="fa fa-check fa-2x"></i></p>
-						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
-						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . '</p>
-
-						<p>Tu postulación quedó grabada, pero no se pudo enviar un correo de confirmación, te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p>
-						<p>Para mayor información por favor contacte al colegio directamente en ' . FPOST_FROMMAIL . '</p>
-						</div>';
-
-		break;
-
-		case(3):
-
-			$message = '<div class="alert alert-error"><p><i class="fa fa-times"></i></p><p>Hubo un error en la inscripción, aunque puede haber recibido un mail, su inscripción no quedó grabada, por favor contacte al colegio directamente en ' . FPOST_FROMMAIL . '.</p></div>';
-
-		break;
-		case(4):
-
-		default:
-
-		$message = '<div class="alert alert-error"><p><i class="fa fa-times"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en ' . FPOST_FROMMAIL . '.</p></div>';
-
-		break;
-
-	endswitch;
-
-	return $message;
-
-}
-
-
-//Shortcode para el formulario
-function fpost_formshortcode($atts) {
-	return fpost_form();
-}
-
-add_shortcode('formulario_postulacion', 'fpost_formshortcode');
-
-function fpost_shareshortcode($atts) {
-	global $post;
-	$soctitle = get_post_meta($post->ID, 'rw_titulosocial', true);   
-    $share['whatsapp'] = '<a target="_blank" href="whatsapp://send?text='.$post->post_title.' ' . get_permalink($post->ID).'" class="wa" title="Enviar por WhatsApp"><span class="fa-stack">
-  				<i class="fa fa-circle-o fa-stack-1x"></i>
-  				<i class="fa fa-phone fa-stack-1x"></i>
-			</span></i></a>';
-    $share['facebook'] = '<a target="_blank" class="fb" href="https://facebook.com/sharer.php?u='.get_permalink($post->ID).'" class="facebook"><i class="fa fa-facebook"></i></a>';
-    //$share['twitter'] = '<a target="_blank" href="https://twitter.com/intent/tweet?url='.get_permalink($post->ID).'&text='.urlencode($soctitle).'" class="twt"><i class="fa fa-twitter"></i></a>';
-    $share['gmas'] = '<a target="_blank" href="https://plus.google.com/share?url='.get_permalink($post->ID).'" class="gpl"><i class="fa fa-google-plus"></i></a>';
-    $share = implode(' ', $share);
-    $share = '<div class="sharing_toolbox">'.$share.'</div>';
-    return $share;
-}
-
-add_shortcode('fpost_share', 'fpost_shareshortcode');
-
-//shortcode para el botón
-function fpost_buttonshortcode($atts) {
-	$link = $atts['url'];
-	$text = $atts['text'];
-	return '<a href="'.$link.'" class="prepostbtn btn btn-lg btn-warning">'.$text.'</a>';
-}
-
-add_shortcode('fpost_btnform', 'fpost_buttonshortcode');
-
-
-//Validación
-//Añadir esta función por AJAX
-function fpost_validate() {
-	if(!wp_verify_nonce( $_POST['postulacion_nonce'], 'fpost_prepost' )) {
-		return 'nonce inválido';
-	} else {
-		//Sanitizar alumno
-
-		$data['postulacion_year'] = sanitize_text_field( $_POST['postulacion_year'] );
-		$data['nombre_alumno'] = sanitize_text_field( $_POST['nombre_alumno'] );
-		$data['apellido_alumno'] = sanitize_text_field( $_POST['apellido_alumno'] );
-
-		if($_POST['tipo_documento_alumno'] == 'rut') {
-
-			$data['rut_alumno'] = sanitize_text_field( $_POST['rut_alumno'] );	
-
-		} else {
-
-			$data['otrodoc_alumno'] = sanitize_text_field( $_POST['otrodoc_alumno'] );
-
-		}
-		
-		$data['alumno_fecha_nacimiento'] = sanitize_text_field( $_POST['alumno_fecha_nacimiento'] );
-		$data['procedencia_alumno'] = sanitize_text_field( $_POST['procedencia_alumno'] );
-		
-		if( isset($_POST['otrocurso']) && $_POST['curso_postula'] == 'otro' ) {
-
-			$data['curso_postula'] = sanitize_text_field( $_POST['otrocurso'] );			
-
-		} else {
-
-			$data['curso_postula'] = sanitize_text_field( $_POST['curso_postula'] );
-
-		}
-		
-		if( isset($_POST['jornada'])) {
-
-			$data['jornada'] = sanitize_text_field( $_POST['jornada'] );
-
-		}
-		
-
-		//Sanitizar apoderado
-
-		$data['nombre_apoderado'] = sanitize_text_field( $_POST['nombre_apoderado'] );
-
-		if( $_POST['tipo_documento_apoderado'] == 'rut' ) {
-
-			$data['rut_apoderado'] = sanitize_text_field( $_POST['rut_apoderado'] );	
-
-		} else {
-
-			$data['otrodoc_apoderado'] = sanitize_text_field( $_POST['otrodoc_apoderado'] );
-
-		}
-		
-		$data['apellido_apoderado'] = sanitize_text_field( $_POST['apellido_apoderado'] );
-		$data['fono_apoderado'] = sanitize_text_field( $_POST['fono_apoderado'] );
-		$data['fonofijo_apoderado'] = sanitize_text_field( $_POST['fonofijo_apoderado'] );
-		$data['email_apoderado'] = sanitize_text_field( $_POST['email_apoderado'] );
-		$data['postulacion_mensaje'] = sanitize_text_field( $_POST['postulacion_mensaje'] );
-		$data['xtra_apoderado'] = sanitize_text_field( $_POST['xtra_apoderado'] );
-
-		//Meter en la base de datos y redirigir
-		$redirect = fpost_putserialdata($data);
-		wp_redirect( $redirect, 303 );
-	}
-}
-
-
-
-function fpost_cursequi($curso, $otro = NULL) {
-	//transforma los valores de curso en valores legibles
-	switch($curso) {
-		case('pg'):
-			$lcurso = 'Playgroup';
-		break;
-		case('pk'):
-			$lcurso = 'Pre-Kinder';
-		break;
-		case('k'):
-			$lcurso = 'Kinder';
-		break;
-		case('1'):
-			$lcurso = '1º Básico';
-		break;
-		case('2'):
-			$lcurso = '2º Básico';
-		break;
-		case('3'):
-			$lcurso = '3º Básico';
-		break;
-		case('4'):
-			$lcurso = '4º Básico';
-		break;
-		case('5'):
-			$lcurso = '5º Básico';
-		break;
-		case('6'):
-			$lcurso = '6º Básico';
-		break;
-		case('7'):
-			$lcurso = '7º Básico';
-		break;
-		case('8'):
-			$lcurso = '8º Básico';
-		break;
-		case('9'):
-			$lcurso = 'Iº Medio';
-		break;
-		case('10'):
-			$lcurso = 'IIº Medio';
-		break;
-		case('jardin'):
-			$lcurso = 'Jardín';
-		break;
-		default:
-			$lcurso = $curso;
-		break;	
-	}
-	return $lcurso;
-}
-//Envío de correos
-
-function fpost_content_type_html() {
-	return 'text/html';
-}
-
-function fpost_content_type_plain() {
-	return 'text/plain';
-}
-
-//Envío de correos
-function fpost_mails($data) {
-	
-	add_filter('wp_mail_content_type', 'fpost_content_type_html');
-
-	$mailapoderado = fpost_mailapoderado( $data );
-	$mailadmin = fpost_mailadmin( $data );
-
-	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
-
-	if($mailapoderado == true && $mailadmin == true) {
-
-		return true;
-
-	} else {
-
-		return false;
-
-	}
-}
-
-function fpost_mailadmin($data) {
-
-		$f_fono_apoderado = '+56 9 ' . $data['fono_apoderado'];
-
-		if( isset($data['fonofijo_apoderado']) ):
-
-			$f_fonofijo_apoderado = '+56 2 ' . $data['fonofijo_apoderado'];
-
-		endif;
-
-		$mensajeadmin = '';
-		$mensajeadmin .= '<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:white;border:1px solid #ccc;">
-					<tr>
-						<td style="background-color:white;color:#333;">
-							<p style="text-align:center;"><img src="'. FPOST_LOGO .'" alt="'.FPOST_NCOLEGIO.'"><br></p>
-
-							<h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.FPOST_NCOLEGIO.'</h1>
-
-							<h3 style="text-align:center;font-size:18px;font-weight:normal;">Se ha enviado una postulación a ' . FPOST_NCOLEGIO . ' para el año '. $data['postulacion_year'] .'</h3>
-						</td> 
-					</tr>
-					
-					<tr>
-						<td>
-							<h4>Datos</h4>
-							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] . '</p>
-							<p><strong>Teléfono Apoderado(a): </strong> <a href="tel:' . $f_fono_apoderado . '">' . $f_fono_apoderado . '</a> </p>';
-
-				if($data['fonofijo_apoderado']):
-					
-						$mensajeadmin .= '<p><strong>Teléfono Fijo Apoderado(a): </strong> <a href="tel:' . $f_fonofijo_apoderado . '">' . $f_fonofijo_apoderado . '</a></p>';
-
-				endif;
-
-			$mensajeadmin .=	'<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>';
-
-			if( isset($data['rut_apoderado']) ) {
-
-				$mensajeadmin .= '<p><strong>RUT apoderado: </strong>' . $data['rut_apoderado'] .'</p>';
-
-			} else {
-
-				$mensajeadmin .= '<p><strong>Doc. Identificación Apoderado: </strong>' . $data['otrodoc_apoderado'] .'</p>';
-
-			}
-			
-
-							
-			$mensajeadmin .= '</td>
-
-					</tr>
-					<tr>
-						<td>
-						<h4>Datos del Alumno</h4>
-							<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula']) .'</p>';
-
-			if( isset($data['jornada']) ):
-
-					$mensajeadmin .= '<p><strong>Preferencia de jornada: </strong>' . fpost_formatjornada($data['jornada']) . '</p>';
-
-			endif;
-
-
-			$mensajeadmin .= '<p><strong>Nombre al Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . ' </p>';
-
-
-			if( isset($data['rut_alumno']) ) {
-
-				$mensajeadmin .= '<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>';
-
-			} else {
-
-				$mensajeadmin .= '<p><strong>Doc. Identificación Alumno: </strong>' . $data['otrodoc_alumno'] .'</p>';
-			}
-
-			
-
-
-			$mensajeadmin .= '<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>
-							<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>';
-
-			if( isset($data['procedencia_alumno']) ) {
-
-				$mensajeadmin .= '<p><strong>Jardín o colegio del cual proviene:</strong>: ' . $data['procedencia_alumno'].'</p>';
-
-			}
-
-			$mensajeadmin .= '</td>
-					</tr>	
-					<tr>
-						<td>
-						<h4>Datos adicionales</h4>
-
-							<p><strong>Consulta adicional: </strong>' .$data['postulacion_mensaje'].'</p>
-							<p><strong>Como se enteró del colegio: </strong>' .$data['xtra_apoderado'].'</p>
-							<p><strong>Fecha y hora de envío: </strong>' . mysql2date( 'j F, G:i', $data['timestamp'] ) .'</p>
-							<p><strong>Número identificador (ID): </strong>' .$data['ID'].'</p>
-						</td>
-					</tr>	
-					</table>
-					';
-	$admins = FPOST_TOMAILS;
-
-	$extramails = explode( ',', FPOST_EXTRAMAILS );
-
-	$headers['From'] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';	
-	
-	foreach($extramails as $extramail):
-
-		$headers[] = 'Bcc: ' . $extramail;
-
-	endforeach;
-
-	$headers['Sender'] = 'Sender: "' . FPOST_NCOLEGIO . ' <'.FPOST_FROMMAIL.'>';
-	$headers['Reply-To'] = 'Reply-To: "' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado']. ' <' . $data['email_apoderado'] . '>';
-	
-
-	$mailadmin = wp_mail( $admins, 'ID: ' . $data['ID'] . ' - Postulación '. FPOST_NCOLEGIO, $mensajeadmin, $headers);
-
-	return $mailadmin;
-
-}
-
-function fpost_mailapoderado( $data ) {
-
-	$mensajeapoderado = '<style>table p {line-height:1,4em;}</style>
-		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;border:1px solid #ccc;">
-		<tr>
-			<td style="background-color:white;color:#333;">
-				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.FPOST_NCOLEGIO.'</h1></p>
-				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de postulación para el año '.fpost_parseyear($data['postulacion_year']).'</h3>
-			</td> 
-		</tr>
-			<tr>
-				<td>
-					<p>Estimado/a <strong>'. $data['nombre_apoderado'] .'</strong>, hemos recibido exitosamente su postulación. Nos pondremos en contacto con usted vía teléfono o correo en <strong>2 días hábiles</strong> como máximo para continuar el proceso.</p>
-					<p>Estos son los datos que usted envió:</p>
-				</td>
-			</tr>
-			<tr>
-						<td style="border-width:1px 0 1px 0;border-style:dotted;border-color:#ccc;background-color:white;">
-							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Datos del alumno</h4>
-							<p><strong>Nombre Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . '</p>
-							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>';
-
-							if( isset($data['rut_apoderado']) ){
-
-								$mensajeapoderado .= '<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>';
-
-							} else {
-
-								$mensajeapoderado .= '<p><strong>Doc. Identificación Alumno: </strong>' . $data['otrodoc_alumno'] .'</p>';
-							}
-							
-
-							$mensajeapoderado .= '<p><strong>Curso al que postula: </strong>' . fpost_cursequi($data['curso_postula']) .'</p>';
-
-							if( isset($data['jornada']) ) :
-
-								$mensajeapoderado .= '<p><strong>Preferencia de jornada: </strong>' . fpost_formatjornada($data['jornada']) . '</p>';
-
-							endif;
-
-
-							$mensajeapoderado .= '<p><strong>Año al que postula: </strong>' . $data['postulacion_year'] . '</p>
-							<p>&nbsp;</p>
-							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Datos del apoderado</h4>
-							<p><strong>Nombre Apoderado(a): </strong>' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado'] .'</p>';
-
-							if( isset($data['rut_apoderado'])) {
-
-								$mensajeapoderado .= '<p><strong>RUT apoderado: </strong>' . $data['rut_apoderado'] .'</p>';
-
-							} else {
-
-								$mensajeapoderado .= '<p><strong>Doc. Identificación apoderado: </strong>' . $data['otrodoc_apoderado'] .'</p>';
-							}
-
-							
-
-							$mensajeapoderado .= '<p><strong>Teléfono Apoderado(a): </strong> +56 9 ' . $data['fono_apoderado'] . '</p>';
-
-						if($data['fonofijo_apoderado']):
-
-							$mensajeapoderado .= '<p><strong>Teléfono Fijo Apoderado(a): </strong>+56 2 ' . $data['fonofijo_apoderado'] . '</p>';
-
-						endif;
-
-							$mensajeapoderado .= '<p><strong>E-Mail Apoderado(a): </strong>' . $data['email_apoderado'] . '</p>
-							<p>&nbsp;</p>
-
-							<h4 style="text-align:center;font-size:22px;font-weight:normal;">Otros datos</h4>
-
-							<p><strong>Consulta adicional: </strong>' .$data['postulacion_mensaje'].'</p>
-							<p><strong>Como se enteró del colegio: </strong>' .$data['xtra_apoderado'].'</p>
-							<p><strong>Fecha y hora de envío: </strong>' . mysql2date( 'j F, G:i', $data['timestamp'] ) .'</p>
-							<p><strong>Número identificador (ID): </strong>' .$data['ID'].'</p>
-
-						</td>
-					</tr>';
-
-	$mensajeapoderado .= '<tr>
-				<td>
-				<p>Muchas gracias por su interés.<br>
-				Afectuosamente<br>
-				<strong>'.FPOST_NCOLEGIO.'</strong></p>
-				<p><strong>Correo: </strong> '.FPOST_FROMMAIL.' <br>
-				<strong>Teléfono: </strong> <a href="tel:'.FPOST_FONO.'">'.FPOST_FONO.'</a>  <br>
-				<strong>Web: </strong><a href="'.get_bloginfo('url').'">'.get_bloginfo('url').'</a></p>
-				';
-
-	$mensajeapoderado .=	'</td>
-							</tr>
-						</table>';
-
-	$headers[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
-	$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <'.FPOST_FROMMAIL.'>';
-	$headers[] = 'Reply-To: "' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado']. ' <' . $data['email_apoderado'] . '>';
-
-	
-
-	$mailapoderado = wp_mail( $data['email_apoderado'], 'Postulación ' . FPOST_NCOLEGIO, $mensajeapoderado, $headers);
-
-	return $mailapoderado;
-}
-
 //Scripts y estilos extras
 function fpost_styleandscripts() {
 	if(!is_admin()) {
-		wp_register_style( 'postulacion', plugins_url('/css/postulacion.css', __FILE__), array(), '1.63', 'screen' );
-		wp_register_script( 'modernizr', plugins_url('/lib/modernizr/modernizr.js', __FILE__ ), array(), '3.2.0', false);
-		wp_register_script( 'funciones-postulacion', plugins_url('/js/funciones-postulacion.js', __FILE__), array('jqvalidate', 'pickadate'), '1.0.1', false);
-
-		wp_register_script( 'funciones-frontadmin-postulacion', plugins_url('/js/funciones-frontadmin-postulacion.js', __FILE__), array('dynatable'), '1.0.1', false);
-
-		wp_register_script( 'jquery-rut', plugins_url('/js/jquery.rut.min.js', __FILE__ ), array(), '0.5', false);
-		wp_register_script( 'jqvalidate', plugins_url('/lib/jquery-validation/dist/jquery.validate.min.js', __FILE__), array('jquery-rut'), '1.14.0', false);
-
-		wp_register_script( 'dynatable', plugins_url( '/lib/dynatable/jquery.dynatable.js', __FILE__, array(), '0.3.1', false ));
-		wp_register_style( 'dynatable', plugins_url( '/lib/dynatable/jquery.dynatable.css', __FILE__));
-
-		wp_register_script( 'pickadate', plugins_url('/lib/pickadate/lib/picker.js', __FILE__ ) , array(), '4.0.0', false );
-		wp_register_script( 'pickadate-date', plugins_url('/lib/pickadate/lib/picker.date.js', __FILE__ ) , array('pickadate'), '4.0.0', false );
-		wp_register_style( 'pickadate-classic', plugins_url( '/lib/pickadate/lib/themes/default.css', __FILE__ ));
-		wp_register_style( 'pickadate-classic-date', plugins_url( '/lib/pickadate/lib/themes/default.date.css', __FILE__ ));
 		
+		wp_register_style( 'postulacioncss', plugins_url('/css/apie-admision.css', __FILE__), array(), FPOST_VERSION, 'screen' );
+		wp_register_script( 'postulacionjs', plugins_url('/js/apie-admision.js', __FILE__ ), array(), FPOST_VERSION, false);
 		
-		wp_enqueue_script( 'jquery-rut' );
-		wp_enqueue_script( 'modernizr' );
-		wp_enqueue_script( 'funciones-postulacion' );
-		wp_enqueue_script( 'funciones-frontadmin-postulacion' );
-		wp_enqueue_script( 'jqvalidate' );
-		wp_enqueue_script( 'pickadate' );
-		wp_enqueue_script( 'pickadate-date' );
-		wp_enqueue_script( 'dynatable' );
-		wp_enqueue_style( 'dynatable' );
-		wp_enqueue_style( 'postulacion' );
-		wp_enqueue_style( 'pickadate-classic' );
-		wp_enqueue_style( 'pickadate-classic-date' );
+		wp_enqueue_script( 'postulacionjs' );
+		
+		wp_enqueue_style( 'postulacioncss' );
+		
 	};
 }
 

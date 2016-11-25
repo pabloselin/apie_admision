@@ -2,9 +2,8 @@
 
 function fpost_admin() {
 
-	add_options_page( __( 'Postulaciones', 'spm' ), __( 'Postulaciones enviadas', 'spm' ), 'manage_options', 'fpost_postulaciones', 'fpost_doadmin' );
-	add_options_page( __( 'Postulaciones', 'spm' ), __( 'Consultas enviadas', 'spm' ), 'manage_options', 'fpost_consultas', 'fpost_doadminconsultas' );
-	add_options_page( __( 'Postulaciones', 'spm' ), __( 'Configuración formularios', 'spm' ), 'manage_options', 'fpost_config', 'fpost_doadminconfig' );
+	add_submenu_page( 'apie_admision', 'Postulaciones enviadas', 'manage_options', 'fpost_postulaciones', 'fpost_doadmin' );
+	add_submenu_page( 'apie_admision', 'Consultas enviadas', 'manage_options', 'fpost_consultas', 'fpost_doadminconsultas' );
 }
 
 add_action('admin_menu', 'fpost_admin');
@@ -155,9 +154,7 @@ function fpost_doadminconsultas() {
 	<?php
 }
 
-function fpost_parseyear($year) {
-	return $year;
-}
+
 
 function fpost_csv() {
 	//Genera un csv con todos los datos
@@ -248,56 +245,6 @@ function fpost_csv_consultas() {
 	$csvfile = FPOST_CSVURL . $filename;
 	return $csvfile;
 
-}
-
-function fpost_formatjornada( $jornada ) {
-	/**
-	 * Devuelve la jornada con formato
-	 */
-	if( $jornada == 'manana' ) {
-		return 'Mañana';
-	} elseif( $jornada == 'tarde') {
-		return 'Tarde';
-	} elseif( $jornada == 'cualquiera') {
-		return 'Cualquiera';
-	} else {
-		return $jornada;
-	}
-
-}
-
-function fpost_formatrut($r = false){
-    if((!$r) or (is_array($r)))
-        return false; /* Hace falta el rut */
- 
-    if(!$r = preg_replace('|[^0-9kK]|i', '', $r))
-        return false; /* Era código basura */
- 
-    if(!((strlen($r) == 8) or (strlen($r) == 9)))
-        return false; /* La cantidad de carácteres no es válida. */
- 
-    $v = strtoupper(substr($r, -1));
-    if(!$r = substr($r, 0, -1))
-        return false;
- 
-    if(!((int)$r > 0))
-        return false; /* No es un valor numérico */
- 
-    $x = 2; $s = 0;
-    for($i = (strlen($r) - 1); $i >= 0; $i--){
-        if($x > 7)
-            $x = 2;
-        $s += ($r[$i] * $x);
-        $x++;
-    }
-    $dv=11-($s % 11);
-    if($dv == 10)
-        $dv = 'K';
-    if($dv == 11)
-        $dv = '0';
-    if($dv == $v)
-        return number_format($r, 0, '', '.').'-'.$v; /* Formatea el RUT */
-    return false;
 }
 
 function fpost_init_settings() {
