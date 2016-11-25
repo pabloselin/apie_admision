@@ -179,12 +179,17 @@ function fpost_contact( $postulacion_id ) {
 
 function fpost_secondmail( $postulacion_id, $message ) {
 
+	$options = get_option('apadm_settings');
+	$nombre_colegio = $options['apadm_nombre_colegio'];
+	$logo_colegio = $options['apadm_logourl'];
+	$email_remitente = $options['apadm_email_remitente'];
+	$fono_contacto = $options['apadm_fono_contacto'];
 
 	$mensajeapoderado = '<style>table p {line-height:1,4em;}</style>
 		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;">
 		<tr>
 			<td style="background-color:white;color:#333;">
-				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.FPOST_NCOLEGIO.'</h1></p>
+				<p style="text-align:center;"><img src="'. $logo_colegio .'" alt="'. $nombre_colegio .'"><br><h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'. $nombre_colegio .'</h1></p>
 				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Solicitud de datos para continuación de postulación</h3>
 			</td> 
 		</tr>
@@ -199,9 +204,9 @@ function fpost_secondmail( $postulacion_id, $message ) {
 				<td>
 				<p>Muchas gracias por su interés.<br>
 				Afectuosamente<br>
-				<strong>'.FPOST_NCOLEGIO.'</strong></p>
-				<p><strong>Correo: </strong> '.FPOST_FROMMAIL.' <br>
-				<strong>Teléfono: </strong> <a href="tel:'.FPOST_FONO.'">'.FPOST_FONO.'</a>  <br>
+				<strong>'. $nombre_colegio .'</strong></p>
+				<p><strong>Correo: </strong> '. $email_remitente .' <br>
+				<strong>Teléfono: </strong> <a href="tel:'. $fono_contacto .'">'. $fono_contacto .'</a>  <br>
 				<strong>Web: </strong><a href="'.get_bloginfo('url').'">'.get_bloginfo('url').'</a></p>
 				';
 

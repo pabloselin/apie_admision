@@ -68,11 +68,20 @@ function fpost_putserialdata_consultas($data) {
 
 function fpost_consultas_mails($data) {
 
-	$headers['From'] = 'From: "' . FPOST_NCOLEGIO . '"<'.FPOST_FROMMAIL.'>';
-	$headers['Sender'] = 'Sender: "' . FPOST_NCOLEGIO . ' <'.FPOST_FROMMAIL.'>';
+	$options = get_option('apadm_settings');
+	$nombre_colegio = $options['apadm_nombre_colegio'];
+	$logo_colegio = $options['apadm_logourl'];
+	$email_remitente = $options['apadm_email_remitente'];
+	$fono_contacto = $options['apadm_fono_contacto'];
+	$emailsto = $options['apadm_emailsto'];
+	$bccemailsto = $options['apadm_bccemailsto'];
+
+
+	$headers['From'] = 'From: "' . $nombre_colegio . '"<'. $email_remitente .'>';
+	$headers['Sender'] = 'Sender: "' . $nombre_colegio . ' <'. $email_remitente .'>';
 	$headers['Reply-To'] = 'Reply-To:' . $data['email_consultas'];
 
-	$extramails = explode( ',', FPOST_EXTRAMAILS );
+	$extramails = explode( ',', $bccemailsto );
 
 	foreach($extramails as $extramail):
 
@@ -81,17 +90,17 @@ function fpost_consultas_mails($data) {
 	endforeach;
 
 
-	$headersapoderado['From'] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
+	$headersapoderado['From'] = 'From: "'.$nombre_colegio.'" <'. $email_remitente .'>';
 
 	$mailapoderado = $data['email_consultas'];
-	$mailadmins = FPOST_TOMAILS;
+	$mailadmins = $emailsto;
 
 	$mensajeapoderado = '<style>table p {line-height:1,4em;}</style>
 		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;border:1px solid #ccc;">
 		<tr>
 			<td style="background-color:white;color:#333;">
-				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.FPOST_NCOLEGIO.'</h1></p>
-				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Consulta enviada en ' . FPOST_NCOLEGIO . '</h3>
+				<p style="text-align:center;"><img src="'. $logo_colegio .'" alt="'.$nombre_colegio.'"><br><h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.$nombre_colegio.'</h1></p>
+				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Consulta enviada en ' . $nombre_colegio . '</h3>
 			</td> 
 		</tr>
 			<tr>
@@ -104,9 +113,9 @@ function fpost_consultas_mails($data) {
 				<td>
 				<p>Muchas gracias por su interés.<br>
 				Afectuosamente<br>
-				<strong>'.FPOST_NCOLEGIO.'</strong></p>
-				<p><strong>Correo: </strong> '.FPOST_FROMMAIL.' <br>
-				<strong>Teléfono: </strong> <a href="tel:'.FPOST_FONO.'">'.FPOST_FONO.'</a>  <br>
+				<strong>'.$nombre_colegio.'</strong></p>
+				<p><strong>Correo: </strong> '. $email_remitente .' <br>
+				<strong>Teléfono: </strong> <a href="tel:'.$fono_contacto.'">'.$fono_contacto.'</a>  <br>
 				<strong>Web: </strong><a href="'.get_bloginfo('url').'">'.get_bloginfo('url').'</a></p>
 				</td>
 				</tr>
@@ -117,13 +126,13 @@ function fpost_consultas_mails($data) {
 		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;border:1px solid #ccc;">
 		<tr>
 			<td style="background-color:white;color:#333;">
-				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.FPOST_NCOLEGIO.'</h1></p>
-				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Consulta enviada en ' . FPOST_NCOLEGIO . '</h3>
+				<p style="text-align:center;"><img src="'.$logo_colegio.'" alt="'.$nombre_colegio.'"><br><h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.$nombre_colegio.'</h1></p>
+				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Consulta enviada en ' . $nombre_colegio . '</h3>
 			</td> 
 		</tr>
 			<tr>
 				<td>
-					<p>Alguien envío un correo de consultas a través del formulario del sitio de admisión en ' . FPOST_NCOLEGIO .'.</p>
+					<p>Alguien envío un correo de consultas a través del formulario del sitio de admisión en ' . $nombre_colegio .'.</p>
 					
 				</td>
 			</tr>
@@ -142,9 +151,9 @@ function fpost_consultas_mails($data) {
 
 	add_filter('wp_mail_content_type', 'fpost_content_type_html');
 
-	$enviadorapoderado = wp_mail( $mailapoderado, 'Consulta en ' . FPOST_NCOLEGIO, $mensajeapoderado, $headersapoderado);
+	$enviadorapoderado = wp_mail( $mailapoderado, 'Consulta en ' . $nombre_colegio, $mensajeapoderado, $headersapoderado);
 
-	$enviadoradmins = wp_mail( $mailadmins, 'ID: ' . $data['ID'] . ' - Consulta en '. FPOST_NCOLEGIO, $mensajeadmin, $headers);
+	$enviadoradmins = wp_mail( $mailadmins, 'ID: ' . $data['ID'] . ' - Consulta en '. $nombre_colegio, $mensajeadmin, $headers);
 
 	
 

@@ -160,11 +160,11 @@ function fpost_csv() {
 	// output headers so that the file is downloaded rather than displayed
 		// header('Content-Type: octet/stream');
 		// header('Content-Disposition: attachment; filename=data.csv');
-		// header('Content-Length: ' . filesize(FPOST_CSVPATH . $filename));
+		// header('Content-Length: ' . filesize(APIEADM_CSVPATH . $filename));
 
 	
 
-	$output = fopen(FPOST_CSVPATH . $filename, 'w');
+	$output = fopen(APIEADM_CSVPATH . $filename, 'w');
 
 	fputcsv($output, array('ID', 'Día', 'Hora', 'Apellido apoderado(a)', 'Nombre apoderado(a)','E-mail apoderado(a)', 'Fono apoderado(a)','Fono fijo apoderado(a)', 'RUT /Doc. ID Apoderado', 'Nombre alumno(a)', 'F. nacimiento alumno(a)', 'RUT Alumno(a)', 'Curso al que postula','Preferencia de jornada', 'Año de postulación', 'Procedencia alumno(a)', 'Mensaje adicional', 'Cómo supo del colegio'), "\t");
 
@@ -195,7 +195,7 @@ function fpost_csv() {
 		fputcsv($output, $inscarr, "\t");
 	}
 
-	$csvfile = FPOST_CSVURL . $filename;
+	$csvfile = APIEADM_CSVURL . $filename;
 	return $csvfile;
 
 }
@@ -210,11 +210,11 @@ function fpost_csv_consultas() {
 	// output headers so that the file is downloaded rather than displayed
 		// header('Content-Type: octet/stream');
 		// header('Content-Disposition: attachment; filename=data.csv');
-		// header('Content-Length: ' . filesize(FPOST_CSVPATH . $filename));
+		// header('Content-Length: ' . filesize(APIEADM_CSVPATH . $filename));
 
 	$filename = FPOST_PREFIX . '_consultas-'.date('d-m-y').'.csv';
 
-	$output = fopen(FPOST_CSVPATH . $filename, 'w');
+	$output = fopen(APIEADM_CSVPATH . $filename, 'w');
 
 	fputcsv($output, array('ID', 'Fecha', 'Hora', 'Nombre', 'Telefono', 'Email', 'Consultas'), "\t");
 
@@ -234,7 +234,7 @@ function fpost_csv_consultas() {
 		fputcsv($output, $consarr, "\t");
 	}
 
-	$csvfile = FPOST_CSVURL . $filename;
+	$csvfile = APIEADM_CSVURL . $filename;
 	return $csvfile;
 
 }

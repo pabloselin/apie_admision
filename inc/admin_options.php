@@ -68,6 +68,14 @@ function apadm_settings_init(  ) {
 	);
 
 	add_settings_field( 
+		'apadm_bccemailsto', 
+		__( 'Correos a quien enviar los formularios en copia oculta (separados por coma)', 'apadm' ), 
+		'apadm_bccemailsto_render', 
+		'optadm', 
+		'apadm_optadm_section' 
+	);
+
+	add_settings_field( 
 		'apadm_logourl', 
 		__( 'URL del logotipo para los correos', 'apadm' ), 
 		'apadm_logourl_render', 
@@ -124,6 +132,15 @@ function apadm_emailsto_render(  ) {
 	$options = get_option( 'apadm_settings' );
 	?>
 	<input type='text' name='apadm_settings[apadm_emailsto]' value='<?php echo $options['apadm_emailsto']; ?>'>
+	<?php
+
+}
+
+function apadm_bccemailsto_render(  ) { 
+
+	$options = get_option( 'apadm_settings' );
+	?>
+	<input type='text' name='apadm_settings[apadm_bccemailsto]' value='<?php echo $options['apadm_bccemailsto']; ?>'>
 	<?php
 
 }

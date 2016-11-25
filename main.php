@@ -30,11 +30,11 @@ TODO:
 global $dbver;
 $dbver = '1.64';
 
-define( 'FPOST_VERSION', '0.8');
+define( 'APIEADM_VERSION', '0.8');
 
 //Crear directorios
-define( 'FPOST_CSVPATH', WP_CONTENT_DIR . '/postulaciones/');
-define( 'FPOST_CSVURL', WP_CONTENT_URL . '/postulaciones/');
+define( 'APIEADM_CSVPATH', WP_CONTENT_DIR . '/postulaciones/');
+define( 'APIEADM_CSVURL', WP_CONTENT_URL . '/postulaciones/');
 //Variables de mails y nombres
 define( 'FPOST_NCOLEGIO', 'Colegio Compañía de María Apoquindo');
 define( 'FPOST_FROMMAIL', 'admision@ciademaria.cl');
@@ -60,7 +60,7 @@ endif;
 
 define( 'FPOST_LOGO', plugins_url( 'img/logo_cma.png', __FILE__ ) );
 
-if(!is_dir(FPOST_CSVPATH)){
+if(!is_dir(APIEADM_CSVPATH)){
 	mkdir(WP_CONTENT_DIR . '/postulaciones', 0755);
 }
 
@@ -104,8 +104,8 @@ function fpost_form() {
 function fpost_styleandscripts() {
 	if(!is_admin()) {
 		
-		wp_register_style( 'postulacioncss', plugins_url('/css/apie-admision.css', __FILE__), array(), FPOST_VERSION, 'screen' );
-		wp_register_script( 'postulacionjs', plugins_url('/js/apie-admision.js', __FILE__ ), array(), FPOST_VERSION, false);
+		wp_register_style( 'postulacioncss', plugins_url('/css/apie-admision.css', __FILE__), array(), APIEADM_VERSION, 'screen' );
+		wp_register_script( 'postulacionjs', plugins_url('/js/apie-admision.js', __FILE__ ), array(), APIEADM_VERSION, false);
 		
 		wp_enqueue_script( 'postulacionjs' );
 		

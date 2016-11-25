@@ -31,6 +31,14 @@ function fpost_mails($data) {
 
 function fpost_mailadmin($data) {
 
+	$options = get_option('apadm_settings');
+	$nombre_colegio = $options['apadm_nombre_colegio'];
+	$logo_colegio = $options['apadm_logourl'];
+	$email_remitente = $options['apadm_email_remitente'];
+	$fono_contacto = $options['apadm_fono_contacto'];
+	$emailsto = $options['apadm_emailsto'];
+	$bccemailsto = $options['apadm_bccemailsto'];
+
 		$f_fono_apoderado = '+56 9 ' . $data['fono_apoderado'];
 
 		if( isset($data['fonofijo_apoderado']) ):
@@ -43,11 +51,11 @@ function fpost_mailadmin($data) {
 		$mensajeadmin .= '<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;background-color:white;border:1px solid #ccc;">
 					<tr>
 						<td style="background-color:white;color:#333;">
-							<p style="text-align:center;"><img src="'. FPOST_LOGO .'" alt="'.FPOST_NCOLEGIO.'"><br></p>
+							<p style="text-align:center;"><img src="'. $logo_colegio .'" alt="'. $nombre_colegio .'"><br></p>
 
-							<h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.FPOST_NCOLEGIO.'</h1>
+							<h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'. $nombre_colegio .'</h1>
 
-							<h3 style="text-align:center;font-size:18px;font-weight:normal;">Se ha enviado una postulación a ' . FPOST_NCOLEGIO . ' para el año '. $data['postulacion_year'] .'</h3>
+							<h3 style="text-align:center;font-size:18px;font-weight:normal;">Se ha enviado una postulación a ' .  $nombre_colegio  . ' para el año '. $data['postulacion_year'] .'</h3>
 						</td> 
 					</tr>
 					
@@ -130,11 +138,11 @@ function fpost_mailadmin($data) {
 					</tr>	
 					</table>
 					';
-	$admins = FPOST_TOMAILS;
+	$admins = $emailsto;
 
-	$extramails = explode( ',', FPOST_EXTRAMAILS );
+	$headers['From'] = 'From: "'. $nombre_colegio .'" <'. $email_remitente .'>';	
 
-	$headers['From'] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';	
+	$extramails = explode(',', $bccemailsto);
 	
 	foreach($extramails as $extramail):
 
@@ -142,11 +150,11 @@ function fpost_mailadmin($data) {
 
 	endforeach;
 
-	$headers['Sender'] = 'Sender: "' . FPOST_NCOLEGIO . ' <'.FPOST_FROMMAIL.'>';
+	$headers['Sender'] = 'Sender: "' .  $nombre_colegio  . ' <'. $email_remitente .'>';
 	$headers['Reply-To'] = 'Reply-To: "' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado']. ' <' . $data['email_apoderado'] . '>';
 	
 
-	$mailadmin = wp_mail( $admins, 'ID: ' . $data['ID'] . ' - Postulación '. FPOST_NCOLEGIO, $mensajeadmin, $headers);
+	$mailadmin = wp_mail( $admins, 'ID: ' . $data['ID'] . ' - Postulación '.  $nombre_colegio , $mensajeadmin, $headers);
 
 	return $mailadmin;
 
@@ -154,11 +162,18 @@ function fpost_mailadmin($data) {
 
 function fpost_mailapoderado( $data ) {
 
+	$options = get_option('apadm_settings');
+	$nombre_colegio = $options['apadm_nombre_colegio'];
+	$logo_colegio = $options['apadm_logourl'];
+	$email_remitente = $options['apadm_email_remitente'];
+	$fono_contacto = $options['apadm_fono_contacto'];
+	$emailsto = $options['apadm_emailsto'];
+
 	$mensajeapoderado = '<style>table p {line-height:1,4em;}</style>
 		<table align="center" width="600" cellspacing="0" cellpadding="20" style="font-family:sans-serif;font-size:14px;border:1px solid #ccc;">
 		<tr>
 			<td style="background-color:white;color:#333;">
-				<p style="text-align:center;"><img src="'.FPOST_LOGO.'" alt="'.FPOST_NCOLEGIO.'"><br><h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'.FPOST_NCOLEGIO.'</h1></p>
+				<p style="text-align:center;"><img src="'. $logo_colegio .'" alt="'. $nombre_colegio .'"><br><h1 style="font-family:sans-serif;font-size:28px;font-weight:normal;text-align:center;color:#1A7CAF;">'. $nombre_colegio .'</h1></p>
 				<h3 style="text-align:center;font-size:18px;font-weight:normal;">Confirmación de postulación para el año '.fpost_parseyear($data['postulacion_year']).'</h3>
 			</td> 
 		</tr>
@@ -234,9 +249,9 @@ function fpost_mailapoderado( $data ) {
 				<td>
 				<p>Muchas gracias por su interés.<br>
 				Afectuosamente<br>
-				<strong>'.FPOST_NCOLEGIO.'</strong></p>
-				<p><strong>Correo: </strong> '.FPOST_FROMMAIL.' <br>
-				<strong>Teléfono: </strong> <a href="tel:'.FPOST_FONO.'">'.FPOST_FONO.'</a>  <br>
+				<strong>'. $nombre_colegio .'</strong></p>
+				<p><strong>Correo: </strong> '. $email_remitente .' <br>
+				<strong>Teléfono: </strong> <a href="tel:'. $fono_contacto .'">'. $fono_contacto .'</a>  <br>
 				<strong>Web: </strong><a href="'.get_bloginfo('url').'">'.get_bloginfo('url').'</a></p>
 				';
 
@@ -244,13 +259,13 @@ function fpost_mailapoderado( $data ) {
 							</tr>
 						</table>';
 
-	$headers[] = 'From: "'.FPOST_NCOLEGIO.'" <'.FPOST_FROMMAIL.'>';
-	$headers[] = 'Sender: "' . FPOST_NCOLEGIO . ' <'.FPOST_FROMMAIL.'>';
+	$headers[] = 'From: "'. $nombre_colegio .'" <'. $email_remitente .'>';
+	$headers[] = 'Sender: "' .  $nombre_colegio  . ' <'. $email_remitente .'>';
 	$headers[] = 'Reply-To: "' . $data['nombre_apoderado'] . ' ' . $data['apellido_apoderado']. ' <' . $data['email_apoderado'] . '>';
 
 	
 
-	$mailapoderado = wp_mail( $data['email_apoderado'], 'Postulación ' . FPOST_NCOLEGIO, $mensajeapoderado, $headers);
+	$mailapoderado = wp_mail( $data['email_apoderado'], 'Postulación ' .  $nombre_colegio , $mensajeapoderado, $headers);
 
 	return $mailapoderado;
 }

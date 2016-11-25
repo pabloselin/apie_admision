@@ -10,6 +10,14 @@ function fpost_exitmessages( $exitcode ) {
 	 * 4: Nada - Error total
 	 */
 	
+	$options = get_option('apadm_settings');
+	$nombre_colegio = $options['apadm_nombre_colegio'];
+	$logo_colegio = $options['apadm_logourl'];
+	$email_remitente = $options['apadm_email_remitente'];
+	$fono_contacto = $options['apadm_fono_contacto'];
+	$emailsto = $options['apadm_emailsto'];
+	$bccemailsto = $options['apadm_bccemailsto'];
+	
 	$idinsc = $_GET['idinsc'];
 
 	switch($exitcode):
@@ -19,7 +27,7 @@ function fpost_exitmessages( $exitcode ) {
 			$message = '<div class="alert alert-success">
 						<p style="text-align:center;font-size:32px;"><i class="fa fa-check fa-2x"></i></p>
 						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
-						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . ', te hemos enviado un correo de confirmación a tu correo (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>';
+						<p style="text-align:center;">Gracias por postular a '. $nombre_colegio . ', te hemos enviado un correo de confirmación a tu correo (revisa tu bandeja de spam por si acaso...) y te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p></div>';
 
 		break;
 
@@ -28,24 +36,24 @@ function fpost_exitmessages( $exitcode ) {
 			$message = '<div class="alert alert-success">
 						<p style="text-align:center;font-size:32px;"><i class="fa fa-check fa-2x"></i></p>
 						<h4 style="font-family: sans-serif;font-size:32px;text-align:center;">Postulación enviada con éxito</h4>
-						<p style="text-align:center;">Gracias por postular a '. FPOST_NCOLEGIO . '</p>
+						<p style="text-align:center;">Gracias por postular a '. $nombre_colegio . '</p>
 
 						<p>Tu postulación quedó grabada, pero no se pudo enviar un correo de confirmación, te contactaremos vía teléfono o correo en máximo <strong>2 días hábiles</strong> para continuar el proceso.</p>
-						<p>Para mayor información por favor contacte al colegio directamente en ' . FPOST_FROMMAIL . '</p>
+						<p>Para mayor información por favor contacte al colegio directamente en ' . $email_remitente . '</p>
 						</div>';
 
 		break;
 
 		case(3):
 
-			$message = '<div class="alert alert-error"><p><i class="fa fa-times"></i></p><p>Hubo un error en la inscripción, aunque puede haber recibido un mail, su inscripción no quedó grabada, por favor contacte al colegio directamente en ' . FPOST_FROMMAIL . '.</p></div>';
+			$message = '<div class="alert alert-error"><p><i class="fa fa-times"></i></p><p>Hubo un error en la inscripción, aunque puede haber recibido un mail, su inscripción no quedó grabada, por favor contacte al colegio directamente en ' . $email_remitente . '.</p></div>';
 
 		break;
 		case(4):
 
 		default:
 
-		$message = '<div class="alert alert-error"><p><i class="fa fa-times"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en ' . FPOST_FROMMAIL . '.</p></div>';
+		$message = '<div class="alert alert-error"><p><i class="fa fa-times"></i></p><p>Hubo un error en la inscripción, por favor contacte al colegio directamente en ' . $email_remitente . '.</p></div>';
 
 		break;
 
