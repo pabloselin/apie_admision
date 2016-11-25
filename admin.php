@@ -1,13 +1,5 @@
 <?php 
 
-function fpost_admin() {
-
-	add_submenu_page( 'apie_admision', 'Postulaciones enviadas', 'manage_options', 'fpost_postulaciones', 'fpost_doadmin' );
-	add_submenu_page( 'apie_admision', 'Consultas enviadas', 'manage_options', 'fpost_consultas', 'fpost_doadminconsultas' );
-}
-
-add_action('admin_menu', 'fpost_admin');
-
 function fpost_doadmin() {
 	if (!current_user_can('manage_options'))  {
 		wp_die( __('No tienes permisos suficientes para ver esta página.') );
@@ -245,39 +237,4 @@ function fpost_csv_consultas() {
 	$csvfile = FPOST_CSVURL . $filename;
 	return $csvfile;
 
-}
-
-function fpost_init_settings() {
-
-	register_setting( 'fpost_infoformularios', 'fpost_settings_info_formularios' );
-
-	add_settings_section(
-		'fpost_info_formularios', 
-		__( 'Datos de Contacto', 'fpost' ), 
-		'adm_settings_infocontacto_section_callback', 
-		'admision_infocontacto'
-	);
-
-	add_settings_field( 
-		'fpost_text_ncolegio', 
-		__( 'Nombre del colegio', 'fpost' ), 
-		'adm_text_encargada_render', 
-		'admision_infocontacto', 
-		'adm_admision_infocontacto_section' 
-	);
-}
-
-function fpost_doadminconfig() {
-	/**
-	 * Crea los campos de configuración para los formularios
-	 */
-	?>
-
-	<div class="wrap">
-		<h2>Configuración formularios de contacto</h2>
-	</div>
-
-
-
-	<?php
 }

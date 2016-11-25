@@ -5,129 +5,135 @@ add_action( 'admin_init', 'apadm_settings_init' );
 
 function apadm_add_admin_menu(  ) { 
 
-	add_menu_page( 'Formulario Admisión', 'apie_admision', 'manage_options', 'apie_admision', 'apadm_options_page' );
+	add_menu_page( 'Formulario Admisión', 'F. Admisión', 'manage_options', 'apie_admision', 'apadm_options_page' );
+
+	//add_submenu_page( 'apie_admision', 'Admisión', 'F. Admisión', 'manage_options', 'admin.php?page=apie_admision');
+
+	add_submenu_page( 'apie_admision', 'Postulaciones enviadas', 'Postulaciones Enviadas',  'manage_options', 'fpost_postulaciones', 'fpost_doadmin' );
+
+	add_submenu_page( 'apie_admision', 'Consultas enviadas', 'Consultas Enviadas', 'manage_options', 'fpost_consultas', 'fpost_doadminconsultas' );
 
 }
 
 
 function apadm_settings_init(  ) { 
 
-	register_setting( 'pluginPage', 'apadm_settings' );
+	register_setting( 'optadm', 'apadm_settings' );
 
 	add_settings_section(
-		'apadm_pluginPage_section', 
-		__( 'Your section description', 'apadm' ), 
+		'apadm_optadm_section', 
+		__( 'Configuración formulario de admisión', 'apadm' ), 
 		'apadm_settings_section_callback', 
-		'pluginPage'
+		'optadm'
 	);
 
 	add_settings_field( 
-		'apadm_text_field_0', 
-		__( 'Settings field description', 'apadm' ), 
-		'apadm_text_field_0_render', 
-		'pluginPage', 
-		'apadm_pluginPage_section' 
+		'apadm_nombre_colegio', 
+		__( 'Nombre del colegio para usar en los correos y formularios', 'apadm' ), 
+		'apadm_nombre_colegio_render', 
+		'optadm', 
+		'apadm_optadm_section' 
 	);
 
 	add_settings_field( 
-		'apadm_text_field_1', 
-		__( 'Settings field description', 'apadm' ), 
-		'apadm_text_field_1_render', 
-		'pluginPage', 
-		'apadm_pluginPage_section' 
+		'apadm_email_remitente', 
+		__( 'Email del remitente de los correos a enviar', 'apadm' ), 
+		'apadm_email_remitente_render', 
+		'optadm', 
+		'apadm_optadm_section' 
 	);
 
 	add_settings_field( 
-		'apadm_text_field_2', 
-		__( 'Settings field description', 'apadm' ), 
-		'apadm_text_field_2_render', 
-		'pluginPage', 
-		'apadm_pluginPage_section' 
+		'apadm_fonocontacto', 
+		__( 'Teléfono de contacto que aparecerá en los correos', 'apadm' ), 
+		'apadm_fonocontacto_render', 
+		'optadm', 
+		'apadm_optadm_section' 
 	);
 
 	add_settings_field( 
-		'apadm_text_field_3', 
-		__( 'Settings field description', 'apadm' ), 
-		'apadm_text_field_3_render', 
-		'pluginPage', 
-		'apadm_pluginPage_section' 
+		'apadm_prefijometabox', 
+		__( 'Prefijo para los campos de opciones (ej: csd_)', 'apadm' ), 
+		'apadm_prefijometabox_render', 
+		'optadm', 
+		'apadm_optadm_section' 
 	);
 
 	add_settings_field( 
-		'apadm_text_field_4', 
-		__( 'Settings field description', 'apadm' ), 
-		'apadm_text_field_4_render', 
-		'pluginPage', 
-		'apadm_pluginPage_section' 
+		'apadm_emailsto', 
+		__( 'Correos a quien enviar los formularios (separados por coma)', 'apadm' ), 
+		'apadm_emailsto_render', 
+		'optadm', 
+		'apadm_optadm_section' 
 	);
 
 	add_settings_field( 
-		'apadm_text_field_5', 
-		__( 'Settings field description', 'apadm' ), 
-		'apadm_text_field_5_render', 
-		'pluginPage', 
-		'apadm_pluginPage_section' 
+		'apadm_logourl', 
+		__( 'URL del logotipo para los correos', 'apadm' ), 
+		'apadm_logourl_render', 
+		'optadm', 
+		'apadm_optadm_section' 
 	);
 
 
 }
 
 
-function apadm_text_field_0_render(  ) { 
+function apadm_nombre_colegio_render(  ) { 
 
 	$options = get_option( 'apadm_settings' );
 	?>
-	<input type='text' name='apadm_settings[apadm_text_field_0]' value='<?php echo $options['apadm_text_field_0']; ?>'>
+	<input type='text' name='apadm_settings[apadm_nombre_colegio]' value='<?php echo $options['apadm_nombre_colegio']; ?>'>
 	<?php
 
 }
 
 
-function apadm_text_field_1_render(  ) { 
+function apadm_email_remitente_render(  ) { 
 
 	$options = get_option( 'apadm_settings' );
 	?>
-	<input type='text' name='apadm_settings[apadm_text_field_1]' value='<?php echo $options['apadm_text_field_1']; ?>'>
+	<input type='text' name='apadm_settings[apadm_email_remitente]' value='<?php echo $options['apadm_email_remitente']; ?>'>
 	<?php
 
 }
 
 
-function apadm_text_field_2_render(  ) { 
+function apadm_fonocontacto_render(  ) { 
 
 	$options = get_option( 'apadm_settings' );
 	?>
-	<input type='text' name='apadm_settings[apadm_text_field_2]' value='<?php echo $options['apadm_text_field_2']; ?>'>
+	<input type='text' name='apadm_settings[apadm_fonocontacto]' value='<?php echo $options['apadm_fonocontacto']; ?>'>
 	<?php
 
 }
 
 
-function apadm_text_field_3_render(  ) { 
+function apadm_prefijometabox_render(  ) { 
 
 	$options = get_option( 'apadm_settings' );
 	?>
-	<input type='text' name='apadm_settings[apadm_text_field_3]' value='<?php echo $options['apadm_text_field_3']; ?>'>
+	<input type='text' name='apadm_settings[apadm_prefijometabox]' value='<?php echo $options['apadm_prefijometabox']; ?>'>
 	<?php
 
 }
 
 
-function apadm_text_field_4_render(  ) { 
+function apadm_emailsto_render(  ) { 
 
 	$options = get_option( 'apadm_settings' );
 	?>
-	<input type='text' name='apadm_settings[apadm_text_field_4]' value='<?php echo $options['apadm_text_field_4']; ?>'>
+	<input type='text' name='apadm_settings[apadm_emailsto]' value='<?php echo $options['apadm_emailsto']; ?>'>
 	<?php
 
 }
 
 
-function apadm_text_field_5_render(  ) { 
+function apadm_logourl_render(  ) { 
 
 	$options = get_option( 'apadm_settings' );
 	?>
-	<input type='text' name='apadm_settings[apadm_text_field_5]' value='<?php echo $options['apadm_text_field_5']; ?>'>
+	<input type='text' name='apadm_settings[apadm_logourl]' value='<?php echo $options['apadm_logourl']; ?>'>
 	<?php
 
 }
@@ -135,7 +141,7 @@ function apadm_text_field_5_render(  ) {
 
 function apadm_settings_section_callback(  ) { 
 
-	echo __( 'This section description', 'apadm' );
+	echo __( 'Aquí están los datos que controlan como funciona el formulario de postulación.', 'apadm' );
 
 }
 
@@ -145,11 +151,11 @@ function apadm_options_page(  ) {
 	?>
 	<form action='options.php' method='post'>
 
-		<h2>apie_admision</h2>
+		<h2>Configuración formulario</h2>
 
 		<?php
-		settings_fields( 'pluginPage' );
-		do_settings_sections( 'pluginPage' );
+		settings_fields( 'optadm' );
+		do_settings_sections( 'optadm' );
 		submit_button();
 		?>
 

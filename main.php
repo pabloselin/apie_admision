@@ -28,9 +28,9 @@ TODO:
 */
 
 global $dbver;
-$dbver = '1.63';
+$dbver = '1.64';
 
-define( 'FPOST_VERSION', '0.65');
+define( 'FPOST_VERSION', '0.8');
 
 //Crear directorios
 define( 'FPOST_CSVPATH', WP_CONTENT_DIR . '/postulaciones/');
@@ -69,7 +69,7 @@ if(!is_dir(FPOST_CSVPATH)){
 include( plugin_dir_path( __FILE__ ) . 'admin.php' );
 
 //admin page options
-include( plugin_dir_path( __FILE__ ) . 'admin_options.php' );
+include( plugin_dir_path( __FILE__ ) . 'inc/admin_options.php' );
 
 
 //la parte de las consultas
