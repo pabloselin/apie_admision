@@ -68,6 +68,10 @@ if(!is_dir(FPOST_CSVPATH)){
 //admin page
 include( plugin_dir_path( __FILE__ ) . 'admin.php' );
 
+//admin page options
+include( plugin_dir_path( __FILE__ ) . 'admin_options.php' );
+
+
 //la parte de las consultas
 include( plugin_dir_path( __FILE__ ) . 'consultas.php' );
 
