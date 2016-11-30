@@ -16,7 +16,6 @@ function fpost_shareshortcode($atts) {
           <i class="fa fa-phone fa-stack-1x"></i>
       </span></i></a>';
     $share['facebook'] = '<a target="_blank" class="fb" href="https://facebook.com/sharer.php?u='.get_permalink($post->ID).'" class="facebook"><i class="fa fa-facebook"></i></a>';
-    //$share['twitter'] = '<a target="_blank" href="https://twitter.com/intent/tweet?url='.get_permalink($post->ID).'&text='.urlencode($soctitle).'" class="twt"><i class="fa fa-twitter"></i></a>';
     $share['gmas'] = '<a target="_blank" href="https://plus.google.com/share?url='.get_permalink($post->ID).'" class="gpl"><i class="fa fa-google-plus"></i></a>';
     $share = implode(' ', $share);
     $share = '<div class="sharing_toolbox">'.$share.'</div>';

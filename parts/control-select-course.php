@@ -1,9 +1,9 @@
 <div class="form-group">
-	<label for="curso_postula" class="control-label">Curso al que postula</label>
+	<label for="curso_postula" class="control-label">Curso</label>
 	<div>
 		<select name="curso_postula" id="curso_postula" class="form-control" required>
 			<option value="">Escoja un curso</option>
-			<option value="pg">Playgroup</option>
+			<option value="jardin">Jardín</option>
 			<option value="pk">PreKinder</option>
 			<option value="k">Kinder</option>
 			<option value="1">1º Básico</option>

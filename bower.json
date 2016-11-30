@@ -1,0 +1,26 @@
+{
+  "name": "apie_admision",
+  "description": "Sistema de admisión para colegios",
+  "main": "main.php",
+  "authors": [
+    "Pablo Selín Carrasco - A Pie"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "dynatable": "^0.3.1",
+    "pickadate": "^3.5.6",
+    "jquery.rut": "*",
+    "jquery-validation": "^1.15.1",
+    "modernizr": "^3.3.1"
+  }
+}

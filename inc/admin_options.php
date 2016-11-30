@@ -36,6 +36,22 @@ function apadm_settings_init(  ) {
 	);
 
 	add_settings_field( 
+		'apadm_year_current', 
+		__( 'Primer año de postulación', 'apadm' ), 
+		'apadm_year_current_render', 
+		'optadm', 
+		'apadm_optadm_section' 
+	);
+
+	add_settings_field( 
+		'apadm_year_next', 
+		__( 'Siguiente año de postulación', 'apadm' ), 
+		'apadm_year_next_render', 
+		'optadm', 
+		'apadm_optadm_section' 
+	);
+
+	add_settings_field( 
 		'apadm_email_remitente', 
 		__( 'Email del remitente de los correos a enviar', 'apadm' ), 
 		'apadm_email_remitente_render', 
@@ -102,6 +118,24 @@ function apadm_email_remitente_render(  ) {
 	$options = get_option( 'apadm_settings' );
 	?>
 	<input type='text' name='apadm_settings[apadm_email_remitente]' value='<?php echo $options['apadm_email_remitente']; ?>'>
+	<?php
+
+}
+
+function apadm_year_current_render(  ) { 
+
+	$options = get_option( 'apadm_settings' );
+	?>
+	<input type='text' name='apadm_settings[apadm_year_current]' value='<?php echo $options['apadm_year_current']; ?>'>
+	<?php
+
+}
+
+function apadm_year_next_render(  ) { 
+
+	$options = get_option( 'apadm_settings' );
+	?>
+	<input type='text' name='apadm_settings[apadm_year_next]' value='<?php echo $options['apadm_year_next']; ?>'>
 	<?php
 
 }

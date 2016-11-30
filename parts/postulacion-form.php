@@ -39,13 +39,26 @@ if($_POST && $nonce){
 
 				} else {
 
+					echo '<div class="row">';
+
+					echo '<div class="col-md-12"><h2 class="first">Curso al que postula</h2></div>';
+					echo '<div class="col-md-6">';
+
 					include( plugin_dir_path( __FILE__ ) . 'control-select-year.php' );
+
+					echo '</div> <div class="col-md-6">';
+
+					include( plugin_dir_path( __FILE__ ) . 'control-select-semestre.php' );
+
+					echo '</div>';
+
+					echo '</div>';
 	
 					include( plugin_dir_path(__FILE__) . 'control-select-course.php' );
 		
 					include( plugin_dir_path( __FILE__ ) . 'control-select-infostudent.php' );
 		
-					include( plugin_dir_path( __FILE__ ) . 'control-select-where.php' );			
+					//include( plugin_dir_path( __FILE__ ) . 'control-select-where.php' );			
 		
 					include( plugin_dir_path( __FILE__ ) . 'control-select-parentinfo.php' );
 		

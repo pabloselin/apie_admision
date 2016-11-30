@@ -30,7 +30,7 @@ TODO:
 global $dbver;
 $dbver = '1.64';
 
-define( 'APIEADM_VERSION', '0.8');
+define( 'APIEADM_VERSION', '0.91');
 
 //Crear directorios
 define( 'APIEADM_CSVPATH', WP_CONTENT_DIR . '/postulaciones/');
