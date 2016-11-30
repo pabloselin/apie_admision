@@ -70,8 +70,11 @@ function fpost_exitmessages( $exitcode ) {
 //Añadir esta función por AJAX
 function fpost_validate() {
 	if(!wp_verify_nonce( $_POST['postulacion_nonce'], 'fpost_prepost' )) {
+		
 		return 'nonce inválido';
+
 	} else {
+
 		//Sanitizar alumno
 
 		$data['postulacion_year'] = sanitize_text_field( $_POST['postulacion_year'] );
@@ -89,7 +92,12 @@ function fpost_validate() {
 		}
 		
 		$data['alumno_fecha_nacimiento'] = sanitize_text_field( $_POST['alumno_fecha_nacimiento'] );
-		$data['procedencia_alumno'] = sanitize_text_field( $_POST['procedencia_alumno'] );
+		
+		if(isset($_POST['procedencia_alumno'])):
+			$data['procedencia_alumno'] = sanitize_text_field( $_POST['procedencia_alumno'] );
+		endif;
+
+
 		
 		if( isset($_POST['otrocurso']) && $_POST['curso_postula'] == 'otro' ) {
 
@@ -130,8 +138,12 @@ function fpost_validate() {
 		$data['xtra_apoderado'] = sanitize_text_field( $_POST['xtra_apoderado'] );
 
 		//Meter en la base de datos y redirigir
+		
 		$redirect = fpost_putserialdata($data);
-		wp_redirect( $redirect, 303 );
+
+		if(wp_redirect( $redirect, 303 )) {
+			exit;
+		}
+
 	}
 }
-

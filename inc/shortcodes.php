@@ -2,7 +2,11 @@
 
 //Shortcode para el formulario
 function fpost_formshortcode($atts) {
-  return fpost_form();
+  ob_start();
+
+    include plugin_dir_path( __FILE__ ) . '/../parts/postulacion-form.php';
+    
+  return ob_get_clean();
 }
 
 add_shortcode('formulario_postulacion', 'fpost_formshortcode');

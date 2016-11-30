@@ -214,5 +214,3 @@ function apadm_options_page(  ) {
 	<?php
 
 }
-
-?>

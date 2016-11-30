@@ -93,12 +93,6 @@ include( plugin_dir_path( __FILE__) . 'inc/utils.php');
 //Funciones para los formularios
 include( plugin_dir_path( __FILE__) . 'inc/form-functions.php');
 
-//Html del formulario
-function fpost_form() {
-	ob_start();
-	include plugin_dir_path( __FILE__ ) . '/parts/postulacion-form.php';
-	return ob_get_clean();
-}
 
 //Scripts y estilos extras
 function fpost_styleandscripts() {

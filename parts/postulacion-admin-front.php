@@ -42,4 +42,3 @@ if( isset($_GET['fpostid'])) {?>
 
 <?php
 }
-?>

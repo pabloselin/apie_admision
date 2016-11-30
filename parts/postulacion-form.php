@@ -10,12 +10,12 @@ if( isset($_GET['exitcode']) ) {
 	if($_POST && $_POST['postulacion_nonce']) {
 		$nonce = $_POST['postulacion_nonce'];
 	};
+
 if($_POST && $nonce){	
 	
 	echo fpost_validate();
 
 	} else { ?>
-
 
 
 <div class="postulacion_formwrapper">
@@ -85,4 +85,4 @@ if($_POST && $nonce){
 //end conditional output	
 		}
 
-} //end exitcode
+}

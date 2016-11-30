@@ -35,7 +35,7 @@ function fpost_mailadmin($data) {
 	$nombre_colegio = $options['apadm_nombre_colegio'];
 	$logo_colegio = $options['apadm_logourl'];
 	$email_remitente = $options['apadm_email_remitente'];
-	$fono_contacto = $options['apadm_fono_contacto'];
+	$fono_contacto = $options['apadm_fonocontacto'];
 	$emailsto = $options['apadm_emailsto'];
 	$bccemailsto = $options['apadm_bccemailsto'];
 
@@ -166,7 +166,7 @@ function fpost_mailapoderado( $data ) {
 	$nombre_colegio = $options['apadm_nombre_colegio'];
 	$logo_colegio = $options['apadm_logourl'];
 	$email_remitente = $options['apadm_email_remitente'];
-	$fono_contacto = $options['apadm_fono_contacto'];
+	$fono_contacto = $options['apadm_fonocontacto'];
 	$emailsto = $options['apadm_emailsto'];
 
 	$mensajeapoderado = '<style>table p {line-height:1,4em;}</style>
@@ -189,7 +189,7 @@ function fpost_mailapoderado( $data ) {
 							<p><strong>Nombre Alumno(a): </strong>' .$data['nombre_alumno']. ' ' . $data['apellido_alumno'] . '</p>
 							<p><strong>Fecha de Nacimiento:</strong>' . $data['alumno_fecha_nacimiento'] . '</p>';
 
-							if( isset($data['rut_apoderado']) ){
+							if( isset($data['rut_alumno']) ){
 
 								$mensajeapoderado .= '<p><strong>RUT Alumno: </strong>' . $data['rut_alumno'] .'</p>';
 
