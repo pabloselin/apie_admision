@@ -28,7 +28,7 @@ TODO:
 */
 
 global $dbver;
-$dbver = '1.64';
+$dbver = '1.7';
 
 define( 'APIEADM_VERSION', '0.91');
 
@@ -36,30 +36,9 @@ define( 'APIEADM_VERSION', '0.91');
 define( 'APIEADM_CSVPATH', WP_CONTENT_DIR . '/postulaciones/');
 define( 'APIEADM_CSVURL', WP_CONTENT_URL . '/postulaciones/');
 //Variables de mails y nombres
-define( 'FPOST_NCOLEGIO', 'Colegio Compañía de María Apoquindo');
-define( 'FPOST_FROMMAIL', 'admision@ciademaria.cl');
-define( 'FPOST_FONO', '+562 236 359 00');
-//Prefijo para algunas cosas
-define( 'FPOST_PREFIX', 'cma_');
+
 define( 'FPOST_TABLENAME', 'apie_adm');
  
-//Cambia los mails según.
-if(get_bloginfo('url') == 'http://admision.ciademaria.cl'):
-
-	define( 'FPOST_TOMAILS', 'admision@ciademaria.cl');
-	
-	define( 'FPOST_EXTRAMAILS', 'luis.rivera@ciademaria.cl, director@ciademaria.cl, pablo@apie.cl,jorgeloayza@gmail.com,pablobravo@apie.cl');
-
-else:
-	
-	define( 'FPOST_TOMAILS', 'contacto@apie.cl');
-
-	define( 'FPOST_EXTRAMAILS', 'pabloselin@gmail.com,jorgeloayza@gmail.com,jorge.loayza@yahoo.cl');
-
-endif;
-
-define( 'FPOST_LOGO', plugins_url( 'img/logo_cma.png', __FILE__ ) );
-
 if(!is_dir(APIEADM_CSVPATH)){
 	mkdir(WP_CONTENT_DIR . '/postulaciones', 0755);
 }

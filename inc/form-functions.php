@@ -11,10 +11,11 @@ function fpost_exitmessages( $exitcode ) {
 	 */
 	
 	$options = get_option('apadm_settings');
+
 	$nombre_colegio = $options['apadm_nombre_colegio'];
 	$logo_colegio = $options['apadm_logourl'];
 	$email_remitente = $options['apadm_email_remitente'];
-	$fono_contacto = $options['apadm_fono_contacto'];
+	$fono_contacto = $options['apadm_fonocontacto'];
 	$emailsto = $options['apadm_emailsto'];
 	$bccemailsto = $options['apadm_bccemailsto'];
 	
@@ -139,11 +140,52 @@ function fpost_validate() {
 
 		//Meter en la base de datos y redirigir
 		
-		$redirect = fpost_putserialdata($data);
+		
+		$putdata = fpost_putserialdata($data);
 
-		if(wp_redirect( $redirect, 303 )) {
-			exit;
+		if( $putdata !== false) {
+
+			$message = fpost_mails($putdata);
+
+			if( $message !== false ) {
+
+				$urlargs = array(
+					'excode' => 1,
+					'idinsc' => $putdata['ID']
+					);
+
+				
+				
+				$newurl = add_query_arg($urlargs, get_permalink());
+				wp_safe_redirect( $newurl, 303 );
+				exit;
+
+			} else {
+
+				$urlargs = array(
+					'excode' => 3
+					);
+
+			}
+
 		}
+
+		// if(wp_redirect( $redirect, 303 )) {
+		// 	exit;
+		// }
 
 	}
 }
+
+function fpost_redirect() {
+	/**
+	 * Devuelve los formularios dependiendo del POST
+	 */
+	if(isset($_POST['postulacion_nonce'])) {
+
+		fpost_validate();
+
+	}
+}
+
+add_action('wp_loaded', 'fpost_redirect');

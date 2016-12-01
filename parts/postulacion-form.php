@@ -1,21 +1,11 @@
 <?php 
 //Si es que se ha enviado el formulario ejecuto otras cosas
 
-if( isset($_GET['exitcode']) ) {
+if( isset($_GET['excode']) ) {
 
-	fpost_exitmessages( $_GET['exitcode'] );
+	echo fpost_exitmessages( $_GET['excode'] );
 
-} else {
-
-	if($_POST && $_POST['postulacion_nonce']) {
-		$nonce = $_POST['postulacion_nonce'];
-	};
-
-if($_POST && $nonce){	
-	
-	echo fpost_validate();
-
-	} else { ?>
+} else { ?>
 
 
 <div class="postulacion_formwrapper">
@@ -82,7 +72,5 @@ if($_POST && $nonce){
 </div>
 
 <?php	
-//end conditional output	
-		}
-
+//end conditional output
 }

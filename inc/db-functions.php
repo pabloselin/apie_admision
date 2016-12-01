@@ -95,32 +95,41 @@ function fpost_putserialdata($data) {
 	//Enviar mensaje y correr funciones
 	$data['ID'] = $lastid;
 	$data['timestamp'] = $timestamp;
-	$message = fpost_mails($data);
 
-	if( $message == true && $lastid ) {
+	// $message = fpost_mails($data);
 
-		$excode = 1;
+	// if( $message == true && $lastid ) {
 
-	} elseif( $message != true && $lastid) {
+	// 	$excode = 1;
 
-		$excode = 2;
+	// } elseif( $message != true && $lastid) {
 
-	} elseif ( $message == true && !$lastid ) {
+	// 	$excode = 2;
 
-		$excode = 3;
+	// } elseif ( $message == true && !$lastid ) {
+
+	// 	$excode = 3;
+
+	// } else {
+
+	// 	$excode = 4;
+
+	// }
+
+	// $urlargs = array(
+	// 	'excode' => $excode,
+	// 	'idinsc' => $lastid
+	// 	);
+
+	// $exiturl = add_query_arg( $urlargs, get_permalink() );
+	if($lastid) {
+
+		return $data;	
 
 	} else {
 
-		$excode = 4;
+		return false;
 
 	}
-
-	$urlargs = array(
-		'excode' => $excode,
-		'idinsc' => $lastid
-		);
-
-	$exiturl = add_query_arg( $urlargs, get_permalink() );
-
-	return $exiturl;
+	
 }

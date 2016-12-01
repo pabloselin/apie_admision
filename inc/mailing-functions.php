@@ -16,6 +16,7 @@ function fpost_mails($data) {
 	$mailapoderado = fpost_mailapoderado( $data );
 	$mailadmin = fpost_mailadmin( $data );
 
+
 	add_filter('wp_mail_content_type', 'fpost_content_type_plain');
 
 	if($mailapoderado == true && $mailadmin == true) {
@@ -29,6 +30,8 @@ function fpost_mails($data) {
 	}
 }
 
+
+
 function fpost_mailadmin($data) {
 
 	$options = get_option('apadm_settings');
@@ -38,6 +41,7 @@ function fpost_mailadmin($data) {
 	$fono_contacto = $options['apadm_fonocontacto'];
 	$emailsto = $options['apadm_emailsto'];
 	$bccemailsto = $options['apadm_bccemailsto'];
+
 
 		$f_fono_apoderado = '+56 9 ' . $data['fono_apoderado'];
 

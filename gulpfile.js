@@ -41,7 +41,6 @@ gulp.task('cleancss', function() {
 
 gulp.task('scripts', function() {
 	return gulp.src([
-		'./lib/modernizr/modernizr.js',
 		'./lib/dynatable/jquery.dynatable.js',
 		'./lib/jquery-validation/dist/jquery.validate.js',
 		'./lib/jquery.rut/jquery.rut.js',
