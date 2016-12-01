@@ -1,4 +1,4 @@
-<h2>Datos apoderado/a</h2>
+<h2 class="formsection-title">Datos apoderado/a</h2>
 			<div class="form-group">
 				
 				<div class="row">

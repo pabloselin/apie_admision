@@ -15,7 +15,7 @@ gulp.task('default', function() {
 });
 
 gulp.task('sass', function() {
-	 return gulp.src('css/main.scss')
+	 return gulp.src('css/src/postulacion.scss')
 		  		.pipe(sass().on('error', sass.logError) )
 		  		.pipe(autoprefixer())
 		  		.pipe(gulp.dest('css'))

@@ -1,4 +1,4 @@
-<h2>Información adicional</h2>
+<h2 class="formsection-title">Información adicional</h2>
 			<!--formel-->
 			<div class="form-group">
 				<label class="control-label" for="postulacion_mensaje">Mensaje adicional</label>

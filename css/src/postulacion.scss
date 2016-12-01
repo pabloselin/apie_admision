@@ -1,5 +1,12 @@
 // Fspm.less
 
+.postulacion_formwrapper {
+	padding:12px;
+	background-color:#f0f0f0;
+	border:1px solid #ccc;
+	margin-bottom:24px;
+}
+
 form#formulario-postulacion {
 
 	text-align: left;
@@ -22,6 +29,10 @@ form#formulario-postulacion {
 
 	h2 {
 		text-transform:uppercase;
+	}
+
+	h2.formsection-title {
+		margin-top:48px;
 	}
 
 	h2.subsectionh2 {

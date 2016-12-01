@@ -625,6 +625,15 @@ th a:hover {
 /* ==========================================================================
    $DEFAULT-DATE-PICKER
    ========================================================================== */
+@charset "UTF-8";
+
+.postulacion_formwrapper {
+  padding: 12px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  margin-bottom: 24px;
+}
+
 form#formulario-postulacion {
   text-align: left;
 }
@@ -647,6 +656,10 @@ form#formulario-postulacion .help-block {
 
 form#formulario-postulacion h2 {
   text-transform: uppercase;
+}
+
+form#formulario-postulacion h2.formsection-title {
+  margin-top: 48px;
 }
 
 form#formulario-postulacion h2.subsectionh2 {

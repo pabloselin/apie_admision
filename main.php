@@ -77,12 +77,15 @@ include( plugin_dir_path( __FILE__) . 'inc/form-functions.php');
 function fpost_styleandscripts() {
 	if(!is_admin()) {
 		
-		wp_register_style( 'postulacioncss', plugins_url('/css/apie-admision.css', __FILE__), array(), APIEADM_VERSION, 'screen' );
+		wp_register_style( 'cssplugins', plugins_url('/css/apie-admision.css', __FILE__), array(), APIEADM_VERSION, 'screen' );
+		wp_register_style( 'formcss', plugins_url('/css/postulacion.css', __FILE__), array(), APIEADM_VERSION, 'screen' );
 		wp_register_script( 'postulacionjs', plugins_url('/js/apie-admision.js', __FILE__ ), array(), APIEADM_VERSION, false);
 		
 		wp_enqueue_script( 'postulacionjs' );
+
+		wp_enqueue_script( 'formcss' );
 		
-		wp_enqueue_style( 'postulacioncss' );
+		wp_enqueue_style( 'cssplugins' );
 		
 	};
 }
